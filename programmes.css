@@ -1,0 +1,815 @@
+/* ==========================================================================
+   Programmes section: "Three programmes. One is yours."
+   Headline: Outfit (as in Figma). Everything else: Inter.
+   Second section of the page, after the particle hero. Every rule is scoped to
+   .programmes so nothing leaks into the hero above it.
+   ========================================================================== */
+
+.programmes {
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --p-ink: #06123f;
+  --p-ink-soft: #1f2e5c;
+  --p-muted: #475569;
+  --p-brand: #0052ff;
+  --p-border: #cecece;
+  --p-border-active: #e8e8e8;
+
+  --academy: #e9f0ff;
+  --intensive: #e4e0fc;
+  --niat: #ecd3d4;
+
+  --ease: cubic-bezier(0.65, 0.05, 0.25, 1);
+  --dur: 0.7s;
+}
+
+.programmes,
+.programmes *,
+.programmes *::before,
+.programmes *::after {
+  box-sizing: border-box;
+}
+
+.programmes img {
+  display: block;
+  max-width: none;
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.programmes svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* --------------------------------------------------------------------------
+   Section + header
+   -------------------------------------------------------------------------- */
+
+.programmes {
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  color: #000;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  padding: 72px 25px 56px;
+  scroll-margin-top: 0;
+}
+
+.programmes__inner {
+  max-width: 1436px;
+  margin: 0 auto;
+}
+
+.programmes__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  margin-bottom: 119px;
+}
+
+.programmes__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(32px, 4.2vw, 56px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  background-image: linear-gradient(97.19deg, #000 17.74%, #0b1e40 31.64%, #2563eb 67.14%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.programmes__subtitle {
+  margin: 0;
+  font-size: clamp(17px, 1.9vw, 26.667px);
+  line-height: 1.5;
+  color: #000;
+}
+
+/* --------------------------------------------------------------------------
+   Row of cards
+   -------------------------------------------------------------------------- */
+
+.programmes__row {
+  --gap: 20px;
+  /* 1 design px of the 1385px-wide Figma row (1345 = 1385 - 2 gaps) */
+  --u: calc((100cqw - 2 * var(--gap)) / 1345);
+  container-type: inline-size;
+  display: flex;
+  justify-content: center;
+  gap: var(--gap);
+  max-width: 1385px;
+  height: 538px;
+  margin: 0 auto;
+}
+
+.programme {
+  --w-default: calc(314 * var(--u));
+  --w-active: calc(1070 * var(--u));
+  --w-collapsed: calc(137.5 * var(--u));
+
+  position: relative;
+  flex: 0 0 var(--w-default);
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--p-border);
+  border-radius: 20px;
+  cursor: pointer;
+  outline: none;
+  transition:
+    flex-basis var(--dur) var(--ease),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.programme:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 82, 255, 0.35);
+}
+
+.programmes__row.has-active .programme {
+  flex-basis: var(--w-collapsed);
+}
+
+.programmes__row.has-active .programme.is-active {
+  flex-basis: var(--w-active);
+  border-color: var(--p-border-active);
+  cursor: default;
+}
+
+.programme--academy { --tint: var(--academy); --tint-0: rgba(233, 240, 255, 0); background: var(--academy); }
+.programme--intensive { --tint: var(--intensive); --tint-0: rgba(228, 224, 252, 0); background: var(--intensive); }
+.programme--niat { --tint: var(--niat); --tint-0: rgba(236, 211, 212, 0); background: #fff; }
+
+/* --------------------------------------------------------------------------
+   Preview layer: default (314px) + collapsed (137.5px) states
+   -------------------------------------------------------------------------- */
+
+.programme__preview {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.35s ease 0.2s;
+}
+
+.programme.is-active .programme__preview {
+  opacity: 0;
+  transition-delay: 0s;
+  transition-duration: 0.25s;
+}
+
+/* Photos are the Figma exports, already cropped to the visible card area,
+   so they sit on the card's bottom edge. Default and collapsed crops cross-fade. */
+.programme__photo {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: auto;
+  transform: translateX(-50%);
+  transform-origin: bottom center;
+  transition: opacity 0.45s ease, transform 0.6s var(--ease);
+}
+
+.programme__photo--default {
+  width: calc(var(--w-default) - 2px);
+}
+
+/* soften the top edge where the photo's background meets the card tint */
+.programme__photo {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 90px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 90px);
+}
+
+.programme__photo--collapsed {
+  width: calc(var(--w-collapsed) - 2px);
+  opacity: 0;
+}
+
+.programmes__row.has-active .programme__photo--default { opacity: 0; }
+.programmes__row.has-active .programme__photo--collapsed { opacity: 1; transition-delay: 0.15s; }
+
+.programmes__row:not(.has-active) .programme:hover .programme__photo--default {
+  transform: translateX(-50%) scale(1.03);
+}
+
+.programme__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 216px;
+  background: linear-gradient(to bottom, var(--tint-0) 0%, var(--tint) 75.8%);
+  transition: height var(--dur) var(--ease);
+}
+
+.programmes__row.has-active .programme__fade {
+  height: 325px;
+}
+
+/* Logo */
+.programme__logo {
+  position: absolute;
+  left: 50%;
+  top: var(--logo-y);
+  width: min(var(--logo-w), 84%);
+  transform: translateX(-50%);
+  transition:
+    width var(--dur) var(--ease),
+    top var(--dur) var(--ease);
+}
+
+.programme__logo img {
+  width: 100%;
+  height: auto;
+}
+
+/* the Academy logo export has a white background; multiply drops it onto the tint */
+.programme__logo,
+.detail__logo {
+  mix-blend-mode: multiply;
+}
+
+.programme--academy   { --logo-w: 199px;   --logo-y: 41px; }
+.programme--intensive { --logo-w: 201.6px; --logo-y: 42px; }
+.programme--niat      { --logo-w: 197px;   --logo-y: 44px; }
+
+.programmes__row.has-active .programme--academy   { --logo-w: 111.6px; --logo-y: 38px; }
+.programmes__row.has-active .programme--intensive { --logo-w: 110px;   --logo-y: 37px; }
+.programmes__row.has-active .programme--niat      { --logo-w: 36px;    --logo-y: 31px; }
+
+/* NIAT swaps the full lock-up for the shield when collapsed */
+.programme--niat .programme__logo {
+  display: grid;
+  justify-items: center;
+}
+
+.programme--niat .programme__logo > * {
+  grid-area: 1 / 1;
+  transition: opacity 0.3s ease;
+}
+
+.programme--niat .logo-mark {
+  width: 36px;
+  opacity: 0;
+}
+
+.programmes__row.has-active .programme--niat .logo-full { opacity: 0; }
+.programmes__row.has-active .programme--niat .logo-mark { opacity: 1; }
+
+/* Caption + expand button (default state only) */
+.programme__caption {
+  position: absolute;
+  left: 24px;
+  bottom: 20px;
+  width: 58%;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #000;
+}
+
+.programme__expand {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.58);
+  -webkit-backdrop-filter: blur(14.45px);
+  backdrop-filter: blur(14.45px);
+  color: #7a7a7a;
+  transition: transform 0.4s var(--ease), background-color 0.3s ease;
+}
+
+.programme__expand svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.6;
+}
+
+.programmes__row:not(.has-active) .programme:hover .programme__expand {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.programme__caption {
+  transition: opacity 0.3s ease 0.3s;
+}
+
+.programmes__row.has-active .programme__caption {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+/* The expand button stays on the collapsed tabs, centred, to show they can open */
+.programme__expand {
+  transition:
+    right var(--dur) var(--ease),
+    transform 0.4s var(--ease),
+    background-color 0.3s ease;
+}
+
+.programmes__row.has-active .programme__expand {
+  right: calc(50% - 23px);
+}
+
+.programmes__row.has-active .programme:not(.is-active):hover .programme__expand {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* --------------------------------------------------------------------------
+   Detail layer: expanded (1070px) state
+   -------------------------------------------------------------------------- */
+
+.programme__detail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  /* fixed at the expanded width so nothing reflows while the card grows */
+  width: calc(var(--w-active) - 2px);
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.programme.is-active .programme__detail {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.45s ease 0.18s;
+}
+
+.detail__media {
+  position: relative;
+  flex: 1 1 auto;
+  overflow: hidden;
+  background: #fff;
+}
+
+.detail__photo {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--dp-w);
+  transform: translateY(24px) scale(1.04);
+  transform-origin: bottom center;
+  transition: transform 0.9s var(--ease);
+}
+
+.detail__photo img {
+  width: 100%;
+  height: auto;
+  filter: grayscale(1);
+  transition: filter 0.8s ease 0.15s;
+}
+
+.programme.is-active .detail__photo {
+  transform: none;
+}
+
+.programme.is-active .detail__photo img {
+  filter: none;
+}
+
+/* Export width as a share of the 751px media panel (cropped by Figma at the panel edges) */
+.programme--academy   { --dp-w: 96.67%; }
+.programme--intensive { --dp-w: 100%; }
+.programme--niat      { --dp-w: 94.81%; }
+
+.detail__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.programme--academy .detail__fade {
+  height: 164.3px;
+  background: linear-gradient(to bottom, rgba(233, 240, 255, 0) 0%, var(--academy) 147.71%);
+}
+.programme--intensive .detail__fade {
+  height: 158.9px;
+  background: linear-gradient(to bottom, rgba(228, 224, 252, 0) 0%, var(--intensive) 139.04%);
+}
+.programme--niat .detail__fade {
+  height: 125.2px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #fff 139.04%);
+}
+
+/* Pixel "steps" that dissolve the photo into the side panel */
+.detail__steps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.detail__steps span {
+  position: absolute;
+  background: var(--tint);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.45s var(--ease);
+}
+
+.programme.is-active .detail__steps span {
+  transform: scaleX(1);
+  transition-delay: calc(0.25s + var(--i) * 25ms);
+}
+
+.detail__intro {
+  position: absolute;
+  left: 11.2%;
+  top: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 29.3px;
+  max-width: 80%;
+}
+
+.detail__intro > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.programme.is-active .detail__intro > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s ease, transform 0.6s var(--ease);
+}
+
+.programme.is-active .detail__intro > :nth-child(1) { transition-delay: 0.25s; }
+.programme.is-active .detail__intro > :nth-child(2) { transition-delay: 0.35s; }
+
+.detail__logo img {
+  height: auto;
+  max-width: 100%;
+}
+
+.programme--academy .detail__logo img { width: 318.6px; }
+.programme--intensive .detail__logo img { width: 260.2px; }
+.programme--niat .detail__logo img { width: 331px; }
+
+.programme--intensive .detail__text { --text-w: 232px; }
+
+.detail__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 7.6px;
+}
+
+.detail__mode {
+  display: flex;
+  align-items: center;
+  gap: 10.5px;
+  margin: 0;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 24.6px;
+  line-height: 35.2px;
+  color: var(--p-muted);
+  white-space: nowrap;
+}
+
+.live-dot {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
+
+.live-dot::before,
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.live-dot::after {
+  animation: pulse 1.8s ease-out infinite;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); opacity: 0.6; }
+  to   { transform: scale(2.6); opacity: 0; }
+}
+
+.detail__text {
+  margin: 0;
+  max-width: var(--text-w, 300px);
+  font-size: 16px;
+  line-height: 1.2;
+  color: #000;
+}
+
+/* Side panel */
+.detail__panel {
+  flex: 0 0 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 34px;
+  background: var(--tint);
+}
+
+.detail__body {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.detail__headline {
+  margin: 0;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.25;
+  color: var(--p-ink);
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 235px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--p-ink-soft);
+}
+
+.features__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--p-brand);
+}
+
+.features__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.detail__headline,
+.features li,
+.programme__cta {
+  opacity: 0;
+  transform: translateX(16px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.programme.is-active .detail__headline,
+.programme.is-active .features li,
+.programme.is-active .programme__cta {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s ease, transform 0.6s var(--ease);
+}
+
+.programme.is-active .detail__headline      { transition-delay: 0.28s; }
+.programme.is-active .features li:nth-child(1) { transition-delay: 0.34s; }
+.programme.is-active .features li:nth-child(2) { transition-delay: 0.39s; }
+.programme.is-active .features li:nth-child(3) { transition-delay: 0.44s; }
+.programme.is-active .features li:nth-child(4) { transition-delay: 0.49s; }
+.programme.is-active .features li:nth-child(5) { transition-delay: 0.54s; }
+.programme.is-active .programme__cta                   { transition-delay: 0.6s; }
+
+.programme__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 14px 28px 14px 32px;
+  border-radius: 28px;
+  background: var(--p-brand);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.programme__cta svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s var(--ease);
+}
+
+.programme.is-active .programme__cta:hover {
+  background: #0046db;
+}
+
+.programme__cta:hover svg {
+  transform: translateX(4px);
+}
+
+.programme__cta:focus-visible {
+  outline: 3px solid rgba(0, 82, 255, 0.35);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Fallbacks while exported Figma assets are missing (see assets/README.md)
+   -------------------------------------------------------------------------- */
+
+.wordmark {
+  display: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1;
+  color: #2b44ff;
+  white-space: nowrap;
+}
+
+.wordmark small {
+  display: block;
+  font-size: 0.42em;
+  letter-spacing: 0.02em;
+}
+
+.programme--niat .wordmark {
+  color: #9b1c1c;
+}
+
+.is-missing > img[data-fallback] {
+  display: none;
+}
+
+.is-missing > .wordmark {
+  display: block;
+}
+
+.programme__logo .wordmark { font-size: 40px; text-align: center; }
+.programmes__row.has-active .programme__logo .wordmark { font-size: 18px; }
+.detail__logo .wordmark { font-size: 64px; }
+.programme--niat .detail__logo .wordmark { font-size: 24px; line-height: 1.2; }
+
+/* --------------------------------------------------------------------------
+   Tablet: tighten the side panel
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1180px) {
+  .detail__panel {
+    flex-basis: 290px;
+    padding: 32px 26px;
+  }
+  .detail__body { gap: 28px; }
+  .detail__intro { left: 7%; }
+  .programme--academy .detail__logo img { width: 240px; }
+  .programme--intensive .detail__logo img { width: 210px; }
+  .programme--niat .detail__logo img { width: 260px; }
+  .detail__mode { font-size: 19px; line-height: 28px; }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile: vertical accordion (tap to expand)
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 899px) {
+  .programmes {
+    padding: 48px 16px;
+  }
+
+  .programmes__header {
+    margin-bottom: 40px;
+  }
+
+  .programmes__row {
+    flex-direction: column;
+    height: auto;
+    gap: 16px;
+  }
+
+  .programme,
+  .programmes__row.has-active .programme,
+  .programmes__row.has-active .programme.is-active {
+    flex: none;
+    width: 100%;
+    height: 360px;
+    transition: height var(--dur) var(--ease), border-color 0.4s ease;
+  }
+
+  /* open card grows to fit its content */
+  .programmes__row.has-active .programme.is-active {
+    height: auto;
+  }
+
+  .programme.is-active .programme__preview {
+    display: none;
+  }
+
+  .programme.is-active .programme__detail {
+    position: relative;
+    animation: reveal 0.5s var(--ease);
+  }
+
+  /* keep the preview in its default look on mobile */
+  .programmes__row.has-active .programme:not(.is-active) {
+    --logo-w: 160px;
+  }
+  .programmes__row.has-active .programme--niat:not(.is-active) .logo-full { opacity: 1; }
+  .programmes__row.has-active .programme--niat:not(.is-active) .logo-mark { opacity: 0; }
+  .programmes__row.has-active .programme:not(.is-active) .programme__caption,
+  .programmes__row.has-active .programme:not(.is-active) .programme__expand { opacity: 1; right: 12px; }
+
+  .programme__photo--default,
+  .programmes__row.has-active .programme:not(.is-active) .programme__photo--default {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 1;
+  }
+
+  .programme__photo--collapsed,
+  .programmes__row.has-active .programme__photo--collapsed { display: none; }
+
+  .programme__caption { width: 70%; }
+
+  .programme__logo .wordmark,
+  .programmes__row.has-active .programme__logo .wordmark { font-size: 32px; }
+  .detail__logo .wordmark { font-size: 40px; }
+
+  .programme__detail {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .detail__media {
+    flex: 0 0 400px;
+  }
+
+  .detail__steps { display: none; }
+
+  .detail__intro {
+    left: 20px;
+    top: 24px;
+    gap: 16px;
+  }
+
+  .programme--academy .detail__logo img { width: 220px; }
+  .programme--intensive .detail__logo img { width: 190px; }
+  .programme--niat .detail__logo img { width: 240px; }
+
+  .programme--academy,
+  .programme--niat,
+  .programme--intensive {
+    --dp-w: 100%;
+  }
+
+  .detail__panel {
+    flex: 1 1 auto;
+    padding: 28px 20px;
+  }
+
+  .detail__body { gap: 24px; }
+  .features { max-width: none; }
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .programmes *,
+  .programmes *::before,
+  .programmes *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    animation: none !important;
+  }
+}

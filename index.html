@@ -12,7 +12,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2303060D'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%234A9BFF'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Inter:ital,wght@0,400;0,500;0,600;1,600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="programmes.css">
 <style>
 :root{
   color-scheme:dark;
@@ -31,6 +32,8 @@ body{font-family:"Outfit",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-
 #stage{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
 .top{position:fixed;z-index:3;top:calc(env(safe-area-inset-top,0px) + 20px);left:clamp(16px,4vw,56px);right:clamp(16px,4vw,56px);
   display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.top{transition:opacity .3s ease}
+.top.is-hidden{opacity:0}
 .mark{font-weight:600;font-size:18px;letter-spacing:-.01em}
 #count{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--muted)}
 
@@ -103,6 +106,180 @@ main{position:relative;z-index:2}
     <a class="cta" href="#programmes">Explore programmes</a>
   </div></section>
 </main>
+
+<!-- ============ Section 2 · Programmes ============ -->
+  <!-- Icon sprite (Lucide icon set, matching the icon names used in the Figma file) -->
+  <svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="i-trending-up" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
+    <symbol id="i-graduation-cap" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></symbol>
+    <symbol id="i-book-open" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+    <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-message-circle" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+    <symbol id="i-landmark" viewBox="0 0 24 24"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="m21 21-6-6m6 6v-4.8m0 4.8h-4.8"/><path d="M3 16.2V21m0 0h4.8M3 21l6-6"/><path d="M21 7.8V3m0 0h-4.8M21 3l-6 6"/><path d="M3 7.8V3m0 0h4.8M3 3l6 6"/></symbol>
+  </svg>
+
+  <section class="programmes" id="programmes" aria-labelledby="programmes-title">
+  <div class="programmes__inner">
+    <header class="programmes__header">
+      <h2 id="programmes-title" class="programmes__title">
+        Three programmes. One is yours.
+      </h2>
+      <p class="programmes__subtitle">
+        Different starting points, same goal, a job in tech.
+      </p>
+    </header>
+
+    <div class="programmes__row" data-programmes>
+      <!-- ============ NxtWave Academy ============ -->
+      <article class="programme programme--academy" tabindex="0" aria-label="NxtWave Academy">
+        <div class="programme__preview" aria-hidden="true">
+          <img class="programme__photo programme__photo--default" src="assets/academy-default.webp" alt="" />
+          <img class="programme__photo programme__photo--collapsed" src="assets/academy-collapsed.webp" alt="" />
+          <div class="programme__fade"></div>
+          <div class="programme__logo">
+            <img src="assets/academy-logo.png" alt="" data-fallback />
+            <span class="wordmark"><small>NXT WAVE</small>ACADEMY</span>
+          </div>
+          <p class="programme__caption">Build software skills alongside your studies.....</p>
+          <span class="programme__expand"><svg><use href="#i-expand" /></svg></span>
+        </div>
+
+        <div class="programme__detail" inert>
+          <div class="detail__media">
+            <div class="detail__photo">
+              <img src="assets/academy-photo.webp" alt="Student learning on a laptop" data-fallback />
+            </div>
+            <div class="detail__fade"></div>
+            <div class="detail__steps" data-steps="mirror"></div>
+            <div class="detail__intro">
+              <div class="detail__logo">
+                <img src="assets/academy-logo.png" alt="NxtWave Academy" data-fallback />
+                <span class="wordmark"><small>NXT WAVE</small>ACADEMY</span>
+              </div>
+              <p class="detail__text">Build software skills<br />alongside your studies.</p>
+            </div>
+          </div>
+          <div class="detail__panel">
+            <div class="detail__body">
+              <h3 class="detail__headline">Become a Highly-paid Gen AI Engineer</h3>
+              <ul class="features">
+                <li><span class="features__icon"><svg><use href="#i-settings" /></svg></span>50+ Real-world AI Projects</li>
+                <li><span class="features__icon"><svg><use href="#i-users" /></svg></span>Learn from IITians &amp; MAANG Professionals</li>
+                <li><span class="features__icon"><svg><use href="#i-briefcase" /></svg></span>End-to-End Placement Support</li>
+                <li><span class="features__icon"><svg><use href="#i-trending-up" /></svg></span>Join 36,000+ Students Preparing for AI Careers</li>
+                <li><span class="features__icon"><svg><use href="#i-calendar" /></svg></span>Next Batch Starting This Week</li>
+              </ul>
+            </div>
+            <a class="programme__cta" href="#">Explore Academy <svg><use href="#i-arrow-right" /></svg></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============ NxtWave Intensive ============ -->
+      <article class="programme programme--intensive" tabindex="0" aria-label="NxtWave Intensive">
+        <div class="programme__preview" aria-hidden="true">
+          <img class="programme__photo programme__photo--default" src="assets/intensive-default.webp" alt="" />
+          <img class="programme__photo programme__photo--collapsed" src="assets/intensive-collapsed.webp" alt="" />
+          <div class="programme__fade"></div>
+          <div class="programme__logo">
+            <img src="assets/intensive-logo.png" alt="" data-fallback />
+            <span class="wordmark"><small>NXT WAVE</small>INTENSIVE</span>
+          </div>
+          <p class="programme__caption">Get Software Training with Placement Support..........</p>
+          <span class="programme__expand"><svg><use href="#i-expand" /></svg></span>
+        </div>
+
+        <div class="programme__detail" inert>
+          <div class="detail__media">
+            <div class="detail__photo">
+              <img src="assets/intensive-photo.webp" alt="Students training together on laptops" data-fallback />
+            </div>
+            <div class="detail__fade"></div>
+            <div class="detail__steps"></div>
+            <div class="detail__intro">
+              <div class="detail__brand">
+                <div class="detail__logo">
+                  <img src="assets/intensive-logo.png" alt="NxtWave Intensive" data-fallback />
+                  <span class="wordmark"><small>NXT WAVE</small>INTENSIVE</span>
+                </div>
+                <p class="detail__mode"><span class="live-dot" aria-hidden="true"></span>Training Center / Online</p>
+              </div>
+              <p class="detail__text">Get Software Training with Placement Support, Online or at Our Training Centers</p>
+            </div>
+          </div>
+          <div class="detail__panel">
+            <div class="detail__body">
+              <h3 class="detail__headline">Get Software Training with Placement Support</h3>
+              <ul class="features">
+                <li><span class="features__icon"><svg><use href="#i-monitor" /></svg></span>Learn Online or at Our Training Centers</li>
+                <li><span class="features__icon"><svg><use href="#i-graduation-cap" /></svg></span>For 2025, 2026 &amp; 2027 Graduates</li>
+                <li><span class="features__icon"><svg><use href="#i-book-open" /></svg></span>Open to Any Branch, Any Degree</li>
+                <li><span class="features__icon"><svg><use href="#i-map-pin" /></svg></span>Training Centers Across 4 Cities</li>
+                <li><span class="features__icon"><svg><use href="#i-message-circle" /></svg></span>View Placements &amp; Talk to a Student</li>
+              </ul>
+            </div>
+            <a class="programme__cta" href="#">Explore Intensive <svg><use href="#i-arrow-right" /></svg></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============ NIAT ============ -->
+      <article class="programme programme--niat" tabindex="0" aria-label="NxtWave Institute of Advanced Technologies">
+        <div class="programme__preview" aria-hidden="true">
+          <img class="programme__photo programme__photo--default" src="assets/niat-default.webp" alt="" />
+          <img class="programme__photo programme__photo--collapsed" src="assets/niat-collapsed.webp" alt="" />
+          <div class="programme__fade"></div>
+          <div class="programme__logo">
+            <img class="logo-full" src="assets/niat-logo-card.svg" alt="" data-fallback />
+            <img class="logo-mark" src="assets/niat-shield.svg" alt="" data-fallback />
+            <span class="wordmark">NIAT</span>
+          </div>
+          <span class="programme__expand"><svg><use href="#i-expand" /></svg></span>
+        </div>
+
+        <div class="programme__detail" inert>
+          <div class="detail__media">
+            <div class="detail__photo">
+              <img src="assets/niat-photo.webp" alt="Students building a drone together" data-fallback />
+            </div>
+            <div class="detail__fade"></div>
+            <div class="detail__steps"></div>
+            <div class="detail__intro">
+              <div class="detail__logo">
+                <img src="assets/niat-logo.svg" alt="NxtWave of Innovation in Advanced Technologies" data-fallback />
+                <span class="wordmark">NxtWave of Innovation in<br />Advanced Technologies</span>
+              </div>
+              <p class="detail__text">Start Your Journey in AI/ML • Robotics<br />Data Science &amp; More</p>
+            </div>
+          </div>
+          <div class="detail__panel">
+            <div class="detail__body">
+              <h3 class="detail__headline">Build Your Degree and Tech Career Together</h3>
+              <ul class="features">
+                <li><span class="features__icon"><svg><use href="#i-cpu" /></svg></span>Learn AI/ML, Robotics, Data Science &amp; More</li>
+                <li><span class="features__icon"><svg><use href="#i-rocket" /></svg></span>Industry-Ready Upskilling</li>
+                <li><span class="features__icon"><svg><use href="#i-landmark" /></svg></span>Offered at 35+ UGC-Approved Institutions</li>
+                <li><span class="features__icon"><svg><use href="#i-graduation-cap" /></svg></span>Designed for Students After 12th</li>
+                <li><span class="features__icon"><svg><use href="#i-target" /></svg></span>Build Skills for Future Tech Careers</li>
+              </ul>
+            </div>
+            <a class="programme__cta" href="#">Explore NIAT <svg><use href="#i-arrow-right" /></svg></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+  </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
@@ -383,10 +560,11 @@ if (renderer) renderer.setClearColor(0x03060d, 1);
 
 /* ---------- scroll: one smooth value drives both the text and the particles ---------- */
 let lenis = null;
-if (!REDUCE && window.Lenis) lenis = new Lenis({ lerp: .05, wheelMultiplier: .6, touchMultiplier: 1.2, smoothWheel: true });
+if (!REDUCE && window.Lenis) lenis = new Lenis({ lerp: .05, wheelMultiplier: .6, touchMultiplier: 1.2, smoothWheel: true, anchors: true });
 const scrollPos = () => lenis ? lenis.scroll : scrollY;
 const count = document.getElementById('count');
 const secs = [...document.querySelectorAll('.sec')];
+const topBar = document.querySelector('.top'), progs = document.getElementById('programmes');
 let mx = 0, my = 0, pmx = 0, pmy = 0;
 if (!MOBILE && !REDUCE) addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
 
@@ -402,7 +580,10 @@ function frame(now) {
   const k = Math.min(S - 2, Math.floor(Sc)), f = Sc - k;
   const cur = Math.round(Sc);
   if (cur !== lastCur) { count.textContent = `${String(cur + 1).padStart(2, '0')} / 07`; lastCur = cur; }
-  if (!renderer) return;
+  // once the programmes section reaches the top, hide the header and stop drawing the particles it covers
+  const pTop = progs ? progs.getBoundingClientRect().top : Infinity;
+  topBar.classList.toggle('is-hidden', pTop < 64);
+  if (!renderer || pTop <= 0) return;
 
   // A = the section scrolling away, B = the one arriving. Both images move exactly with their text;
   // in between, the particles melt out of one picture and re-form into the next.
@@ -427,5 +608,6 @@ function frame(now) {
 requestAnimationFrame(frame);
 })();
 </script>
+<script src="programmes.js"></script>
 </body>
 </html>
