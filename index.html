@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NxtWave — The Wave</title>
+<meta name="description" content="AI changed tech hiring. NxtWave changed how you learn: fundamentals + AI, industry mentors and real projects. Join 16,000+ learners hired at 3,000+ companies.">
+<meta name="theme-color" content="#03060D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="NxtWave — The Wave">
+<meta property="og:description" content="Join the 16,000+ NxtWave learners hired at 3,000+ companies.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2303060D'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%234A9BFF'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --ink:#03060D;
+  --text:#F2F5FB;
+  --muted:#8C97B2;
+  --nxt:#4A9BFF;
+  --inter:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto !important}
+html,body{margin:0;background:var(--ink);color:var(--text)}
+body{font-family:"Outfit",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#stage{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.top{position:fixed;z-index:3;top:calc(env(safe-area-inset-top,0px) + 20px);left:clamp(16px,4vw,56px);right:clamp(16px,4vw,56px);
+  display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.mark{font-weight:600;font-size:18px;letter-spacing:-.01em}
+#count{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--muted)}
+
+/* sections: one screen each, text flows with the page */
+main{position:relative;z-index:2}
+.sec{position:relative;height:100vh;height:100svh;min-height:520px}
+/* one text system everywhere: left-aligned, same rhythm (headline → 20px → subheading → 32px → stats/CTA) */
+.copy{--gutter:clamp(24px,6vw,104px);position:absolute;text-align:left;text-shadow:0 2px 24px rgba(3,6,13,.85)}
+.copy h1,.copy h2{margin:0;font-weight:400;font-size:clamp(28px,3vw,46px);line-height:1.14;letter-spacing:-.01em}
+.copy h1 span,.copy h2 span{display:block;white-space:nowrap}
+.copy .blue{color:#8DBBFF}
+.sub{margin:20px 0 0;font-family:var(--inter);font-size:clamp(16px,1.3vw,19px);line-height:1.6;color:rgba(255,255,255,.72);max-width:440px;text-wrap:pretty}
+.stats{display:flex;align-items:stretch;gap:28px;margin-top:32px}
+.stats div{display:flex;flex-direction:column;gap:4px}
+.stats b{font-family:var(--inter);font-weight:600;font-size:clamp(22px,2vw,30px);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.stats small{font-family:var(--inter);font-size:13px;color:rgba(255,255,255,.72)}
+.stats i{width:1px;background:rgba(255,255,255,.22)}
+.cta{display:inline-block;margin-top:32px;background:var(--nxt);color:#fff;text-decoration:none;font-family:var(--inter);font-weight:500;font-size:14px;line-height:1;padding:13px 22px;border-radius:8px;
+  box-shadow:0 0 0 0 rgba(74,155,255,0);transition:background .2s,box-shadow .3s,transform .2s;text-shadow:none}
+.cta:hover{background:#65abff;box-shadow:0 0 32px -4px rgba(74,155,255,.7);transform:translateY(-1px)}
+.copy.l{left:var(--gutter);top:50%;transform:translateY(-50%)}
+.copy.r{left:66%;top:50%;transform:translateY(-50%)}
+.copy.bl{left:var(--gutter);bottom:12%}
+.copy.c{left:50%;bottom:7%;transform:translateX(-50%);text-align:center}
+.copy.c .sub{margin-inline:auto}
+.nogl{position:fixed;inset:0;display:grid;place-items:center;color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-align:center;padding-inline:24px}
+@media (max-width:760px){
+  .copy,.copy.l,.copy.r,.copy.bl,.copy.c{left:16px;right:16px;top:auto;bottom:8%;transform:none}
+  .copy h1,.copy h2{font-size:clamp(26px,7.4vw,34px)}
+  .copy h1 span,.copy h2 span{white-space:normal}
+}
+</style>
+</head>
+<body>
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<header class="top">
+  <span class="mark">NxtWave</span>
+  <span id="count">01 / 07</span>
+</header>
+
+<main>
+  <section class="sec"><div class="copy l">
+    <h1><span>AI changed tech hiring.</span><span class="blue">We changed how you learn.</span></h1>
+    <div class="stats"><div><b>16,000+</b><small>Learners Hired</small></div><i></i><div><b>3000+</b><small>Companies Hiring</small></div></div>
+  </div></section>
+  <section class="sec"><div class="copy r">
+    <h2><span>Everyone's scrolling.</span><span>You start building.</span></h2>
+    <p class="sub">While others watch tutorials, you join a programme built around what tech companies actually hire for.</p>
+  </div></section>
+  <section class="sec"><div class="copy c">
+    <h2><span>Fundamentals + AI,</span><span>with a mentor beside you.</span></h2>
+    <p class="sub">Industry mentors review your code, unblock you and push you further every single week.</p>
+  </div></section>
+  <section class="sec"><div class="copy l">
+    <h2><span>Projects that prove it.</span><span>Interviews you're ready for.</span></h2>
+    <p class="sub">A portfolio of real builds, mock interviews with working engineers, and feedback until you're sharp.</p>
+  </div></section>
+  <section class="sec"><div class="copy l">
+    <h2><span>Then the message</span><span>you've worked for.</span></h2>
+    <p class="sub">Interviews with 3,000+ hiring companies. One of them says yes.</p>
+  </div></section>
+  <section class="sec"><div class="copy c">
+    <h2><span>An offer letter changes</span><span>more than one life.</span></h2>
+    <p class="sub">For you, and for the people who believed in you first.</p>
+  </div></section>
+  <section class="sec"><div class="copy bl">
+    <h2><span>Join the 16,000+</span><span>who already made it.</span></h2>
+    <p class="sub">NxtWave learners now build at 3,000+ companies. Your name could be next.</p>
+    <a class="cta" href="#programmes">Explore programmes</a>
+  </div></section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(() => {
+'use strict';
+const MOBILE = matchMedia('(max-width: 760px)').matches || (matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 820);
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const N = MOBILE ? 80000 : 210000;
+const NB = Math.round(N * .93);   // image particles; the rest is star dust
+const S = 7;
+/* Per section, from the Figma frame:
+   rect   = where the image sits (fractions of the viewport: x0, y0, x1, y1)
+   focus  = point kept in view when the image is cropped
+   relief = depth pushed out of the depth map
+   lift   = gamma on the photo's light (below 1 pulls dim faces and bodies out of the dark)
+   gain   = extra glow, res = sampling resolution (higher keeps small details like the hoodie logo) */
+const SEC = [
+  // boost = [u0, v0, u1, v1, factor]: a region that gets extra particles and light (the hoodie logo)
+  { img: 'hero.webp',      dep: 'd-hero.webp',   rect: [.41, .1, .97, 1],     focus: [.55, .45], relief: .42, lift: .85, gain: 1.1, res: 1600, boost: [.61, .66, .71, .75, 5] },
+  { img: 'hall.webp',      dep: 'd-hall.webp',   rect: [0, .04, .63, .98],    focus: [.47, .5],  relief: .34, lift: .55, gain: 1.35, res: 1100 },
+  { img: 'mentor.webp',    dep: 'd-mentor.webp',       rect: [.2, .02, .8, .7],    focus: [.5, .45],  relief: .32, lift: .8,  gain: 1,   res: 1000 },
+  { img: 'handshake.webp', dep: 'd-handshake.webp',       rect: [.4, 0, 1.08, 1],        focus: [.55, .5],  relief: .32, lift: .8,  gain: 1,   res: 1000 },
+  { img: 'phone.webp',     dep: 'd-phone.webp', rect: [.2, 0, 1.36, .98],   focus: [.5, .5],   relief: .34, lift: .8,  gain: 1,   res: 1100 },
+  { img: 'family.webp',    dep: 'd-family.webp',       rect: [.2, .02, .8, .7],  focus: [.5, .42],  relief: .3,  lift: .8,  gain: 1,   res: 1000 },
+  { img: 'crowd.webp',     dep: 'd-crowd.webp',       rect: [0, 0, 1, 1],          focus: [.5, .45], relief: .46, lift: .75, gain: 1,   res: 1100 },
+];
+const MOBILE_RECT = [0, .06, 1, .66];
+
+const PI = Math.PI;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const mix = (a, b, t) => a + (b - a) * t;
+const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+const hsh = (i, s) => { let x = Math.imul(i ^ Math.imul(s, 0x27d4eb2d), 0x9E3779B1); x ^= x >>> 15; x = Math.imul(x, 0x85ebca6b); x ^= x >>> 13; return (x >>> 0) / 4294967296; };
+const loadImg = src => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => rej(new Error('Could not load ' + src)); im.src = src; });
+
+/* ---------- star dust (and the starting state) ---------- */
+const DUST = new Float32Array(N * 4);
+for (let i = 0; i < N; i++) {
+  DUST[i * 4] = hsh(i, 1); DUST[i * 4 + 1] = hsh(i, 2); DUST[i * 4 + 2] = hsh(i, 3);
+  DUST[i * 4 + 3] = -(.08 + .5 * Math.pow(hsh(i, 4), 3));   // negative brightness marks dust
+}
+
+/* ---------- image + depth → particles in image space (u, v, nearness, brightness) ---------- */
+const ASPECT = new Array(S).fill(16 / 9);
+async function sample(k) {
+  const s = SEC[k];
+  const [im, dm] = await Promise.all([loadImg('beats/' + s.img), loadImg('beats/' + s.dep)]);
+  const MAXD = MOBILE ? Math.min(800, s.res) : s.res, sc = Math.min(1, MAXD / Math.max(im.width, im.height));
+  const w = Math.round(im.width * sc), h = Math.round(im.height * sc), n = w * h;
+  ASPECT[k] = w / h;
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+  const cx = cv.getContext('2d', { willReadFrequently: true });
+  cx.fillStyle = '#000'; cx.fillRect(0, 0, w, h);
+  cx.drawImage(im, 0, 0, w, h); const col = cx.getImageData(0, 0, w, h).data;
+  cx.drawImage(dm, 0, 0, w, h); const dep = cx.getImageData(0, 0, w, h).data;
+  const L = new Float32Array(n), Z = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    L[i] = Math.pow((col[i * 4] * .3 + col[i * 4 + 1] * .55 + col[i * 4 + 2] * .15) / 255, s.lift);
+    Z[i] = 1 - dep[i * 4] / 255;                    // these depth maps are dark = near
+  }
+  // importance: light, plus local contrast so edges, text and glasses stay crisp
+  const cdf = new Float64Array(n); let acc = 0;
+  const bx = s.boost, inBoost = (x, y) => bx && x >= bx[0] * w && x <= bx[2] * w && y >= bx[1] * h && y <= bx[3] * h;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const i = y * w + x;
+    const e = x > 0 && y > 0 && x < w - 1 && y < h - 1 ? Math.abs(L[i + 1] - L[i - 1]) + Math.abs(L[i + w] - L[i - w]) : 0;
+    let wt = 2.6 * Math.pow(L[i], 1.1) + 3.2 * e + .3 * Math.max(0, Z[i] - .25) + .004;
+    if (inBoost(x, y) && L[i] > .3) wt *= bx[4];
+    acc += wt;
+    cdf[i] = acc;
+  }
+  const out = new Float32Array(N * 4), tmp = new Float32Array(NB * 4);
+  for (let j = 0; j < NB; j++) {
+    const r = Math.random() * acc; let lo = 0, hi = n - 1;
+    while (lo < hi) { const m = (lo + hi) >> 1; if (cdf[m] < r) lo = m + 1; else hi = m; }
+    const x = lo % w, y = (lo / w) | 0;
+    tmp[j * 4] = (x + Math.random()) / w;
+    tmp[j * 4 + 1] = (y + Math.random()) / h;
+    tmp[j * 4 + 2] = Z[lo];
+    tmp[j * 4 + 3] = (.1 + 1.7 * Math.pow(L[lo], .8)) * s.gain * (inBoost(x, y) && L[lo] > .3 ? 1.7 : 1);
+  }
+  // top-to-bottom order: heads flow into heads when one section re-forms as the next
+  const idx = new Uint32Array(NB); for (let j = 0; j < NB; j++) idx[j] = j;
+  idx.sort((a, b) => tmp[a * 4 + 1] - tmp[b * 4 + 1]);
+  for (let j = 0; j < NB; j++) out.set(tmp.subarray(idx[j] * 4, idx[j] * 4 + 4), j * 4);
+  out.set(DUST.subarray(NB * 4), NB * 4);
+  return out;
+}
+
+/* ---------- renderer ---------- */
+const canvas = document.getElementById('stage');
+let renderer = null;
+if (!window.THREE) { const m = document.createElement('div'); m.className = 'nogl'; m.textContent = 'The particle engine could not load. Please refresh the page.'; document.body.appendChild(m); return; }
+try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
+if (!renderer) { const m = document.createElement('div'); m.className = 'nogl'; m.textContent = 'This page needs WebGL to show the particles.'; document.body.appendChild(m); }
+const FOV = 30, DIST = 5;
+const VH = 2 * DIST * Math.tan(FOV * PI / 360);   // world height of the viewport at the image plane
+let aspect = innerWidth / innerHeight;
+const camera = new THREE.PerspectiveCamera(FOV, aspect, .05, 60);
+camera.position.set(0, 0, DIST);
+const scene = new THREE.Scene();
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
+const seedArr = new Float32Array(N * 4);
+for (let i = 0; i < N; i++) for (let k = 0; k < 4; k++) seedArr[i * 4 + k] = hsh(i, 20 + k);
+geo.setAttribute('aSeed', new THREE.BufferAttribute(seedArr, 4));
+// one buffer per section, but only the two being blended are bound at a time
+const ATTR = [];
+for (let k = 0; k < S; k++) ATTR.push(new THREE.BufferAttribute(DUST.slice(), 4));
+let bound = -1;
+function bind(k) {
+  if (k === bound) return;
+  geo.setAttribute('aA', ATTR[k]); geo.setAttribute('aB', ATTR[k + 1]);
+  bound = k;
+}
+bind(0);
+
+const uniforms = {
+  uMorph: { value: 0 }, uTime: { value: 0 },
+  uRA: { value: new THREE.Vector4() }, uRB: { value: new THREE.Vector4() },
+  uFA: { value: new THREE.Vector4() }, uFB: { value: new THREE.Vector4() },   // xy focus, z image aspect, w relief
+  uYA: { value: 0 }, uYB: { value: 0 }, uGA: { value: 1 }, uGB: { value: 1 },
+  uVW: { value: VH * aspect }, uVH: { value: VH },
+  uSize: { value: MOBILE ? .0068 : .0041 }, uPx: { value: 800 }, uGain: { value: MOBILE ? 1.2 : .74 },
+  uMotion: { value: REDUCE ? .3 : 1 }, uLoose: { value: 1.5 }, uWave: { value: 0 },
+  uCol: { value: new THREE.Color(.8, .88, 1.0) }, uBlueCol: { value: new THREE.Color(.2, .45, 1.0) },
+};
+const vert = `
+uniform float uMorph, uTime, uYA, uYB, uGA, uGB, uVW, uVH, uSize, uPx, uGain, uMotion, uLoose, uWave;
+uniform vec4 uRA, uRB, uFA, uFB;
+uniform vec3 uCol, uBlueCol;
+attribute vec4 aA, aB, aSeed;
+varying vec3 vColor;
+varying float vSize, vStar, vStreak;
+// image space → world, cropped like CSS object-fit: cover into the section's rect, edges feathered into the dark
+vec3 place(vec4 a, vec4 R, vec4 F, float yOff, out float vis){
+  if (a.w < 0.) { vis = 1.; return vec3((a.x - .5) * uVW * 1.3, (a.y - .5) * uVH * 1.3, -3. + a.z * 4.5); }
+  float ra = R.z / R.w, ia = F.z;
+  vec2 size = ia > ra ? vec2(R.w * ia, R.w) : vec2(R.z, R.z / ia);
+  vec2 shift = clamp((F.xy - .5) * size, -(size - R.zw) * .5, (size - R.zw) * .5);
+  vec2 p = (a.xy - .5) * size - shift;
+  p.y = -p.y;
+  vec2 e = R.zw * .5 - abs(p);
+  vis = smoothstep(0., R.w * .1, e.x) * smoothstep(0., R.w * .08, e.y);
+  return vec3(R.x + p.x, R.y + p.y + yOff, (a.z - .45) * F.w * R.w);
+}
+void main(){
+  float visA, visB;
+  vec3 PA = place(aA, uRA, uFA, uYA, visA);
+  vec3 PB = place(aB, uRB, uFB, uYB, visB);
+  // each particle leaves a little earlier or later than its neighbours, so the picture melts rather than jumps
+  float m = clamp((uMorph - aSeed.y * .45) / .55, 0., 1.);
+  m = .5 - .5 * cos(m * 3.14159);
+  // curved flight: arc sideways through space instead of a straight line
+  vec3 P = mix(PA, PB, m);
+  float mid = sin(m * 3.14159);
+  vec3 swirl = vec3(sin(aSeed.x * 37. + uTime * .3), cos(aSeed.y * 41. + uTime * .25), sin(aSeed.z * 43. + uTime * .22));
+  P += swirl * mid * (.06 + .3 * aSeed.w * aSeed.w) * uMotion;
+  P.z += mid * (aSeed.z - .3) * .6 * uMotion;
+  float dust = step(mix(aA.w, aB.w, m), 0.);
+  float bright = mix(abs(aA.w) * uGA * visA, abs(aB.w) * uGB * visB, m);
+  bright *= 1. - mid * .35;
+  vec3 drift = vec3(sin(uTime * (.3 + .5 * aSeed.x) + aSeed.y * 31.), sin(uTime * (.25 + .45 * aSeed.z) + aSeed.w * 29.), sin(uTime * (.28 + .4 * aSeed.y) + aSeed.x * 23.));
+  float loose = mix(uLoose, .25, dust);
+  P += drift * loose * (.25 + .75 * aSeed.w) * uMotion;
+  bright *= 1. / (1. + loose * 4. * (1. - dust));
+  // last section: a broad band of light rolls across the crowd, lifting and brightening everyone it passes
+  float front = mix(-.75, .75, fract(uTime / 4.5)) * uVW;
+  float wv = exp(-pow((P.x - front) / (.16 * uVW), 2.)) * uWave * (1. - dust);
+  float wtrail = exp(-pow((P.x - front + .18 * uVW) / (.22 * uVW), 2.)) * uWave * (1. - dust) * .5;
+  P.y += wv * .035; P.z += wv * .08;
+  bright *= 1. + wv * 2.6 + wtrail;
+  // a slow diagonal beam of blue light sweeps through every scene
+  float beamPos = mix(-1.4, 1.4, fract(uTime / 9.)) * uVW;
+  float beam = exp(-pow((P.x * .8 + P.y * .6 - beamPos) / .22, 2.)) * (1. - dust);
+  // BLUE LAYER 1 · aura: ~1 in 10 figure particles lift a little off the body and burn pure NxtWave blue
+  float aura = step(aSeed.z, .1) * (1. - dust);
+  vec3 auraFlow = vec3(sin(uTime * .7 + aSeed.x * 50.), cos(uTime * .6 + aSeed.y * 50.), sin(uTime * .5 + aSeed.w * 50.));
+  P += auraFlow * aura * (.012 + .03 * aSeed.w) * uMotion;
+  // BLUE LAYER 2 · embers: part of the star dust becomes soft blue embers rising through the page
+  float ember = dust * step(.02, aSeed.x) * step(aSeed.x, .075);
+  float rise = fract(aA.y + uTime * (.012 + .02 * aSeed.z));
+  P.y = mix(P.y, (rise - .5) * uVH * 1.3, ember);
+  P.x += sin(uTime * .4 + aSeed.w * 20.) * .06 * ember;
+  float emberFade = sin(rise * 3.14159);
+  float star = step(.988, aSeed.w) * (1. - ember);
+  float tw = .5 + .5 * sin(uTime * (1.6 + 2.4 * aSeed.y) + aSeed.x * 60.);
+  bright *= mix(.85 + .15 * tw, .35 + 1.9 * pow(tw, 5.), star);
+  float streak = step(aSeed.x, .0018) * (1. - star) * (1. - dust);
+  float sl = fract(uTime * (.05 + .06 * aSeed.z) + aSeed.y);
+  P += vec3(.7071, -.7071, 0.) * (sl - .5) * .7 * streak * uMotion;
+  bright *= mix(1., .5 * sin(sl * 3.14159), streak);
+
+  vec4 mv = modelViewMatrix * vec4(P, 1.);
+  float px = uPx / max(.05, -mv.z);
+  float sz = uSize * mix(.55 + .7 * aSeed.z, 2.2 + 1.2 * aSeed.z, star) * px * mix(1., 1.5, dust) * (1. + ember * 3.5) * (1. + aura * .4);
+  sz = mix(max(sz, 1.3), clamp((.16 + .3 * aSeed.y) * px, 20., 160.), streak);
+  gl_PointSize = sz;
+  gl_Position = projectionMatrix * mv;
+  vSize = sz; vStar = star; vStreak = streak;
+  // colour: shadows sink into deep NxtWave blue, mid-tones glow electric blue, highlights burn ice-white.
+  // far particles lean bluer, near ones whiter, so the depth reads in colour too.
+  vec3 deep = vec3(.08, .2, .95), elec = vec3(.3, .62, 1.), ice = vec3(.78, .9, 1.);
+  float near = mix(aA.z, aB.z, m);
+  float lv = bright * (.8 + .4 * near);
+  vec3 col = lv < .75 ? mix(deep, elec, lv / .75) : lv < 1.7 ? mix(elec, ice, (lv - .75) / .95) : mix(ice, vec3(1.), clamp((lv - 1.7) / .9, 0., 1.));
+  col = mix(col, vec3(.35, .45, 1.), dust * .6);                 // star dust: faint violet-blue
+  col = mix(col, vec3(1.), .5 * star);
+  col = mix(col, elec, streak * .6);                              // light streaks carry the brand blue
+  col += elec * beam * .9 + ice * wv * .9;
+  bright *= 1. + beam * .7;
+  // apply the blue layers
+  vec3 nxt = vec3(.16, .45, 1.);
+  col = mix(col, nxt, aura * .9);  bright = mix(bright, max(bright, .55) * 1.25, aura);
+  col = mix(col, elec, mid * .85);                                 // BLUE LAYER 3 · particles turn electric blue in flight
+  col = mix(col, mix(nxt, elec, aSeed.y), ember);  bright = mix(bright, (.35 + .5 * aSeed.w) * emberFade, ember);
+  vColor = col * bright * uGain * mix(clamp(sz / 1.3, .6, 1.), 1., streak);
+}`;
+const frag = `
+varying vec3 vColor;
+varying float vSize, vStar, vStreak;
+void main(){
+  vec2 c = gl_PointCoord - .5;
+  if (vStreak > .5) {
+    float along = (c.x + c.y) * .7071, across = (c.x - c.y) * .7071;
+    float a = exp(-pow(across * vSize / 1.1, 2.)) * pow(max(0., 1. - abs(along) * 2.), 1.4);
+    if (a < .004) discard;
+    gl_FragColor = vec4(vColor * a, 1.); return;
+  }
+  float d = length(c) * 2.;
+  if (vStar > .5) {
+    float fl = exp(-abs(c.x) * vSize * .9) * max(0., 1. - abs(c.y) * 2.) + exp(-abs(c.y) * vSize * .9) * max(0., 1. - abs(c.x) * 2.);
+    float a = exp(-d * d * 14.) + fl * .6 + exp(-d * 4.) * .12;
+    if (a < .004) discard;
+    gl_FragColor = vec4(vColor * a, 1.); return;
+  }
+  if (d > 1.) discard;
+  gl_FragColor = vec4(vColor * pow(1. - d, 2.), 1.);
+}`;
+const mat = new THREE.ShaderMaterial({ uniforms, vertexShader: vert, fragmentShader: frag, transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending });
+const points = new THREE.Points(geo, mat);
+points.frustumCulled = false;
+scene.add(points);
+
+// load the hero first so the page forms fast, then the rest
+let loadedAt = -1;
+(async () => {
+  try {
+    ATTR[0].array.set(await sample(0)); ATTR[0].needsUpdate = true;
+    loadedAt = performance.now();
+    for (let k = 1; k < S; k++) { ATTR[k].array.set(await sample(k)); ATTR[k].needsUpdate = true; }
+  } catch (e) { console.error(e); }
+})();
+
+/* ---------- layout: section rect → world rect ---------- */
+function rectOf(k) {
+  const r = MOBILE || aspect < .9 ? MOBILE_RECT : SEC[k].rect, vw = VH * aspect;
+  const w = (r[2] - r[0]) * vw, h = (r[3] - r[1]) * VH;
+  return [((r[0] + r[2]) / 2 - .5) * vw, (.5 - (r[1] + r[3]) / 2) * VH, w, h];
+}
+const gainOf = k => { const r = rectOf(k), ref = rectOf(0); return clamp(Math.pow((r[2] * r[3]) / (ref[2] * ref[3]), .6), .6, 2.4); };
+
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  aspect = w / h;
+  if (!renderer) return;
+  const dpr = Math.min(devicePixelRatio || 1, 1.5);
+  renderer.setPixelRatio(dpr); renderer.setSize(w, h, false);
+  camera.aspect = aspect; camera.updateProjectionMatrix();
+  uniforms.uPx.value = h * dpr / (2 * Math.tan(FOV * PI / 360));
+  uniforms.uVW.value = VH * aspect;
+}
+addEventListener('resize', resize);
+resize();
+if (renderer) renderer.setClearColor(0x03060d, 1);
+
+/* ---------- scroll: one smooth value drives both the text and the particles ---------- */
+let lenis = null;
+if (!REDUCE && window.Lenis) lenis = new Lenis({ lerp: .05, wheelMultiplier: .6, touchMultiplier: 1.2, smoothWheel: true });
+const scrollPos = () => lenis ? lenis.scroll : scrollY;
+const count = document.getElementById('count');
+const secs = [...document.querySelectorAll('.sec')];
+let mx = 0, my = 0, pmx = 0, pmy = 0;
+if (!MOBILE && !REDUCE) addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+
+const t0 = performance.now(); let prev = t0, lastCur = -1;
+function setSec(u, f, k) { const r = rectOf(k); u.value.set(r[0], r[1], r[2], r[3]); f.value.set(SEC[k].focus[0], SEC[k].focus[1], ASPECT[k], SEC[k].relief); }
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (lenis) lenis.raf(now);
+  const dt = Math.min(.05, (now - prev) / 1000); prev = now;
+  const t = (now - t0) / 1000;
+  const hgt = secs[0].offsetHeight || innerHeight;
+  const Sc = clamp(scrollPos() / hgt, 0, S - 1);
+  const k = Math.min(S - 2, Math.floor(Sc)), f = Sc - k;
+  const cur = Math.round(Sc);
+  if (cur !== lastCur) { count.textContent = `${String(cur + 1).padStart(2, '0')} / 07`; lastCur = cur; }
+  if (!renderer) return;
+
+  // A = the section scrolling away, B = the one arriving. Both images move exactly with their text;
+  // in between, the particles melt out of one picture and re-form into the next.
+  bind(k);
+  setSec(uniforms.uRA, uniforms.uFA, k); setSec(uniforms.uRB, uniforms.uFB, k + 1);
+  uniforms.uYA.value = f * VH;
+  uniforms.uYB.value = -(1 - f) * VH;
+  uniforms.uGA.value = gainOf(k); uniforms.uGB.value = gainOf(k + 1);
+  uniforms.uMorph.value = sstep(.03, .97, f);
+
+  const intro = loadedAt < 0 ? 1 : Math.pow(clamp(1 - (now - loadedAt) / 2400), 2);
+  uniforms.uLoose.value = .0015 + intro * 1.4;
+  uniforms.uTime.value = t;
+  uniforms.uWave.value = sstep(5.15, 5.85, Sc);
+
+  // a slow sway plus the pointer turn the depth relief so the pictures read as 3D
+  pmx += (mx - pmx) * Math.min(1, dt * 2.5); pmy += (my - pmy) * Math.min(1, dt * 2.5);
+  const sway = REDUCE ? 0 : Math.sin(t * .35) * .05;
+  points.rotation.y = pmx * .18 + sway; points.rotation.x = pmy * .1 + Math.cos(t * .28) * .02 * (REDUCE ? 0 : 1);
+  renderer.render(scene, camera);
+}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
