@@ -1807,18 +1807,19 @@ const S = 7;
 /* Per section, from the Figma frame:
    rect   = where the image sits (fractions of the viewport: x0, y0, x1, y1)
    focus  = point kept in view when the image is cropped
-   relief = depth pushed out of the depth map
+   relief = depth pushed out of the depth map (0 everywhere: the pictures stay flat; the depth maps
+            still steer where particles gather)
    lift   = gamma on the photo's light (below 1 pulls dim faces and bodies out of the dark)
    gain   = extra glow, res = sampling resolution (higher keeps small details like the hoodie logo) */
 const SEC = [
   // boost = [u0, v0, u1, v1, factor]: a region that gets extra particles and light (the hoodie logo)
-  { img: 'hero.webp',      dep: 'd-hero.webp',   rect: [.41, .1, .97, 1],     focus: [.55, .45], relief: .42, lift: .85, gain: 1.1, res: 1600, boost: [.61, .66, .71, .75, 5] },
-  { img: 'hall.webp',      dep: 'd-hall.webp',   rect: [0, .04, .63, .98],    focus: [.47, .5],  relief: .34, lift: .55, gain: 1.35, res: 1100 },
-  { img: 'mentor.webp',    dep: 'd-mentor.webp',       rect: [.2, .02, .8, .7],    focus: [.5, .45],  relief: .32, lift: .8,  gain: 1,   res: 1000 },
-  { img: 'handshake.webp', dep: 'd-handshake.webp',       rect: [.4, 0, 1.08, 1],        focus: [.55, .5],  relief: .32, lift: .8,  gain: 1,   res: 1000 },
-  { img: 'phone.webp',     dep: 'd-phone.webp', rect: [.2, 0, 1.36, .98],   focus: [.5, .5],   relief: .34, lift: .8,  gain: 1,   res: 1100 },
-  { img: 'family.webp',    dep: 'd-family.webp',       rect: [.2, .02, .8, .7],  focus: [.5, .42],  relief: .3,  lift: .8,  gain: 1,   res: 1000 },
-  { img: 'crowd.webp',     dep: 'd-crowd.webp',       rect: [0, 0, 1, 1],          focus: [.5, .45], relief: .46, lift: .75, gain: 1,   res: 1100 },
+  { img: 'hero.webp',      dep: 'd-hero.webp',   rect: [.41, .1, .97, 1],     focus: [.55, .45], relief: 0,  lift: .85, gain: 1.1, res: 1600, boost: [.61, .66, .71, .75, 5] },
+  { img: 'hall.webp',      dep: 'd-hall.webp',   rect: [0, .04, .63, .98],    focus: [.47, .5],  relief: 0,  lift: .55, gain: 1.35, res: 1100 },
+  { img: 'mentor.webp',    dep: 'd-mentor.webp',       rect: [.2, .02, .8, .7],    focus: [.5, .45],  relief: 0,  lift: .8,  gain: 1,   res: 1000 },
+  { img: 'handshake.webp', dep: 'd-handshake.webp',       rect: [.4, 0, 1.08, 1],        focus: [.55, .5],  relief: 0,  lift: .8,  gain: 1,   res: 1000 },
+  { img: 'phone.webp',     dep: 'd-phone.webp', rect: [.2, 0, 1.36, .98],   focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1,   res: 1100 },
+  { img: 'family.webp',    dep: 'd-family.webp',       rect: [.2, .02, .8, .7],  focus: [.5, .42],  relief: 0,   lift: .8,  gain: 1,   res: 1000 },
+  { img: 'crowd.webp',     dep: 'd-crowd.webp',       rect: [0, 0, 1, 1],          focus: [.5, .45], relief: 0,  lift: .75, gain: 1,   res: 1100 },
 ];
 const MOBILE_RECT = [0, .06, 1, .66];
 
@@ -1997,10 +1998,10 @@ void main(){
   float star = step(.988, aSeed.w) * (1. - ember);
   float tw = .5 + .5 * sin(uTime * (1.6 + 2.4 * aSeed.y) + aSeed.x * 60.);
   bright *= mix(.85 + .15 * tw, .35 + 1.9 * pow(tw, 5.), star);
-  float streak = step(aSeed.x, .0018) * (1. - star) * (1. - dust);
+  float streak = step(aSeed.x, .0005) * (1. - star) * (1. - dust);   // a few, not a shower
   float sl = fract(uTime * (.05 + .06 * aSeed.z) + aSeed.y);
   P += vec3(.7071, -.7071, 0.) * (sl - .5) * .7 * streak * uMotion;
-  bright *= mix(1., .5 * sin(sl * 3.14159), streak);
+  bright *= mix(1., .28 * sin(sl * 3.14159), streak);
 
   vec4 mv = modelViewMatrix * vec4(P, 1.);
   float px = uPx / max(.05, -mv.z);
@@ -2018,15 +2019,15 @@ void main(){
   col = mix(col, vec3(.35, .45, 1.), dust * .6);                 // star dust: faint violet-blue
   col = mix(col, vec3(1.), .5 * star);
   col = mix(col, elec, streak * .6);                              // light streaks carry the brand blue
-  col += elec * beam * .9 + ice * wv * .9;
-  bright *= 1. + beam * .7;
+  col += elec * beam * .4 + ice * wv * .9;
+  bright *= 1. + beam * .3;
   // apply the blue layers
   vec3 nxt = vec3(.16, .45, 1.);
   col = mix(col, nxt, aura * .9);  bright = mix(bright, max(bright, .55) * 1.25, aura);
   col = mix(col, elec, mid * .85);                                 // BLUE LAYER 3 · particles turn electric blue in flight
   col = mix(col, mix(nxt, elec, aSeed.y), ember);  bright = mix(bright, (.35 + .5 * aSeed.w) * emberFade, ember);
   // while the photo is up, the figure particles dim to a sparkle over it; stars, embers and dust carry on
-  bright *= 1. - uCalm * .62 * (1. - dust) * (1. - star);
+  bright *= 1. - uCalm * .78 * (1. - dust) * (1. - star);
   vColor = col * bright * uGain * mix(clamp(sz / 1.3, .6, 1.), 1., streak);
 }`;
 const frag = `
