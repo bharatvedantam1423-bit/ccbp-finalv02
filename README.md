@@ -1,7 +1,8 @@
-# NxtWave — The Wave (particle hero)
+# NxtWave — homepage
 
-A scroll-driven hero where each section's photo is rebuilt as ~210k glittering 3D particles
-(Three.js). Particles dissolve and re-form into the next section's image as you scroll.
+Opens on a scroll-driven particle hero where each photo is rebuilt as ~210k glittering 3D
+particles (Three.js) that dissolve and re-form as you scroll, followed by the programmes cards and
+the rest of the NxtWave homepage (from the CCBP-v02 build).
 
 ## Page structure
 
@@ -9,6 +10,18 @@ A scroll-driven hero where each section's photo is rebuilt as ~210k glittering 3
 2. **Programmes** — "Three programmes. One is yours." Three cards (Academy, Intensive, NIAT);
    hover (desktop) or tap (mobile) a card to expand it. The hero's "Explore programmes" button
    scrolls here.
+3. From the CCBP-v02 build, unchanged: **Recognised by** · **Awards & Recognitions** (scroll-scrubbed
+   film) · **National Level Recognition** · **3,000+ companies** logo ticker · **Taught by people who
+   have done the job** (pinned, scroll-scrubbed film) · **Career Transformations** · **Masterclasses** ·
+   **Learner's Experiences** · **We train you for what companies hire for** · **Why Top Companies
+   Prefer NxtWave Students** · **Investors** · **Recognized by Leading Media** · footer.
+
+Also from v02: the **navbar** (fixed over the particle hero, fades out when the white sections
+start, as it did over the v02 hero), the **WhatsApp** button, and the **Design notes** switch
+(bottom-left; the rationale per section lives in the `NOTES` array at the end of `index.html`).
+
+One Lenis instance drives scrolling for the whole page. Over the particle hero it uses the hero's
+slower feel; from the programmes section down it uses the v02 settings (see the "page chrome" script).
 
 ## Run locally
 
@@ -34,9 +47,11 @@ It also works unchanged on GitHub Pages or Netlify.
 
 ## Files
 
-- `index.html` — page, styles and the particle engine (Three.js r128 and Lenis load from CDN)
+- `index.html` — page, v02 section styles and scripts, and the particle engine (Three.js r128 from CDN)
 - `programmes.css`, `programmes.js` — section 2 styles and card behaviour (all styles scoped to `.programmes`)
-- `assets/` — section 2 images and logos exported from Figma (see `assets/README.md`)
+- `career/` — styles and scripts for the lower sections (scoped to `.cs`, `.mc`, `.nr`, `.ft`)
+- `vendor/` — Lenis, GSAP + ScrollTrigger, Three.js r170 (National Recognition backdrop), self-hosted fonts
+- `assets/` — section 2 images (see `assets/README.md`) and the v02 images, logos and films
 - `vercel.json` — Vercel headers and URL settings
 - `beats/` — one image + one depth map per section
   - `hero.webp` / `d-hero.webp` — 1 · AI changed tech hiring
@@ -50,7 +65,13 @@ It also works unchanged on GitHub Pages or Netlify.
 ## Tuning
 
 Per-section position, crop focus, depth relief, brightness and sampling resolution live in the
-`SEC` array near the top of the script in `index.html`.
+`SEC` array near the top of the particle script in `index.html`.
+
+Lower-section content: logo ticker `NAMES`, Career Transformations `PEOPLE` / `REVIEWS` (in
+`index.html`), hiring-team cards (`career/script.js`), masterclass mentors (`career/masterclass.js`),
+media and footer course tracks (`career/media-footer.js`).
 
 The "Explore programmes" button scrolls to the programmes section. The three "Explore Academy /
 Intensive / NIAT" buttons still link to `#` — point them at the real pages before launch.
+Also placeholder in the v02 sections: the Career Transformations names, photos, quotes and packages,
+and the nav's "Hire With Us", "About Us" and "Login" links (they do nothing yet).

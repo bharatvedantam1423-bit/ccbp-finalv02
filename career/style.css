@@ -1,0 +1,183 @@
+@font-face{font-family:"Inter Display";src:url("../vendor/fonts/InterVariable.woff2") format("woff2");font-weight:100 900;font-display:swap}
+/* merged into the NxtWave page: every global rule of the original is scoped to .cs (career sections) */
+.cs{
+  --m:120px;               /* side margin */
+  --sec:80px;              /* uniform space between sections */
+  --gap:16px;
+  --deck:14px;             /* stacked-deck offset */
+  --ink:#0b0b0c; --mute:#5f6168; --line:#e6e6e9;
+  /* card width: ~4.4 cards across the content box, capped so the section always fits the viewport height */
+  --cw:min(calc((100vw - 2 * var(--m) - 3 * var(--gap)) / 4.4), calc((100svh - 300px) * .5625));
+}
+@media (max-width:900px){.cs{--m:48px}}
+@media (max-width:640px){.cs{--sec:56px;--m:20px;--gap:12px;--cw:min(64vw,calc((100svh - 280px) * .5625))}}
+
+:where(.cs) *{box-sizing:border-box;margin:0;padding:0}   /* zero specificity, like the original * reset */
+.cs{background:#fff;color:var(--ink)}
+.cs{font-family:"Inter Display","Inter",system-ui,sans-serif;font-optical-sizing:auto;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+
+.ht{display:flex;flex-direction:column;padding:var(--sec) 0 0;overflow:hidden}
+.ht__head{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;margin:0 var(--m) 56px}
+.ht__head>div:first-child{display:flex;flex-direction:column;align-items:center}
+.ht__title{font-size:48px;line-height:1.1;font-weight:600;letter-spacing:-.02em;font-variation-settings:"opsz" 32}
+.ht__sub{font-family:"InterVariable","Inter",system-ui,sans-serif;font-size:16px;font-weight:500;line-height:1.5;color:var(--mute);margin-top:12px;max-width:520px;letter-spacing:-.02em}
+.ht__nav{display:flex;justify-content:center;gap:8px;margin-top:40px;padding:0 var(--m)}   /* below the cards, moves with the rail */
+.ht__arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;transition:background .25s,border-color .25s,opacity .25s}
+.ht__arrow svg{width:18px;height:18px;fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ht__arrow:hover{background:var(--ink);border-color:var(--ink)}
+.ht__arrow:hover svg{stroke:#fff}
+.ht__arrow:disabled{opacity:.3;pointer-events:none}
+@media (max-width:640px){.ht__nav{display:none}}
+
+.ht__rail{will-change:transform}
+.ht__track{list-style:none;display:flex;gap:var(--gap);overflow-x:auto;padding:0 var(--m);scroll-padding:0 var(--m);scroll-snap-type:x mandatory;scrollbar-width:none;cursor:grab;overscroll-behavior-x:contain}
+.ht__track::-webkit-scrollbar{display:none}
+.ht__track.drag{cursor:grabbing;scroll-snap-type:none}
+.ht__track.drag *{pointer-events:none}
+.ht__card{flex:0 0 var(--cw);scroll-snap-align:start;position:relative;will-change:transform}
+.ht__track::after{content:"";flex:0 0 1px;margin-left:calc(var(--m) - var(--gap) - 1px)}
+
+.ht__media{position:relative;display:block;width:100%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;background:#eceae6;border:1px solid #ddd;cursor:pointer;isolation:isolate}
+.ht__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform .9s cubic-bezier(.2,.7,.1,1)}
+.ht__media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.45));pointer-events:none}
+.ht__play{position:absolute;left:14px;bottom:14px;z-index:1;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;transition:transform .5s cubic-bezier(.2,.7,.1,1)}
+.ht__play svg{width:14px;height:14px;margin-left:2px;fill:var(--ink)}
+.ht__dur{position:absolute;right:14px;bottom:24px;z-index:1;color:#fff;font-size:12px;font-weight:500;letter-spacing:0}
+.ht__media:hover img{transform:scale(1.08)}
+.ht__media:hover .ht__play{transform:scale(1.15)}
+.ht__media:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+.ht__label{margin-top:12px}
+.ht__name{font-size:18px;font-weight:600;line-height:1.3}
+.ht__role{font-size:14px;color:var(--mute);line-height:1.4;margin-top:2px}
+/* company: logo (weight-balanced in script.js) or a wordmark, in a fixed-height row so every label lines up */
+.ht__co{display:flex;align-items:center;width:100%;height:48px;margin-top:12px}
+.ht__co img{display:block;flex:0 0 auto;width:auto;height:34px;max-width:100%;object-fit:contain;object-position:left center}
+.ht__co span{font-size:20px;font-weight:700;line-height:1.1;letter-spacing:-.01em;color:#334155}
+
+.ht__modal{margin:auto;border:0;padding:0;background:transparent;width:min(92vw,1100px);overflow:visible}
+.ht__modal::backdrop{background:rgba(10,10,12,.82);backdrop-filter:blur(6px)}
+.ht__frame{aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000}
+.ht__frame iframe{width:100%;height:100%;border:0;display:block}
+.ht__close{position:absolute;top:-48px;right:0;width:40px;height:40px;border-radius:50%;border:0;background:#fff;font-size:22px;cursor:pointer}
+
+/* ── What companies look for now (Figma 839:377) ──────────────────────────
+   One tall hero card on the left, three cards stacked on the right. On scroll
+   the hero enters as one unit and the right column as a second unit; the
+   pieces inside each card then settle in with a short stagger (script.js). */
+.wl{padding:var(--sec) var(--m) 0}
+.wl__head{margin-bottom:56px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.wl__title{font-size:48px;line-height:1.15;font-weight:600;letter-spacing:-.02em}
+/* Section headings on light backgrounds — Figma gradient (token in index.html :root) */
+.wl__title,.ht__title,.fm__title{width:fit-content;max-width:100%;padding-bottom:.08em;
+  background:var(--title-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wl__title .sw-w,.ht__title .sw-w,.fm__title .sw-w{display:inline}  /* keep the split words inside the text clip */
+.wl__sub{font-family:"InterVariable","Inter",system-ui,sans-serif;font-size:16px;font-weight:500;line-height:1.5;color:#757373;margin-top:12px}
+
+/* layout — 578 : 606 of the 1200 content box, same 16px gutter as Figma */
+.wl__grid{display:flex;align-items:stretch;gap:16px;min-height:721px}
+.wl__col{flex:606 1 0;min-width:0;display:flex;flex-direction:column;gap:16px}
+.wl__col>.wl__card{flex:1 1 0;min-height:0}
+.wl__card{position:relative;overflow:hidden;border-radius:16px;margin:0}
+.wl__card--hero{flex:578 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;padding:39px 39px 32px;
+  background:linear-gradient(155.75deg,#f9f5fe 5.81%,#fff 94.19%);border:1px solid rgba(32,0,71,.1)}
+.wl__card--fund{background:linear-gradient(118.3deg,#fff 12.3%,#f6f7fb 87.7%);border:1px solid rgba(0,14,70,.1)}
+.wl__card--curr{background:linear-gradient(108.98deg,#fff .53%,#f6ffe5 99.47%);border:1px solid rgba(53,81,0,.1)}
+.wl__card--prep{background:linear-gradient(120.13deg,#fff 14.22%,#faf8f4 85.78%);border:1px solid rgba(0,14,70,.1)}
+
+.wl__copy{position:relative;z-index:1;display:flex;flex-direction:column;gap:12px}
+.wl__card--hero .wl__copy{align-self:flex-start;width:470px;max-width:100%}
+.wl__col .wl__copy{padding:39px;width:402px;max-width:68%}
+.wl__h{font-size:28px;line-height:1.3;font-weight:600;letter-spacing:-.02em;color:#1d1d1d}
+.wl__card--hero .wl__h{font-size:32px;line-height:1.4}
+.wl__p{font-size:16px;line-height:1.4;font-weight:500;color:#757373}
+
+/* hero: illustration fills the space between the copy and the footnote pill */
+.wl__art{flex:1;width:100%;display:flex;align-items:center;justify-content:center;margin:8px 0 4px;min-height:0}
+.wl__art svg{width:100%;max-width:510px;height:auto;max-height:100%;overflow:visible}
+.wl__note{display:flex;align-items:center;gap:6px;padding:8px 14px 8px 8px;border-radius:100px;background:#e2e6ff;
+  font-size:16px;font-weight:500;line-height:1.4;letter-spacing:-.02em;color:#312e2e;text-align:center}
+.wl__note svg{flex:0 0 auto}
+
+/* right-hand visuals, parked against the card's right edge */
+.wl__viz{position:absolute;top:50%;translate:0 -50%;z-index:0}
+.wl__viz--stack{right:26px;display:flex;flex-direction:column;align-items:flex-end;gap:9px;transform:skewY(-5deg)}
+.wl__slab{width:var(--w);padding:9px 13px;border-radius:11px;text-align:center;white-space:nowrap;
+  font-size:12.5px;font-weight:500;letter-spacing:-.01em;color:#3b5bd9;
+  background:linear-gradient(180deg,#fff,#e9efff);border:1px solid rgba(40,70,180,.16);
+  box-shadow:0 8px 16px -12px rgba(25,55,150,.65)}
+.wl__viz--flow{right:34px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.wl__chip{padding:9px 14px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;line-height:1.3;color:#2f7d46;
+  background:#f2fbf4;border:1px solid rgba(35,120,70,.22)}
+.wl__chip--solid{background:#e1f5e6;border-color:rgba(35,120,70,.3)}
+.wl__arrow{width:14px;height:26px;stroke:#3aa15f;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.wl__viz--rounds{right:28px;list-style:none;display:flex;flex-direction:column;gap:8px}
+.wl__viz--rounds li{display:flex;align-items:center;gap:8px;width:162px;padding:7px 12px;border-radius:8px;
+  font-size:12px;font-weight:500;letter-spacing:-.01em;color:#2a2a2a;background:#fff;border:1px solid #ececec;
+  box-shadow:0 4px 10px -8px rgba(15,23,42,.5)}
+.wl__viz--rounds i{flex:0 0 6px;height:6px;border-radius:50%;background:#f97316}
+
+/* hero illustration internals (inline SVG) */
+.wl-plate-top{fill:url(#wlPlate)}
+.wl-plate-side{fill:#c6d8f5}
+.wl-core-top{fill:url(#wlCore)}
+.wl-wire{fill:none;stroke:#a9c3ef;stroke-width:1.4;stroke-linecap:round}
+.wl-label{font-family:"Inter Display","Inter",system-ui,sans-serif;font-size:13px;font-weight:500;fill:#5b6478;letter-spacing:-.01em;text-anchor:middle}
+.wl-ai{font-family:"Inter Display","Inter",system-ui,sans-serif;font-size:34px;font-weight:700;fill:#1a3fd0;letter-spacing:-.02em;text-anchor:middle}
+
+/* hover: a light lift, the visual leans in a touch */
+.wl__card{transition:translate .5s cubic-bezier(.22,1,.36,1),box-shadow .5s cubic-bezier(.22,1,.36,1),border-color .3s}
+.wl__viz,.wl__art{transition:scale .8s cubic-bezier(.22,1,.36,1)}
+.wl__viz,.wl__art{transform-origin:50% 50%}
+@media (hover:hover) and (pointer:fine){
+  .wl__card:hover{translate:0 -4px;box-shadow:0 18px 40px -22px rgba(11,30,64,.35)}
+  .wl__card--hero:hover{border-color:rgba(32,0,71,.2)}
+  .wl__card--fund:hover,.wl__card--prep:hover{border-color:rgba(0,14,70,.2)}
+  .wl__card--curr:hover{border-color:rgba(53,81,0,.2)}
+  .wl__card:hover .wl__viz,.wl__card--hero:hover .wl__art{scale:1.04}
+}
+
+/* scroll reveal — [data-reveal] is the unit that enters; .wl-a are its parts */
+.wl [data-reveal]{opacity:0;transform:translateY(34px) scale(1.05);filter:blur(8px);will-change:transform,opacity,filter;
+  transition:opacity .75s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1),filter .75s cubic-bezier(.16,1,.3,1)}
+.wl [data-reveal].is-in{opacity:1;transform:none;filter:none}
+.wl .wl-a{opacity:0;transform:translateY(12px) scale(.96);transform-box:fill-box;transform-origin:50% 50%;
+  transition:opacity .55s cubic-bezier(.16,1,.3,1) var(--d,0s),transform .7s cubic-bezier(.16,1,.3,1) var(--d,0s)}
+.wl [data-reveal].is-in .wl-a{opacity:1;transform:none}
+.wl .wl-wire{stroke-dasharray:420;stroke-dashoffset:420;transition:stroke-dashoffset 1.2s ease var(--d,0s)}
+.wl [data-reveal].is-in .wl-wire{stroke-dashoffset:0}
+/* once settled, the illustration keeps breathing */
+@keyframes wl-float{50%{translate:0 -7px}}
+.wl [data-reveal].is-in .wl-node{animation:wl-float 6s ease-in-out var(--d,0s) infinite}
+@media (prefers-reduced-motion:reduce){
+  .wl [data-reveal],.wl .wl-a,.wl .wl-wire,.wl__card,.wl__viz,.wl__art{transition:none;animation:none}
+  .wl [data-reveal],.wl .wl-a{opacity:1;transform:none;filter:none}
+  .wl .wl-wire{stroke-dashoffset:0}
+}
+
+@media (max-width:1199px){
+  .wl__grid{flex-direction:column;min-height:0}
+  .wl__card--hero{flex:none;min-height:640px}
+  .wl__col{flex:none}
+  .wl__col>.wl__card{flex:none;min-height:230px}
+}
+@media (max-width:860px){
+  .wl__col .wl__copy{width:auto;max-width:56%}
+  .wl__viz--rounds li{width:136px}
+}
+@media (max-width:640px){
+  .wl__head{margin-bottom:32px}
+  .wl__title{font-size:30px}
+  .wl__h,.wl__card--hero .wl__h{font-size:22px}
+  .wl__p{font-size:15px}
+  .wl__card--hero{padding:24px 24px 24px;min-height:0}
+  .wl__card--hero .wl__copy{width:auto}
+  .wl__note{font-size:13px;padding:7px 12px 7px 7px}
+  .wl__col .wl__copy{padding:24px;width:auto;max-width:none}
+  .wl__col>.wl__card{display:flex;flex-direction:column}
+  .wl__viz{position:relative;top:auto;right:auto!important;translate:none;align-self:center;margin:0 24px 24px}
+  .wl__viz--stack{align-items:center}
+  .wl__viz--rounds{width:100%;max-width:280px}
+  .wl__viz--rounds li{width:100%}
+  .wl__br{display:none}
+}
