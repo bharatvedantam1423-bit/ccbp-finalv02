@@ -6,8 +6,9 @@
    ========================================================================== */
 
 .programmes {
-  --font-display: "Outfit", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  /* the page's type system (index.html :root): Outfit headings, Geist subheads, Inter text */
+  --font-display: var(--font-head);
+  --font-body: var(--font);
 
   --p-ink: #06123f;
   --p-ink-soft: #1f2e5c;
@@ -75,7 +76,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   text-align: center;
   margin-bottom: 119px;
 }
@@ -84,10 +85,14 @@
   margin: 0;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(32px, 4.2vw, 56px);
-  line-height: 1.2;
+  font-size: var(--head-size);
+  line-height: 1.12;
   letter-spacing: -0.01em;
-  background-image: linear-gradient(97.19deg, #000 17.74%, #0b1e40 31.64%, #2563eb 67.14%);
+  padding-bottom: .08em;
+  width: fit-content;
+  max-width: 100%;
+  text-wrap: balance;
+  background-image: var(--head-grad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -95,9 +100,10 @@
 
 .programmes__subtitle {
   margin: 0;
-  font-size: clamp(17px, 1.9vw, 26.667px);
+  font-family: var(--font-sub);
+  font-size: var(--sub-size);
   line-height: 1.5;
-  color: #000;
+  color: var(--sub-ink);
 }
 
 /* --------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 /* S3b — Masterclasses from Mentors (merged from masterclass-mentors/; scoped to .mc).
    Tokens mirror the career build (localhost:5182): section-2+ headings, --m side margin, --sec rhythm, S4 logo ticker. */
 .mc{
-  --title-grad:linear-gradient(97.9deg,#000 17.74%,#0b1e40 31.64%,#2563eb 67.14%); /* build: Figma 747:244 section heading */
+  --title-grad:var(--head-grad);   /* the page-wide heading fill (index.html :root) */
   --font:"InterVariable","Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
   --ink:#0b1e40;
   --text:#1e293b;
