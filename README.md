@@ -1,8 +1,11 @@
 # NxtWave — homepage
 
-Opens on a scroll-driven particle hero where each photo is rebuilt as ~210k glittering 3D
-particles (Three.js) that dissolve and re-form as you scroll, followed by the programmes cards and
-the rest of the NxtWave homepage (from the CCBP-v02 build).
+Opens on a scroll-driven particle hero. Each photo is rebuilt as ~210k glittering 3D particles
+(Three.js), and a depth map pushes them forward and back so the picture has real volume when it
+tilts. In a transition every particle flies from its place in one photo to its place in the next,
+and the photo itself fades in exactly where they land (a depth-lifted copy of the image, placed and
+cropped like the particles and added onto the dark page so its backdrop disappears). After it come
+the programmes cards and the rest of the NxtWave homepage (from the CCBP-v02 build).
 
 ## Page structure
 
@@ -47,10 +50,11 @@ It also works unchanged on GitHub Pages or Netlify.
 
 ## Files
 
-- `index.html` — page, v02 section styles and scripts, and the particle engine (Three.js r128 from CDN)
+- `index.html` — page, v02 section styles and scripts, and the particle engine
 - `programmes.css`, `programmes.js` — section 2 styles and card behaviour (all styles scoped to `.programmes`)
 - `career/` — styles and scripts for the lower sections (scoped to `.cs`, `.mc`, `.nr`, `.ft`)
-- `vendor/` — Lenis, GSAP + ScrollTrigger, Three.js r170 (National Recognition backdrop), self-hosted fonts
+- `vendor/` — Lenis, GSAP + ScrollTrigger, Three.js r128 (particle hero) and r170 (National Recognition
+  backdrop), self-hosted fonts; nothing but Google Fonts loads from another site
 - `assets/` — section 2 images (see `assets/README.md`) and the v02 images, logos and films
 - `vercel.json` — Vercel headers and URL settings
 - `beats/` — one image + one depth map per section
