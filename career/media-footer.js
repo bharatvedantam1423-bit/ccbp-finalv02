@@ -193,7 +193,7 @@
     [...el.children].forEach(c => c.setAttribute('aria-hidden', 'true'));
     return [...el.querySelectorAll('.sw-c')];
   };
-  document.querySelectorAll('.ct__title, .wl__title, .ht__title, .fm__title, .cta__title').forEach(el => {
+  document.querySelectorAll('.programmes__title, .record-title, .nr-title, .companies-title, .mw-title, .ctv-title, .mc__title, .inv-title, .wl__title, .ht__title, .fm__title, .cta__title').forEach(el => {
     const dark = !!el.closest('.cta, .ct');
     const chars = split(el);
     const finals = chars.map(c => { const v = getComputedStyle(c).color; return /rgba\(.*,\s*0\)$/.test(v) ? 'rgba(37,99,235,0)' : v; });  // transparent → gradient title

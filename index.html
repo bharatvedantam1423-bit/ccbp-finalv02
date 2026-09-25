@@ -582,6 +582,8 @@ a{color:inherit;text-decoration:none}
 /* footer: the dark card sits 20px in from the window, so its inside padding makes up the rest of the margin */
 .cs .ft__inner{padding-inline:max(24px,calc(var(--page-pad) - 20px))}
 .cs .ft__rights{margin-inline:auto}
+/* heading sweep on every section title: the split words stay inline so the gradient clip covers them */
+:is(.programmes__title,.record-title,.nr-title,.companies-title,.mw-title,.ctv-title,.mc__title,.inv-title) .sw-w{display:inline}
 
 @media (prefers-reduced-motion:reduce){ .dn-track,.dn-thumb{transition-duration:.01s} }
 </style>
@@ -740,7 +742,6 @@ html.lenis,html.lenis body{height:auto}
             <img src="assets/academy-logo.png" alt="" data-fallback />
             <span class="wordmark"><small>NXT WAVE</small>ACADEMY</span>
           </div>
-          <p class="programme__caption">Build software skills alongside your studies.....</p>
         </div>
 
         <div class="programme__actions">
@@ -792,7 +793,6 @@ html.lenis,html.lenis body{height:auto}
             <img src="assets/intensive-logo.png" alt="" data-fallback />
             <span class="wordmark"><small>NXT WAVE</small>INTENSIVE</span>
           </div>
-          <p class="programme__caption">Get Software Training with Placement Support..........</p>
         </div>
 
         <div class="programme__actions">
