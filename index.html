@@ -620,13 +620,14 @@ html.lenis,html.lenis body{height:auto}
   box-shadow:0 0 0 0 rgba(74,155,255,0);transition:background .2s,box-shadow .3s,transform .2s;text-shadow:none}
 #hero .wave-cta:hover{background:#65abff;box-shadow:0 0 32px -4px rgba(74,155,255,.7);transform:translateY(-1px)}
 #hero .copy.l{left:var(--gutter);top:50%;transform:translateY(-50%)}
-#hero .copy.r{left:66%;top:50%;transform:translateY(-50%)}
+#hero .copy.r{left:auto;right:var(--gutter);top:50%;transform:translateY(-50%);max-width:min(560px,38vw)}
+#hero .era{margin:0 0 16px;font:600 12px/1 var(--font);letter-spacing:.16em;text-transform:uppercase;color:#82BDFF;text-shadow:none}
 #hero .copy.bl{left:var(--gutter);bottom:12%}
 #hero .copy.c{left:50%;bottom:7%;transform:translateX(-50%);text-align:center}
 #hero .copy.c .sub{margin-inline:auto}
 .nogl{position:fixed;inset:0;z-index:1;display:grid;place-items:center;color:var(--w-muted);background:var(--w-ink);font-family:var(--font);font-size:13px;letter-spacing:.02em;text-align:center;padding-inline:24px}
 @media (max-width:760px){
-  #hero .copy,#hero .copy.l,#hero .copy.r,#hero .copy.bl,#hero .copy.c{left:var(--page-pad);right:var(--page-pad);top:auto;bottom:8%;transform:none}
+  #hero .copy,#hero .copy.l,#hero .copy.r,#hero .copy.bl,#hero .copy.c{left:var(--page-pad);right:var(--page-pad);top:auto;bottom:8%;transform:none;max-width:none}
   #hero .copy h1,#hero .copy h2{font-size:clamp(26px,7.4vw,34px)}
   #hero .copy h1 span,#hero .copy h2 span{white-space:normal}
 }
@@ -664,27 +665,32 @@ html.lenis,html.lenis body{height:auto}
     <div class="stats"><div><b>16,000+</b><small>Learners Hired</small></div><i></i><div><b>3000+</b><small>Companies Hiring</small></div></div>
   </div></section>
   <section class="sec"><div class="copy r">
-    <h2><span>Everyone's scrolling.</span><span>You start building.</span></h2>
-    <p class="sub">While others watch tutorials, you join a programme built around what tech companies actually hire for.</p>
+    <p class="era">Then</p>
+    <h2><span>Learning began with</span><span>chalk and memory.</span></h2>
+    <p class="sub">Notes copied from the board, learnt by heart, forgotten after the exam.</p>
   </div></section>
   <section class="sec"><div class="copy c">
-    <h2><span>Fundamentals + AI,</span><span>with a mentor beside you.</span></h2>
-    <p class="sub">Industry mentors review your code, unblock you and push you further every single week.</p>
+    <p class="era">Then came the internet</p>
+    <h2><span>Everything to learn.</span><span>No one to guide you.</span></h2>
+    <p class="sub">Endless answers and no clear path. Most learners got lost somewhere in between.</p>
   </div></section>
   <section class="sec"><div class="copy l">
-    <h2><span>Projects that prove it.</span><span>Interviews you're ready for.</span></h2>
-    <p class="sub">A portfolio of real builds, mock interviews with working engineers, and feedback until you're sharp.</p>
+    <p class="era">The shift</p>
+    <h2><span>Then technology changed</span><span>what companies hire for.</span></h2>
+    <p class="sub">AI, cloud and new tools reshaped every role. Interviews now test what you can build.</p>
   </div></section>
   <section class="sec"><div class="copy l">
-    <h2><span>Then the message</span><span>you've worked for.</span></h2>
-    <p class="sub">Interviews with 3,000+ hiring companies. One of them says yes.</p>
+    <p class="era">NxtWave</p>
+    <h2><span>We didn't wait for the change.</span><span class="blue">We led it.</span></h2>
+    <p class="sub">Our mentors mastered AI and the newest technologies first, so you learn from people already using them.</p>
   </div></section>
   <section class="sec"><div class="copy c">
-    <h2><span>An offer letter changes</span><span>more than one life.</span></h2>
-    <p class="sub">For you, and for the people who believed in you first.</p>
+    <p class="era">Now</p>
+    <h2><span>You build with what the</span><span>industry is just adopting.</span></h2>
+    <p class="sub">Real products with AI, full-stack and cloud, and offers from 3,000+ companies.</p>
   </div></section>
   <section class="sec"><div class="copy bl">
-    <h2><span>Join the 16,000+</span><span>who already made it.</span></h2>
+    <h2><span>Join the 16,000+</span><span class="blue">learning what's next.</span></h2>
     <p class="sub">NxtWave learners now build at 3,000+ companies. Your name could be next.</p>
     <a class="wave-cta" href="#programmes">Explore programmes</a>
   </div></section>
@@ -1875,12 +1881,12 @@ const S = 7;
 const SEC = [
   // boost = [u0, v0, u1, v1, factor]: a region that gets extra particles and light (the hoodie logo)
   { img: 'hero.webp',      dep: 'd-hero.webp',   rect: [.41, .1, .97, 1],     focus: [.55, .45], relief: 0,  lift: .85, gain: 1.1, res: 1600, boost: [.61, .66, .71, .75, 5] },
-  { img: 'hall.webp',      dep: 'd-hall.webp',   rect: [0, .04, .63, .98],    focus: [.47, .5],  relief: 0,  lift: .55, gain: 1.35, res: 1100 },
-  { img: 'mentor.webp',    dep: 'd-mentor.webp',       rect: [.2, .02, .8, .7],    focus: [.5, .45],  relief: 0,  lift: .8,  gain: 1,   res: 1000 },
-  { img: 'handshake.webp', dep: 'd-handshake.webp',       rect: [.4, 0, 1.08, 1],        focus: [.55, .5],  relief: 0,  lift: .8,  gain: 1,   res: 1000 },
-  { img: 'phone.webp',     dep: 'd-phone.webp', rect: [.2, 0, 1.36, .98],   focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1,   res: 1100 },
-  { img: 'family.webp',    dep: 'd-family.webp',       rect: [.2, .02, .8, .7],  focus: [.5, .42],  relief: 0,   lift: .8,  gain: 1,   res: 1000 },
-  { img: 'crowd.webp',     dep: 'd-crowd.webp',       rect: [0, 0, 1, 1],          focus: [.5, .45], relief: 0,  lift: .75, gain: 1,   res: 1100 },
+  { img: 'story2.webp',    dep: 'd-story2.webp', rect: [0, .04, .63, .98],    focus: [.38, .5],  relief: 0,  lift: .8,  gain: 1.1, res: 1100 },
+  { img: 'story3.webp',    dep: 'd-story3.webp', rect: [.2, .02, .8, .7],     focus: [.5, .4],   relief: 0,  lift: .8,  gain: 1.1, res: 1100 },
+  { img: 'story4.webp',    dep: 'd-story4.webp', rect: [.4, 0, 1.08, 1],      focus: [.6, .45],  relief: 0,  lift: .8,  gain: 1.1, res: 1100 },
+  { img: 'story5.webp',    dep: 'd-story5.webp', rect: [.4, 0, 1.08, 1],      focus: [.62, .45], relief: 0,  lift: .8,  gain: 1,   res: 1100 },
+  { img: 'story6.webp',    dep: 'd-story6.webp', rect: [.2, .02, .8, .7],     focus: [.5, .4],   relief: 0,  lift: .8,  gain: 1,   res: 1100 },
+  { img: 'story7.webp',    dep: 'd-story7.webp', rect: [0, 0, 1, 1],          focus: [.5, .5],   relief: 0,  lift: .75, gain: 1,   res: 1200 },
 ];
 const MOBILE_RECT = [0, .06, 1, .66];
 

@@ -59,12 +59,16 @@ It also works unchanged on GitHub Pages or Netlify.
 - `vercel.json` — Vercel headers and URL settings
 - `beats/` — one image + one depth map per section
   - `hero.webp` / `d-hero.webp` — 1 · AI changed tech hiring
-  - `hall.webp` / `d-hall.webp` — 2 · Everyone's scrolling
-  - `mentor.webp` / `d-mentor.webp` — 3 · Fundamentals + AI
-  - `handshake.webp` / `d-handshake.webp` — 4 · Projects that prove it
-  - `phone.webp` / `d-phone.webp` — 5 · Then the message
-  - `family.webp` / `d-family.webp` — 6 · An offer letter
-  - `crowd.webp` / `d-crowd.webp` — 7 · Join the 16,000+
+  - `story2.webp` / `d-story2.webp` — 2 · Then: chalk and memory
+  - `story3.webp` / `d-story3.webp` — 3 · The internet: everything to learn, no one to guide you
+  - `story4.webp` / `d-story4.webp` — 4 · The shift: technology changed what companies hire for
+  - `story5.webp` / `d-story5.webp` — 5 · NxtWave: we led the change
+  - `story6.webp` / `d-story6.webp` — 6 · Now: you build with what the industry is adopting
+  - `story7.webp` / `d-story7.webp` — 7 · Join the 16,000+
+
+  Photos 2–7 were generated in Magnific on a pure black background so they blend into the page.
+  Depth maps come from Depth Anything V2 (Base), inverted so darker = nearer, which is what the
+  particle engine expects.
 
 ## Tuning
 
