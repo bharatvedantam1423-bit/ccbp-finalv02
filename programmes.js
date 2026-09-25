@@ -53,6 +53,8 @@
       const on = c === card;
       c.classList.toggle("is-active", on);
       c.querySelector(".programme__detail").inert = !on;
+      // resting CTAs: hidden on the open card, and on every card in the wide row once one is open
+      c.querySelector(".programme__actions").inert = on || (Boolean(card) && !stacked.matches);
     });
     row.classList.toggle("has-active", Boolean(card));
   };
@@ -78,7 +80,7 @@
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         setActive(card);
-        card.querySelector(".programme__cta")?.focus();
+        card.querySelector(".detail__panel .programme__cta")?.focus();
       }
     });
   });
@@ -91,6 +93,52 @@
 
   row.addEventListener("focusout", (e) => {
     if (!row.contains(e.relatedTarget)) setActive(null);
+  });
+
+  // Expanded photo follows the pointer: it zooms in and drifts toward the cursor,
+  // the logo/intro drift the other way, and a soft light tracks the pointer.
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  row.querySelectorAll(".detail__media").forEach((media) => {
+    const card = media.closest(".programme");
+    const target = { x: 0, y: 0, s: 1, o: 0 };
+    const cur = { ...target };
+    let frame = 0;
+
+    const tick = () => {
+      let moving = false;
+      for (const k in cur) {
+        cur[k] += (target[k] - cur[k]) * 0.08;
+        if (Math.abs(target[k] - cur[k]) > 0.001) moving = true;
+        else cur[k] = target[k];
+      }
+      card.style.setProperty("--mx", `${cur.x.toFixed(2)}px`);
+      card.style.setProperty("--my", `${cur.y.toFixed(2)}px`);
+      card.style.setProperty("--ms", cur.s.toFixed(4));
+      card.style.setProperty("--lo", cur.o.toFixed(3));
+      frame = moving ? requestAnimationFrame(tick) : 0;
+    };
+    const run = () => { if (!frame) frame = requestAnimationFrame(tick); };
+
+    media.addEventListener("pointermove", (e) => {
+      if (!canHover.matches || stacked.matches || reduceMotion.matches) return;
+      if (!card.classList.contains("is-active")) return;
+      const r = media.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width - 0.5; // -0.5 .. 0.5
+      const ny = (e.clientY - r.top) / r.height - 0.5;
+      // the photo is anchored to the bottom edge, so it only moves down (never lifts off it)
+      target.x = nx * 24;
+      target.y = (ny + 0.5) * 10;
+      target.s = 1.06;
+      target.o = 1;
+      card.style.setProperty("--lx", `${((nx + 0.5) * 100).toFixed(1)}%`);
+      card.style.setProperty("--ly", `${((ny + 0.5) * 100).toFixed(1)}%`);
+      run();
+    });
+
+    media.addEventListener("pointerleave", () => {
+      Object.assign(target, { x: 0, y: 0, s: 1, o: 0 });
+      run();
+    });
   });
 
   document.addEventListener("keydown", (e) => {

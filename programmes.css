@@ -215,8 +215,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 216px;
-  background: linear-gradient(to bottom, var(--tint-0) 0%, var(--tint) 75.8%);
+  height: 260px;
+  background: linear-gradient(to bottom, var(--tint-0) 0%, var(--tint) 62%);
   transition: height var(--dur) var(--ease);
 }
 
@@ -274,46 +274,17 @@
 .programmes__row.has-active .programme--niat .logo-full { opacity: 0; }
 .programmes__row.has-active .programme--niat .logo-mark { opacity: 1; }
 
-/* Caption + expand button (default state only) */
+/* Caption + CTAs (resting state only) */
 .programme__caption {
   position: absolute;
-  left: 24px;
-  bottom: 20px;
-  width: 58%;
+  left: 20px;
+  right: 20px;
+  bottom: calc(var(--actions-h) + 30px);
   margin: 0;
-  font-size: 12px;
-  line-height: 1.2;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
   color: #000;
-}
-
-.programme__expand {
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.58);
-  -webkit-backdrop-filter: blur(14.45px);
-  backdrop-filter: blur(14.45px);
-  color: #7a7a7a;
-  transition: transform 0.4s var(--ease), background-color 0.3s ease;
-}
-
-.programme__expand svg {
-  width: 20px;
-  height: 20px;
-  stroke-width: 1.6;
-}
-
-.programmes__row:not(.has-active) .programme:hover .programme__expand {
-  transform: scale(1.08);
-  background: rgba(255, 255, 255, 0.85);
-}
-
-.programme__caption {
   transition: opacity 0.3s ease 0.3s;
 }
 
@@ -322,21 +293,70 @@
   transition-delay: 0s;
 }
 
-/* The expand button stays on the collapsed tabs, centred, to show they can open */
-.programme__expand {
-  transition:
-    right var(--dur) var(--ease),
-    transform 0.4s var(--ease),
-    background-color 0.3s ease;
+.programme {
+  --actions-h: 92px;
 }
 
-.programmes__row.has-active .programme__expand {
-  right: calc(50% - 23px);
+/* the CTAs sit on top of the photo, above the preview layer */
+.programme__actions {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: opacity 0.3s ease 0.3s, transform 0.4s var(--ease) 0.3s;
 }
 
-.programmes__row.has-active .programme:not(.is-active):hover .programme__expand {
-  transform: scale(1.08);
-  background: rgba(255, 255, 255, 0.85);
+.programmes__row.has-active .programme__actions {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition-delay: 0s;
+}
+
+.programme__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.programme__btn--primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+.programme__btn--primary:hover {
+  background: #1d4ed8;
+  box-shadow: 0 6px 16px -6px rgba(37, 99, 235, 0.6);
+}
+
+.programme__btn--ghost {
+  background: #fff;
+  border-color: #d4d9e6;
+  color: #1d4ed8;
+}
+
+.programme__btn--ghost:hover {
+  border-color: #2563eb;
+  background: #f5f8ff;
+}
+
+.programme__btn:focus-visible {
+  outline: 3px solid rgba(0, 82, 255, 0.35);
+  outline-offset: 2px;
 }
 
 /* --------------------------------------------------------------------------
@@ -383,7 +403,40 @@
   width: 100%;
   height: auto;
   filter: grayscale(1);
+  transform-origin: 50% 100%;
+  /* --mx/--my/--ms are eased every frame in programmes.js while the pointer is over the photo */
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) scale(var(--ms, 1));
   transition: filter 0.8s ease 0.15s;
+  will-change: transform;
+}
+
+/* the logo + intro drift the other way, so the photo reads as a layer behind them */
+.detail__intro {
+  z-index: 2;
+  translate: calc(var(--mx, 0px) * -0.5) calc(var(--my, 0px) * -0.4);
+}
+
+/* a soft light that follows the pointer across the photo */
+.detail__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--lx, 50%) var(--ly, 60%), rgba(255, 255, 255, 0.22), transparent 60%);
+  opacity: var(--lo, 0);
+  mix-blend-mode: soft-light;
+}
+
+/* no pointer to follow: a slow drift keeps the open photo alive */
+@media (hover: none), (pointer: coarse) {
+  .programme.is-active .detail__photo img {
+    animation: photo-drift 9s ease-in-out 0.9s infinite alternate;
+  }
+}
+
+@keyframes photo-drift {
+  from { transform: scale(1); }
+  to   { transform: translate3d(-10px, 0, 0) scale(1.05); }
 }
 
 .programme.is-active .detail__photo {
@@ -534,14 +587,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 40px 34px;
+  padding: 32px 30px 28px;
   background: var(--tint);
 }
 
 .detail__body {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 26px;
 }
 
 .detail__headline {
@@ -555,7 +608,7 @@
 .features {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   max-width: 235px;
   margin: 0;
   padding: 0;
@@ -601,7 +654,7 @@
 .programme.is-active .programme__cta {
   opacity: 1;
   transform: none;
-  transition: opacity 0.5s ease, transform 0.6s var(--ease);
+  transition: opacity 0.5s ease, transform 0.6s var(--ease), background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .programme.is-active .detail__headline      { transition-delay: 0.28s; }
@@ -611,40 +664,13 @@
 .programme.is-active .features li:nth-child(4) { transition-delay: 0.49s; }
 .programme.is-active .features li:nth-child(5) { transition-delay: 0.54s; }
 .programme.is-active .programme__cta                   { transition-delay: 0.6s; }
+.programme.is-active .programme__cta + .programme__cta { transition-delay: 0.66s; }
 
-.programme__cta {
+.detail__actions {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
   margin-top: 12px;
-  padding: 14px 28px 14px 32px;
-  border-radius: 28px;
-  background: var(--p-brand);
-  color: #fff;
-  font-weight: 600;
-  font-size: 16px;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.programme__cta svg {
-  width: 18px;
-  height: 18px;
-  transition: transform 0.3s var(--ease);
-}
-
-.programme.is-active .programme__cta:hover {
-  background: #0046db;
-}
-
-.programme__cta:hover svg {
-  transform: translateX(4px);
-}
-
-.programme__cta:focus-visible {
-  outline: 3px solid rgba(0, 82, 255, 0.35);
-  outline-offset: 3px;
 }
 
 /* --------------------------------------------------------------------------
@@ -724,7 +750,7 @@
   .programmes__row.has-active .programme.is-active {
     flex: none;
     width: 100%;
-    height: 360px;
+    height: 460px;
     transition: height var(--dur) var(--ease), border-color 0.4s ease;
   }
 
@@ -748,13 +774,18 @@
   }
   .programmes__row.has-active .programme--niat:not(.is-active) .logo-full { opacity: 1; }
   .programmes__row.has-active .programme--niat:not(.is-active) .logo-mark { opacity: 0; }
-  .programmes__row.has-active .programme:not(.is-active) .programme__caption,
-  .programmes__row.has-active .programme:not(.is-active) .programme__expand { opacity: 1; right: 12px; }
+  .programmes__row.has-active .programme:not(.is-active) .programme__caption { opacity: 1; }
+  .programmes__row.has-active .programme:not(.is-active) .programme__actions {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .programme.is-active .programme__actions { display: none; }
 
   .programme__photo--default,
   .programmes__row.has-active .programme:not(.is-active) .programme__photo--default {
     width: 100%;
-    height: 250px;
+    height: 330px;
     object-fit: cover;
     object-position: center top;
     opacity: 1;
@@ -763,7 +794,8 @@
   .programme__photo--collapsed,
   .programmes__row.has-active .programme__photo--collapsed { display: none; }
 
-  .programme__caption { width: 70%; }
+  .programme__fade,
+  .programmes__row.has-active .programme__fade { height: 220px; }
 
   .programme__logo .wordmark,
   .programmes__row.has-active .programme__logo .wordmark { font-size: 32px; }
