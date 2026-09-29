@@ -9,9 +9,7 @@ All exported from the Figma file **CCBP-v02** (section `938:1666`).
 | `niat-logo.svg` | `938:1312` (SVG) | NIAT logo, expanded card |
 | `niat-logo-card.svg` | `938:1559` (SVG) | NIAT logo, default card |
 | `niat-shield.svg` | `938:1395` (SVG) | NIAT shield, collapsed tab |
-| `*-default.webp` | `938:1478`, `938:1555`, `938:1550` | Photo in the default card |
-| `*-collapsed.webp` | `938:1383`, `938:1388`, `938:1393` | Photo in the collapsed tab |
-| `*-photo.webp` | `938:276`, `938:1033`, `938:1316` | Photo in the expanded card |
+| `*-figma.png` | `1036:511`, `1036:512`, `1036:513` | Figma cutouts, used for the default, collapsed and expanded card photo |
 
 Photos were exported at 2x as PNG (Figma crops them to the visible card area),
 then converted to WebP (quality 86) to cut them from about 5.9 MB to about 390 KB.

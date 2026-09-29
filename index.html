@@ -609,22 +609,22 @@ html.lenis,html.lenis body{height:auto}
 #hero .sec{position:relative;height:100vh;height:100svh;min-height:520px}
 /* one text system everywhere: left-aligned, same rhythm (headline → 20px → subheading → 32px → stats/CTA) */
 #hero .copy{--gutter:var(--page-edge);position:absolute;text-align:left;text-shadow:0 2px 24px rgba(3,6,13,.85)}
-#hero .copy h1,#hero .copy h2{margin:0;font-weight:500;font-size:clamp(24px,2.4vw,37px);line-height:1.16;letter-spacing:-.01em}
+#hero .copy h1,#hero .copy h2{margin:0;font-weight:500;font-size:clamp(31px,3.6vw,56px);line-height:1.13;letter-spacing:-.01em}
 #hero .copy h1 span,#hero .copy h2 span{display:block;white-space:nowrap}
 #hero .copy .blue{color:#82BDFF}
-#hero .sub{margin:18px 0 0;font-family:var(--font);font-size:clamp(14px,1.05vw,16px);line-height:1.6;color:rgba(255,255,255,.72);max-width:400px;text-wrap:pretty}
-#hero .stats{display:flex;align-items:stretch;gap:28px;margin-top:32px}
+#hero .sub{margin:18px 0 0;font-family:var(--font);font-size:clamp(16px,1.5vw,22px);line-height:1.55;color:rgba(255,255,255,.72);max-width:560px;text-wrap:pretty}
+#hero .stats{display:flex;align-items:stretch;gap:34px;margin-top:38px}
 #hero .stats div{display:flex;flex-direction:column;gap:4px}
-#hero .stats b{font-family:var(--font-head);font-weight:600;font-size:clamp(19px,1.6vw,25px);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-#hero .stats small{font-family:var(--font);font-size:13px;color:rgba(255,255,255,.72)}
+#hero .stats b{font-family:var(--font-head);font-weight:600;font-size:clamp(26px,2.4vw,38px);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+#hero .stats small{font-family:var(--font);font-size:clamp(13px,1vw,15px);color:rgba(255,255,255,.72)}
 #hero .stats i{width:1px;background:rgba(255,255,255,.22)}
-#hero .wave-cta{display:inline-block;margin-top:32px;background:var(--w-nxt);color:#fff;text-decoration:none;font-family:var(--font);font-weight:500;font-size:14px;line-height:1;padding:13px 22px;border-radius:8px;
+#hero .wave-cta{display:inline-block;margin-top:32px;background:var(--w-nxt);color:#fff;text-decoration:none;font-family:var(--font);font-weight:500;font-size:clamp(16px,1.3vw,20px);line-height:1;padding:18px 32px;border-radius:10px;
   box-shadow:0 0 0 0 rgba(74,155,255,0);transition:background .2s,box-shadow .3s,transform .2s;text-shadow:none}
 #hero .wave-cta:hover{background:#65abff;box-shadow:0 0 32px -4px rgba(74,155,255,.7);transform:translateY(-1px)}
 #hero .copy.l{left:var(--gutter);top:50%;transform:translateY(-50%)}
-#hero .copy.r{left:auto;right:var(--gutter);top:50%;transform:translateY(-50%);max-width:min(560px,38vw)}
-#hero .era{margin:0 0 14px;font:600 11px/1 var(--font);letter-spacing:.16em;text-transform:uppercase;color:#82BDFF;text-shadow:none}
-#hero .copy.bl{left:var(--gutter);bottom:12%}
+#hero .copy.r{left:auto;right:var(--gutter);top:50%;transform:translateY(-50%);max-width:min(700px,46vw)}
+#hero .era{margin:0 0 18px;font:600 clamp(12px,.95vw,15px)/1 var(--font);letter-spacing:.16em;text-transform:uppercase;color:#82BDFF;text-shadow:none}
+#hero .copy.bl{left:var(--gutter);bottom:9%}
 #hero .copy.c{left:50%;bottom:7%;transform:translateX(-50%);text-align:center}
 /* picture above, words below it: the block is centred on the page, the lines stay left-aligned */
 #hero .copy.bc{left:50%;bottom:11%;transform:translateX(-50%);text-align:left;max-width:min(760px,84vw)}
@@ -632,7 +632,7 @@ html.lenis,html.lenis body{height:auto}
 /* screen 2: the 3,000+ companies, as three ticker rows over the particles. The logos are real
    (assets/logos-wall, drawn from the same files the section below uses), reduced to one white
    silhouette each so the rows read as one material instead of 32 different brand colours. */
-#hero .wall{position:absolute;left:var(--page-edge);right:var(--page-edge);top:15%;height:25%;
+#hero .wall{position:absolute;left:var(--page-edge);right:46%;top:9%;height:31%;
   display:flex;flex-direction:column;gap:clamp(12px,1.6vw,26px);
   pointer-events:none;overflow:hidden;opacity:0;transition:opacity .9s ease .35s;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
@@ -644,7 +644,7 @@ html.lenis,html.lenis body{height:auto}
 #hero .wall-r:nth-child(2) .wall-t{animation-direction:reverse}
 /* the files are already normalised on optical size (see assets/logos-wall), so one box fits all:
    a long wordmark lands wide and short, a compact mark tall and narrow, and they read the same weight */
-#hero .wall-t img{max-height:clamp(18px,2vw,30px);max-width:clamp(57px,6.3vw,95px);width:auto;height:auto;
+#hero .wall-t img{max-height:clamp(22px,2.4vw,38px);max-width:clamp(70px,7.6vw,115px);width:auto;height:auto;
   display:block;opacity:.72;filter:drop-shadow(0 0 14px rgba(130,189,255,.35))}
 #hero .wall-r:nth-child(2) .wall-t img{opacity:.6}
 #hero .wall-r:nth-child(3) .wall-t img{opacity:.48}
@@ -658,7 +658,7 @@ html.lenis,html.lenis body{height:auto}
   #hero .wall-t{gap:30px}
   #hero .wall-t img{max-height:19px;max-width:60px}
   #hero .copy,#hero .copy.l,#hero .copy.r,#hero .copy.bl,#hero .copy.c,#hero .copy.bc{left:var(--page-pad);right:var(--page-pad);top:auto;bottom:8%;transform:none;max-width:none}
-  #hero .copy h1,#hero .copy h2{font-size:clamp(23px,6.6vw,30px)}
+  #hero .copy h1,#hero .copy h2{font-size:clamp(28px,7.8vw,39px)}
   #hero .copy h1 span,#hero .copy h2 span{white-space:normal}
 }
 </style>
@@ -762,8 +762,8 @@ html.lenis,html.lenis body{height:auto}
       <!-- ============ NxtWave Academy ============ -->
       <article class="programme programme--academy" tabindex="0" aria-label="NxtWave Academy">
         <div class="programme__preview" aria-hidden="true">
-          <img class="programme__photo programme__photo--default" src="assets/academy-default.webp" alt="" />
-          <img class="programme__photo programme__photo--collapsed" src="assets/academy-collapsed.webp" alt="" />
+          <img class="programme__photo programme__photo--default" src="assets/academy-figma.png" alt="" />
+          <img class="programme__photo programme__photo--collapsed" src="assets/academy-figma.png" alt="" />
           <div class="programme__fade"></div>
           <div class="programme__logo">
             <img src="assets/academy-logo.png" alt="" data-fallback />
@@ -779,7 +779,7 @@ html.lenis,html.lenis body{height:auto}
         <div class="programme__detail" inert>
           <div class="detail__media">
             <div class="detail__photo">
-              <img src="assets/academy-photo.webp" alt="Student learning on a laptop" data-fallback />
+              <img src="assets/academy-figma.png" alt="Student learning on a laptop" data-fallback />
             </div>
             <div class="detail__fade"></div>
             <div class="detail__steps" data-steps="mirror"></div>
@@ -803,8 +803,8 @@ html.lenis,html.lenis body{height:auto}
               </ul>
             </div>
             <div class="detail__actions">
-              <a class="programme__btn programme__btn--primary programme__cta" href="#">Request Callback</a>
-              <a class="programme__btn programme__btn--ghost programme__cta" href="#">Know More</a>
+              <a class="detail__cta programme__cta" href="#">Request Callback</a>
+              <a class="detail__cta detail__cta--ghost programme__cta" href="#">Know More</a>
             </div>
           </div>
         </div>
@@ -813,8 +813,8 @@ html.lenis,html.lenis body{height:auto}
       <!-- ============ NxtWave Intensive ============ -->
       <article class="programme programme--intensive" tabindex="0" aria-label="NxtWave Intensive">
         <div class="programme__preview" aria-hidden="true">
-          <img class="programme__photo programme__photo--default" src="assets/intensive-default.webp" alt="" />
-          <img class="programme__photo programme__photo--collapsed" src="assets/intensive-collapsed.webp" alt="" />
+          <img class="programme__photo programme__photo--default" src="assets/intensive-figma.png" alt="" />
+          <img class="programme__photo programme__photo--collapsed" src="assets/intensive-figma.png" alt="" />
           <div class="programme__fade"></div>
           <div class="programme__logo">
             <img src="assets/intensive-logo.png" alt="" data-fallback />
@@ -830,7 +830,7 @@ html.lenis,html.lenis body{height:auto}
         <div class="programme__detail" inert>
           <div class="detail__media">
             <div class="detail__photo">
-              <img src="assets/intensive-photo.webp" alt="Students training together on laptops" data-fallback />
+              <img src="assets/intensive-figma.png" alt="Students training together on laptops" data-fallback />
             </div>
             <div class="detail__fade"></div>
             <div class="detail__steps"></div>
@@ -857,8 +857,8 @@ html.lenis,html.lenis body{height:auto}
               </ul>
             </div>
             <div class="detail__actions">
-              <a class="programme__btn programme__btn--primary programme__cta" href="#">Request Callback</a>
-              <a class="programme__btn programme__btn--ghost programme__cta" href="#">Know More</a>
+              <a class="detail__cta programme__cta" href="#">Request Callback</a>
+              <a class="detail__cta detail__cta--ghost programme__cta" href="#">Know More</a>
             </div>
           </div>
         </div>
@@ -867,8 +867,8 @@ html.lenis,html.lenis body{height:auto}
       <!-- ============ NIAT ============ -->
       <article class="programme programme--niat" tabindex="0" aria-label="NxtWave Institute of Advanced Technologies">
         <div class="programme__preview" aria-hidden="true">
-          <img class="programme__photo programme__photo--default" src="assets/niat-default.webp" alt="" />
-          <img class="programme__photo programme__photo--collapsed" src="assets/niat-collapsed.webp" alt="" />
+          <img class="programme__photo programme__photo--default" src="assets/niat-figma.png" alt="" />
+          <img class="programme__photo programme__photo--collapsed" src="assets/niat-figma.png" alt="" />
           <div class="programme__fade"></div>
           <div class="programme__logo">
             <img class="logo-full" src="assets/niat-logo-card.svg" alt="" data-fallback />
@@ -885,7 +885,7 @@ html.lenis,html.lenis body{height:auto}
         <div class="programme__detail" inert>
           <div class="detail__media">
             <div class="detail__photo">
-              <img src="assets/niat-photo.webp" alt="Students building a drone together" data-fallback />
+              <img src="assets/niat-figma.png" alt="Students building a drone together" data-fallback />
             </div>
             <div class="detail__fade"></div>
             <div class="detail__steps"></div>
@@ -909,8 +909,8 @@ html.lenis,html.lenis body{height:auto}
               </ul>
             </div>
             <div class="detail__actions">
-              <a class="programme__btn programme__btn--primary programme__cta" href="#">Request Callback</a>
-              <a class="programme__btn programme__btn--ghost programme__cta" href="#">Know More</a>
+              <a class="detail__cta programme__cta" href="#">Request Callback</a>
+              <a class="detail__cta detail__cta--ghost programme__cta" href="#">Know More</a>
             </div>
           </div>
         </div>
@@ -1887,7 +1887,7 @@ html.lenis,html.lenis body{height:auto}
   const nav = document.querySelector('.site-nav'), stage = document.getElementById('stage'), progs = document.getElementById('programmes');
   if (!progs) return;
   const lenis = (window.NW && NW.lenis) || null;
-  const HERO_FEEL = { lerp: .075, duration: undefined, easing: undefined, wheelMultiplier: .95, touchMultiplier: 1.5 };
+  const HERO_FEEL = { lerp: .12, duration: undefined, easing: undefined, wheelMultiplier: 1, touchMultiplier: 1.2 };
   let pageFeel = null, feel = '';
   const setFeel = inHero => {
     const k = inHero ? 'hero' : 'page';

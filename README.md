@@ -13,10 +13,10 @@ the programmes cards and the rest of the NxtWave homepage (from the CCBP-v02 bui
    hire, the curriculum that moves with them, the mentors, the building, the reward, the invitation.
 2. **Programmes** — "Three programmes. One is yours." Three cards (Academy, Intensive, NIAT);
    hover (desktop) or tap (mobile) a card to expand it. The hero's "Explore programmes" button
-   scrolls here. The resting and collapsed cards are the earlier build, their photos black and
-   white so the colour arrives with the card that opens; the open card follows the Figma file
-   (CCBP-v02, node 1030:488): both halves white and the photo fading up into white, but it keeps
-   the two buttons rather than the file's single pill. While the pointer is over an open card it turns
+   scrolls here. Resting and collapsed cards keep their tint, their photo black and white so the
+   colour arrives with the card that opens; the open card follows the Figma file (CCBP-v02, node
+   1030:488): both halves white and the photo fading up into white, with Request Callback and Know
+   More on the file's pill. While the pointer is over an open card it turns
    toward the cursor and the layers travel by different amounts — photo, then logo, then panel —
    so they read at different depths (`--nx/--ny/--rx/--ry`, eased in `programmes.js`).
 
