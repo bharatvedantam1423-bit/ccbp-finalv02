@@ -1027,15 +1027,23 @@
   }
   .programme.is-active .detail__panel { background: var(--tint); }
 
-  /* the logo alone, large and centred over the photo */
-  .programmes__row .programme.is-active .detail__intro {
+  /* the logo alone, large and centred over the photo. Set for every state, not only the open
+     one: the open layer is still fading while a card closes or the pointer moves to the next
+     card, and the older intro (logo left, "Training Center / Online", the line of text) must
+     never show through then */
+  .programmes__row .programme .detail__intro {
+    left: 50%;
     top: calc(70.49 * var(--u));
-    width: max-content;
+    translate: calc(-50% + var(--mx, 0px) * 0.35) calc(var(--my, 0px) * 0.3);
+    flex-direction: row;
     justify-content: center;
+    gap: 0;
+    width: max-content;
+    max-width: none;
   }
-  .programmes__row .programme.is-active .detail__logo img { width: auto; height: calc(108.36 * var(--u)); }
-  .programme.is-active .detail__text,
-  .programme.is-active .detail__mode { display: none; }
+  .programmes__row .programme .detail__logo img { width: auto; height: calc(108.36 * var(--u)); }
+  .detail__text,
+  .detail__mode { display: none; }
 
   /* open-card CTAs match the resting ones in the file */
   .detail__actions { gap: 12px; }
@@ -1093,10 +1101,8 @@
 .detail__fade { z-index: 2; }
 .detail__intro { z-index: 0; }
 
-/* the logo is the far layer now: it follows the pointer the same way as the photo, but less */
-.programme.is-active .detail__intro {
-  translate: calc(-50% + var(--mx, 0px) * 0.35) calc(var(--my, 0px) * 0.3);
-}
-@media (prefers-reduced-motion: reduce) {
-  .programme.is-active .detail__intro { translate: -50% 0; }
+/* the logo is the far layer now: it follows the pointer the same way as the photo, but less
+   (the translate itself is set with the desktop placement above) */
+@media (min-width: 900px) and (prefers-reduced-motion: reduce) {
+  .programmes__row .programme .detail__intro { translate: -50% 0; }
 }
