@@ -1360,7 +1360,7 @@ html.lenis,html.lenis body{height:auto}
 
   /* smooth scrolling keeps the scrubbed hero fluid */
   if (!RM && window.Lenis){
-    const lenis = new Lenis({ lerp: 0, duration: 1, easing: t => 1 - Math.pow(1 - t, 4), anchors: true });
+    const lenis = new Lenis({ lerp: 0, duration: 1.15, easing: t => 1 - Math.pow(1 - t, 4), anchors: true });
     const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
     window.NW = Object.assign(window.NW || {}, { lenis });
@@ -1860,7 +1860,7 @@ html.lenis,html.lenis body{height:auto}
   const nav = document.querySelector('.site-nav'), stage = document.getElementById('stage'), progs = document.getElementById('programmes');
   if (!progs) return;
   const lenis = (window.NW && NW.lenis) || null;
-  const HERO_FEEL = { lerp: .05, duration: undefined, easing: undefined, wheelMultiplier: .6, touchMultiplier: 1.2 };
+  const HERO_FEEL = { lerp: .035, duration: undefined, easing: undefined, wheelMultiplier: .5, touchMultiplier: 1.1 };
   let pageFeel = null, feel = '';
   const setFeel = inHero => {
     const k = inHero ? 'hero' : 'page';
