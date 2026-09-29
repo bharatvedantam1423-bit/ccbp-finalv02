@@ -609,13 +609,13 @@ html.lenis,html.lenis body{height:auto}
 #hero .sec{position:relative;height:100vh;height:100svh;min-height:520px}
 /* one text system everywhere: left-aligned, same rhythm (headline → 20px → subheading → 32px → stats/CTA) */
 #hero .copy{--gutter:var(--page-edge);position:absolute;text-align:left;text-shadow:0 2px 24px rgba(3,6,13,.85)}
-#hero .copy h1,#hero .copy h2{margin:0;font-weight:500;font-size:clamp(28px,3vw,46px);line-height:1.14;letter-spacing:-.01em}
+#hero .copy h1,#hero .copy h2{margin:0;font-weight:500;font-size:clamp(24px,2.4vw,37px);line-height:1.16;letter-spacing:-.01em}
 #hero .copy h1 span,#hero .copy h2 span{display:block;white-space:nowrap}
 #hero .copy .blue{color:#82BDFF}
-#hero .sub{margin:20px 0 0;font-family:var(--font);font-size:clamp(16px,1.3vw,19px);line-height:1.6;color:rgba(255,255,255,.72);max-width:440px;text-wrap:pretty}
+#hero .sub{margin:18px 0 0;font-family:var(--font);font-size:clamp(14px,1.05vw,16px);line-height:1.6;color:rgba(255,255,255,.72);max-width:400px;text-wrap:pretty}
 #hero .stats{display:flex;align-items:stretch;gap:28px;margin-top:32px}
 #hero .stats div{display:flex;flex-direction:column;gap:4px}
-#hero .stats b{font-family:var(--font-head);font-weight:600;font-size:clamp(22px,2vw,30px);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+#hero .stats b{font-family:var(--font-head);font-weight:600;font-size:clamp(19px,1.6vw,25px);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 #hero .stats small{font-family:var(--font);font-size:13px;color:rgba(255,255,255,.72)}
 #hero .stats i{width:1px;background:rgba(255,255,255,.22)}
 #hero .wave-cta{display:inline-block;margin-top:32px;background:var(--w-nxt);color:#fff;text-decoration:none;font-family:var(--font);font-weight:500;font-size:14px;line-height:1;padding:13px 22px;border-radius:8px;
@@ -623,9 +623,11 @@ html.lenis,html.lenis body{height:auto}
 #hero .wave-cta:hover{background:#65abff;box-shadow:0 0 32px -4px rgba(74,155,255,.7);transform:translateY(-1px)}
 #hero .copy.l{left:var(--gutter);top:50%;transform:translateY(-50%)}
 #hero .copy.r{left:auto;right:var(--gutter);top:50%;transform:translateY(-50%);max-width:min(560px,38vw)}
-#hero .era{margin:0 0 16px;font:600 12px/1 var(--font);letter-spacing:.16em;text-transform:uppercase;color:#82BDFF;text-shadow:none}
+#hero .era{margin:0 0 14px;font:600 11px/1 var(--font);letter-spacing:.16em;text-transform:uppercase;color:#82BDFF;text-shadow:none}
 #hero .copy.bl{left:var(--gutter);bottom:12%}
 #hero .copy.c{left:50%;bottom:7%;transform:translateX(-50%);text-align:center}
+/* picture above, words below it: the block is centred on the page, the lines stay left-aligned */
+#hero .copy.bc{left:50%;bottom:11%;transform:translateX(-50%);text-align:left;max-width:min(760px,84vw)}
 #hero .copy.c .sub{margin-inline:auto}
 /* screen 2: the 3,000+ companies, as three ticker rows over the particles. The logos are real
    (assets/logos-wall, drawn from the same files the section below uses), reduced to one white
@@ -655,8 +657,8 @@ html.lenis,html.lenis body{height:auto}
             mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
   #hero .wall-t{gap:30px}
   #hero .wall-t img{max-height:19px;max-width:60px}
-  #hero .copy,#hero .copy.l,#hero .copy.r,#hero .copy.bl,#hero .copy.c{left:var(--page-pad);right:var(--page-pad);top:auto;bottom:8%;transform:none;max-width:none}
-  #hero .copy h1,#hero .copy h2{font-size:clamp(26px,7.4vw,34px)}
+  #hero .copy,#hero .copy.l,#hero .copy.r,#hero .copy.bl,#hero .copy.c,#hero .copy.bc{left:var(--page-pad);right:var(--page-pad);top:auto;bottom:8%;transform:none;max-width:none}
+  #hero .copy h1,#hero .copy h2{font-size:clamp(23px,6.6vw,30px)}
   #hero .copy h1 span,#hero .copy h2 span{white-space:normal}
 }
 </style>
@@ -712,7 +714,7 @@ html.lenis,html.lenis body{height:auto}
     <p class="era">Involve. Learn. Grow.</p>
     <h2><span>You don't watch lessons.</span><span class="blue">You build.</span></h2>
   </div></section>
-  <section class="sec"><div class="copy l">
+  <section class="sec"><div class="copy bc">
     <p class="era">The real reward</p>
     <h2><span>Your first offer changes</span><span>more than your salary.</span></h2>
   </div></section>
@@ -801,7 +803,8 @@ html.lenis,html.lenis body{height:auto}
               </ul>
             </div>
             <div class="detail__actions">
-              <a class="detail__cta programme__cta" href="#">Explore Academy<svg aria-hidden="true"><use href="#i-arrow-right" /></svg></a>
+              <a class="programme__btn programme__btn--primary programme__cta" href="#">Request Callback</a>
+              <a class="programme__btn programme__btn--ghost programme__cta" href="#">Know More</a>
             </div>
           </div>
         </div>
@@ -854,7 +857,8 @@ html.lenis,html.lenis body{height:auto}
               </ul>
             </div>
             <div class="detail__actions">
-              <a class="detail__cta programme__cta" href="#">Explore Intensive<svg aria-hidden="true"><use href="#i-arrow-right" /></svg></a>
+              <a class="programme__btn programme__btn--primary programme__cta" href="#">Request Callback</a>
+              <a class="programme__btn programme__btn--ghost programme__cta" href="#">Know More</a>
             </div>
           </div>
         </div>
@@ -905,7 +909,8 @@ html.lenis,html.lenis body{height:auto}
               </ul>
             </div>
             <div class="detail__actions">
-              <a class="detail__cta programme__cta" href="#">Explore NIAT<svg aria-hidden="true"><use href="#i-arrow-right" /></svg></a>
+              <a class="programme__btn programme__btn--primary programme__cta" href="#">Request Callback</a>
+              <a class="programme__btn programme__btn--ghost programme__cta" href="#">Know More</a>
             </div>
           </div>
         </div>
@@ -1382,7 +1387,7 @@ html.lenis,html.lenis body{height:auto}
 
   /* smooth scrolling keeps the scrubbed hero fluid */
   if (!RM && window.Lenis){
-    const lenis = new Lenis({ lerp: 0, duration: 1.15, easing: t => 1 - Math.pow(1 - t, 4), anchors: true });
+    const lenis = new Lenis({ lerp: 0, duration: 1, easing: t => 1 - Math.pow(1 - t, 4), anchors: true });
     const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
     window.NW = Object.assign(window.NW || {}, { lenis });
@@ -1882,7 +1887,7 @@ html.lenis,html.lenis body{height:auto}
   const nav = document.querySelector('.site-nav'), stage = document.getElementById('stage'), progs = document.getElementById('programmes');
   if (!progs) return;
   const lenis = (window.NW && NW.lenis) || null;
-  const HERO_FEEL = { lerp: .035, duration: undefined, easing: undefined, wheelMultiplier: .5, touchMultiplier: 1.1 };
+  const HERO_FEEL = { lerp: .075, duration: undefined, easing: undefined, wheelMultiplier: .95, touchMultiplier: 1.5 };
   let pageFeel = null, feel = '';
   const setFeel = inHero => {
     const k = inHero ? 'hero' : 'page';
@@ -1931,7 +1936,7 @@ const SEC = [
   { img: 'story3.webp',    dep: 'd-story3.webp', rect: [.30, .16, .98, .85],  focus: [.56, .5],  relief: 0,  lift: .8,  gain: 1.1, res: 1100, keep: 'l' },
   { img: 'story4.webp',    dep: 'd-story4.webp', rect: [.30, .15, .98, .86],  focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1.1, res: 1100, keep: 'l' },
   { img: 'story5.webp',    dep: 'd-story5.webp', rect: [.30, .16, .98, .85],  focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1,   res: 1100, keep: 'l' },
-  { img: 'story6.webp',    dep: 'd-story6.webp', rect: [.30, .16, .98, .85],  focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1,   res: 1100, keep: 'l' },
+  { img: 'story6.webp',    dep: 'd-story6.webp', rect: [.18, .03, .82, .63],  focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1,   res: 1100 },
   { img: 'story7.webp',    dep: 'd-story7.webp', rect: [0, 0, 1, 1],          focus: [.5, .5],   relief: 0,  lift: .75, gain: 1,   res: 1200 },
 ];
 const MOBILE_RECT = [0, .06, 1, .66];

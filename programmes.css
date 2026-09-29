@@ -192,8 +192,10 @@
   width: calc(var(--w-default) - 2px);
 }
 
-/* soften the top edge where the photo's background meets the card tint */
+/* soften the top edge where the photo's background meets the card tint. The resting and
+   collapsed photos are black and white, so the colour arrives with the card that opens. */
 .programme__photo {
+  filter: grayscale(1);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 90px);
   mask-image: linear-gradient(to bottom, transparent 0, #000 90px);
 }
@@ -873,31 +875,6 @@
 .programme.is-active .detail__body { gap: 40px; }
 .programme.is-active .features { gap: 16px; }
 
-/* one CTA: 252px column, 28px pill, #0052ff */
-.detail__cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 28px 14px 32px;
-  border-radius: 28px;
-  background: var(--p-brand);
-  color: #fff;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 16px;
-  line-height: normal;
-  text-decoration: none;
-}
-
-.detail__cta svg { flex: none; width: 18px; height: 18px; }
-
-.programme.is-active .detail__cta:hover {
-  background: #1a64ff;
-  box-shadow: 0 12px 30px -12px rgba(0, 82, 255, 0.7);
-}
-
-.programme.is-active .detail__cta:hover svg { transform: translateX(3px); }
 
 /* --------------------------------------------------------------------------
    Pointer tilt: the open card turns toward the cursor, and the layers inside

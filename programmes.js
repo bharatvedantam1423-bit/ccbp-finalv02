@@ -80,7 +80,7 @@
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         setActive(card);
-        card.querySelector(".detail__panel .detail__cta")?.focus();
+        card.querySelector(".detail__panel .programme__cta")?.focus();
       }
     });
   });

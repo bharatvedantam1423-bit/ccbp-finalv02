@@ -13,14 +13,14 @@ the programmes cards and the rest of the NxtWave homepage (from the CCBP-v02 bui
    hire, the curriculum that moves with them, the mentors, the building, the reward, the invitation.
 2. **Programmes** — "Three programmes. One is yours." Three cards (Academy, Intensive, NIAT);
    hover (desktop) or tap (mobile) a card to expand it. The hero's "Explore programmes" button
-   scrolls here. The resting and collapsed cards are the earlier build; the open card follows the
-   Figma file (CCBP-v02, node 1030:488): both halves white, the photo fading up into white, and one
-   blue pill instead of the two resting buttons. While the pointer is over an open card it turns
+   scrolls here. The resting and collapsed cards are the earlier build, their photos black and
+   white so the colour arrives with the card that opens; the open card follows the Figma file
+   (CCBP-v02, node 1030:488): both halves white and the photo fading up into white, but it keeps
+   the two buttons rather than the file's single pill. While the pointer is over an open card it turns
    toward the cursor and the layers travel by different amounts — photo, then logo, then panel —
    so they read at different depths (`--nx/--ny/--rx/--ry`, eased in `programmes.js`).
 
-   The file repeats the Academy copy on all three cards; each card keeps its own here, and the CTA
-   reads Explore Academy / Intensive / NIAT.
+   The file repeats the Academy copy on all three cards; each card keeps its own here.
 3. From the CCBP-v02 build, unchanged: **Recognised by** · **Awards & Recognitions** (scroll-scrubbed
    film) · **National Level Recognition** · **3,000+ companies** logo ticker · **Taught by people who
    have done the job** (pinned, scroll-scrubbed film) · **Career Transformations** · **Masterclasses** ·
@@ -74,7 +74,8 @@ It also works unchanged on GitHub Pages or Netlify.
   - `story4.webp` / `d-story4.webp` — 4 · Taught by doers: people who still do the job
   - `story5.webp` / `d-story5.webp` — 5 · Involve, learn, grow: you build (cropped in from the
     generated plate's black left band, so the two of them fill the slot)
-  - `story6.webp` / `d-story6.webp` — 6 · The real reward: the first offer changes more than a salary
+  - `story6.webp` / `d-story6.webp` — 6 · The real reward: the first offer changes more than a
+    salary (the only screen with the picture above the words rather than beside them)
   - `story7.webp` / `d-story7.webp` — 7 · Join the 16,000+
 
   Screen 2's wall is a ticker: three rows of the real company logos running over the particles
