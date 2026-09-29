@@ -626,8 +626,8 @@ html.lenis,html.lenis body{height:auto}
 #hero .era{margin:0 0 18px;font:600 clamp(12px,.95vw,15px)/1 var(--font);letter-spacing:.16em;text-transform:uppercase;color:#82BDFF;text-shadow:none}
 #hero .copy.bl{left:var(--gutter);bottom:9%}
 #hero .copy.c{left:50%;bottom:7%;transform:translateX(-50%);text-align:center}
-/* picture above, words below it: the block is centred on the page, the lines stay left-aligned */
-#hero .copy.bc{left:50%;bottom:11%;transform:translateX(-50%);text-align:left;max-width:min(760px,84vw)}
+/* picture above, words below it: the block and its lines are centred on the page */
+#hero .copy.bc{left:50%;bottom:11%;transform:translateX(-50%);text-align:center;max-width:min(760px,84vw)}
 #hero .copy.c .sub{margin-inline:auto}
 /* screen 2: the 3,000+ companies, as three ticker rows over the particles. The logos are real
    (assets/logos-wall, drawn from the same files the section below uses), reduced to one white
@@ -691,32 +691,32 @@ html.lenis,html.lenis body{height:auto}
      =================================================================== -->
 <div id="hero">
   <section class="sec"><div class="copy l">
-    <h1><span>AI changed tech hiring.</span><span class="blue">We changed how you learn.</span></h1>
+    <h1><span>AI changed tech hiring.</span><span class="blue">Learn to build what</span><span class="blue">companies hire for.</span></h1>
     <div class="stats"><div><b>16,000+</b><small>Learners Hired</small></div><i></i><div><b>3000+</b><small>Companies Hiring</small></div></div>
   </div></section>
   <section class="sec">
     <!-- the 3,000+ companies, running as a ticker over the particles (real logos, see assets/logos-wall) -->
     <div class="wall" aria-label="Companies that hire NxtWave learners" data-wall></div>
     <div class="copy r">
-      <p class="era">3,000+ companies</p>
-      <h2><span>We know who's hiring.</span><span>And what they hire for.</span></h2>
+      <p class="era">What companies look for</p>
+      <h2><span>We pay attention to</span><span>what companies hire for.</span></h2>
     </div>
   </section>
   <section class="sec"><div class="copy l">
-    <p class="era">Always current</p>
-    <h2><span>So the curriculum moves</span><span>when the market moves.</span></h2>
+    <p class="era">Built to stay relevant</p>
+    <h2><span>So the curriculum moves,</span><span>when the market moves.</span></h2>
+  </div></section>
+  <section class="sec"><div class="copy r">
+    <p class="era">Taught by people in tech</p>
+    <h2><span>Learn from people who</span><span>know the work firsthand.</span></h2>
   </div></section>
   <section class="sec"><div class="copy l">
-    <p class="era">Taught by doers</p>
-    <h2><span>Not lecturers.</span><span>People who still do the job.</span></h2>
-  </div></section>
-  <section class="sec"><div class="copy l">
-    <p class="era">Involve. Learn. Grow.</p>
-    <h2><span>You don't watch lessons.</span><span class="blue">You build.</span></h2>
+    <p class="era">Learn by building</p>
+    <h2><span>Put what you learn to work</span><span>on real projects.</span></h2>
   </div></section>
   <section class="sec"><div class="copy bc">
     <p class="era">The real reward</p>
-    <h2><span>Your first offer changes</span><span>more than your salary.</span></h2>
+    <h2><span>Your first offer changes</span><span>more than your future.</span></h2>
   </div></section>
   <section class="sec"><div class="copy bl">
     <h2><span>Join the 16,000+</span><span class="blue">learning what's next.</span></h2>
@@ -1934,7 +1934,8 @@ const SEC = [
   // story2's plate is cropped tight on the student, so he fills his slot the way screen 1's does
   { img: 'story2.webp',    dep: 'd-story2.webp', rect: [.03, .22, .41, .99],  focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1.1, res: 1200, keep: 'r' },
   { img: 'story3.webp',    dep: 'd-story3.webp', rect: [.30, .16, .98, .85],  focus: [.56, .5],  relief: 0,  lift: .8,  gain: 1.1, res: 1100, keep: 'l' },
-  { img: 'story4.webp',    dep: 'd-story4.webp', rect: [.30, .15, .98, .86],  focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1.1, res: 1100, keep: 'l' },
+  // the mentors: picture on the left, words on the right
+  { img: 'story4.webp',    dep: 'd-story4.webp', rect: [.02, .15, .70, .86],  focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1.1, res: 1100, keep: 'r' },
   { img: 'story5.webp',    dep: 'd-story5.webp', rect: [.30, .16, .98, .85],  focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1,   res: 1100, keep: 'l' },
   { img: 'story6.webp',    dep: 'd-story6.webp', rect: [.18, .03, .82, .63],  focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1,   res: 1100 },
   { img: 'story7.webp',    dep: 'd-story7.webp', rect: [0, 0, 1, 1],          focus: [.5, .5],   relief: 0,  lift: .75, gain: 1,   res: 1200 },
@@ -2291,12 +2292,18 @@ const progs = document.getElementById('programmes');
 let mx = 0, my = 0, pmx = 0, pmy = 0;
 if (!MOBILE && !REDUCE) addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
 
-const t0 = performance.now(); let prev = t0;
+let prev = performance.now();
+/* the particle clock: the drift answers the scroll instead of running on its own. When the page is
+   still it creeps at a fraction of real time; each scroll moves it on by how far the reader went. */
+const IDLE_RATE = .3, SCROLL_RATE = 2.4;
+let pClock = 0, pPrev = scrollPos();
 function setSec(u, f, k) { const r = rectOf(k); u.value.set(r[0], r[1], r[2], r[3]); f.value.set(SEC[k].focus[0], SEC[k].focus[1], ASPECT[k], SEC[k].relief); }
 function frame(now) {
   requestAnimationFrame(frame);
   const dt = Math.min(.05, (now - prev) / 1000); prev = now;
-  const t = (now - t0) / 1000;
+  const pos = scrollPos(), moved = Math.min(.35, Math.abs(pos - pPrev) / innerHeight); pPrev = pos;
+  pClock += (REDUCE ? 0 : dt * IDLE_RATE) + moved * SCROLL_RATE;
+  const t = pClock;
   const hgt = secs[0].offsetHeight || innerHeight;
   const Sc = clamp(scrollPos() / hgt, 0, S - 1);
   const k = Math.min(S - 2, Math.floor(Sc)), f = Sc - k;
