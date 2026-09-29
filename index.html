@@ -2052,9 +2052,14 @@ const uniforms = {
   uSize: { value: MOBILE ? .0068 : .0041 }, uPx: { value: 800 }, uGain: { value: MOBILE ? 1.2 : .74 },
   uMotion: { value: REDUCE ? .3 : 1 }, uLoose: { value: 1.5 }, uWave: { value: 0 }, uCalm: { value: 0 },
   uCol: { value: new THREE.Color(.8, .88, 1.0) }, uBlueCol: { value: new THREE.Color(.2, .45, 1.0) },
+  // the pointer, in world units on the image plane: uMouse where it is, uFollow a point easing after it
+  uMouse: { value: new THREE.Vector2() }, uFollow: { value: new THREE.Vector2() },
+  uMove: { value: 0 }, uStill: { value: 0 }, uReal: { value: 0 }, uMR: { value: .3 },
 };
 const vert = `
 uniform float uMorph, uTime, uYA, uYB, uGA, uGB, uVW, uVH, uSize, uPx, uGain, uMotion, uLoose, uWave, uCalm;
+uniform float uMove, uStill, uReal, uMR;
+uniform vec2 uMouse, uFollow;
 uniform vec4 uRA, uRB, uFA, uFB;
 uniform vec3 uCol, uBlueCol;
 attribute vec4 aA, aB, aSeed;
@@ -2119,6 +2124,21 @@ void main(){
   P += vec3(.7071, -.7071, 0.) * (sl - .5) * .7 * streak * uMotion;
   bright *= mix(1., .28 * sin(sl * 3.14159), streak);
 
+  // the pointer. While it moves, a share of the particles near it gather and trail after it (uFollow
+  // eases behind the pointer); once it rests, the ones around it spread out and ripple in slow rings.
+  // Both are measured at each particle's own depth, so near and far particles line up under it.
+  float dep = (5. - P.z) / 5.;
+  vec2 tf = P.xy - uFollow * dep;
+  float fol = step(aSeed.w, .4) * uMove * exp(-pow(length(tf) / uMR, 2.));
+  P.xy -= tf * fol * .72;
+  vec2 tm = P.xy - uMouse * dep;
+  float dm = length(tm) + 1e-4;
+  float ring = sin(dm * 42. - uReal * 4.5);
+  float rip = uStill * exp(-pow(dm / (uMR * 1.4), 2.));   // gaussian: nothing moves outside the ripple
+  P.xy += tm / dm * rip * (.12 + .025 * ring);
+  float lit = clamp(fol + rip * (.5 + .5 * ring), 0., 1.);
+  bright *= 1. + fol * 1.2 + rip * .8 * max(ring, 0.);
+
   vec4 mv = modelViewMatrix * vec4(P, 1.);
   float px = uPx / max(.05, -mv.z);
   float sz = uSize * mix(.55 + .7 * aSeed.z, 2.2 + 1.2 * aSeed.z, star) * px * mix(1., 1.5, dust) * (1. + ember * 3.5) * (1. + aura * .4);
@@ -2150,7 +2170,7 @@ void main(){
   vec4 Rs = mix(uRA, uRB, onB);
   float ys = mix(uYA, uYB, onB);
   float edge = smoothstep(.45, .95, length((P.xy - vec2(Rs.x, Rs.y + ys)) / (Rs.zw * .5)));
-  bright *= 1. - uCalm * mix(mix(.98, .3, edge), mix(.85, 0., edge), dust);
+  bright *= 1. - uCalm * mix(mix(.98, .3, edge), mix(.85, 0., edge), dust) * (1. - .75 * lit);   // lit by the pointer: stays on over a photo
   vColor = col * bright * uGain * mix(clamp(sz / 1.3, .6, 1.), 1., streak);
 }`;
 const frag = `
@@ -2329,7 +2349,13 @@ const scrollPos = () => lenis ? lenis.scroll : scrollY;
 const secs = [...document.querySelectorAll('.sec')];
 const progs = document.getElementById('programmes');
 let mx = 0, my = 0, pmx = 0, pmy = 0;
-if (!MOBILE && !REDUCE) addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+// pointer → particles: where it is, whether it is on the page, and how it has been moving
+let mIn = false, lmx = 0, lmy = 0, fX = 0, fY = 0, mMove = 0, mStill = 0;
+if (!MOBILE && !REDUCE) {
+  addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; mIn = true; });
+  document.documentElement.addEventListener('pointerleave', () => { mIn = false; });
+  addEventListener('blur', () => { mIn = false; });
+}
 
 let prev = performance.now();
 /* the particle clock: the drift answers the scroll instead of running on its own. When the page is
@@ -2339,7 +2365,7 @@ let pClock = 0, pPrev = scrollPos();
 function setSec(u, f, k) { const r = rectOf(k); u.value.set(r[0], r[1], r[2], r[3]); f.value.set(SEC[k].focus[0], SEC[k].focus[1], ASPECT[k], SEC[k].relief); }
 function frame(now) {
   requestAnimationFrame(frame);
-  const dt = Math.min(.05, (now - prev) / 1000); prev = now;
+  const rdt = Math.min(.25, (now - prev) / 1000), dt = Math.min(.05, rdt); prev = now;   // rdt: real time, for the pointer
   const pos = scrollPos(), moved = Math.min(.35, Math.abs(pos - pPrev) / innerHeight); pPrev = pos;
   pClock += (REDUCE ? 0 : dt * IDLE_RATE) + moved * SCROLL_RATE;
   const t = pClock;
@@ -2372,6 +2398,18 @@ function frame(now) {
   uniforms.uLoose.value = .0015 + intro * 1.4;
   uniforms.uTime.value = t;
   uniforms.uWave.value = sstep(5.15, 5.85, Sc);
+
+  // pointer: speed in viewport-heights a second decides between following (moving) and rippling
+  // (still); both rise quickly and fade slowly, so neither snaps on or off
+  const wx = mx * VH * aspect, wy = -my * VH;
+  const speed = Math.hypot(wx - lmx, wy - lmy) / Math.max(rdt, .001) / VH; lmx = wx; lmy = wy;
+  const moving = mIn ? clamp(speed / .6) : 0;
+  mMove += (moving - mMove) * Math.min(1, rdt * (moving > mMove ? 8 : 1.6));
+  mStill += ((mIn ? 1 - clamp(mMove * 3) : 0) - mStill) * Math.min(1, rdt * .9);
+  fX += (wx - fX) * Math.min(1, rdt * 5); fY += (wy - fY) * Math.min(1, rdt * 5);
+  uniforms.uMouse.value.set(wx, wy); uniforms.uFollow.value.set(fX, fY);
+  uniforms.uMove.value = mMove; uniforms.uStill.value = mStill;
+  uniforms.uReal.value = now / 1000;
 
   // a slow sway plus the pointer turn the depth relief so the pictures read as 3D
   pmx += (mx - pmx) * Math.min(1, dt * 2.5); pmy += (my - pmy) * Math.min(1, dt * 2.5);

@@ -1181,3 +1181,10 @@
   }
   .programme.is-active .detail__cta--ghost:hover { background: #f8fafc; border-color: #94a3b8; }
 }
+
+/* Academy's open photo at 88% of the file's size: the plate is cropped tight on his hair and the
+   pointer zoom (1.06, from the bottom edge) lifts it ~6%, which ran his hair into the logo. Top of
+   the hair: 172 at rest, ~132 at full zoom, both below the logo's 120; centred where it was. */
+@media (min-width: 900px) {
+  .programme--academy { --op-x: -75.9; --op-b: -245.6; --op-w: 766.3; }
+}
