@@ -851,3 +851,101 @@
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   Open card — the Figma design (CCBP-v02, node 1030:488)
+
+   The closed and collapsed states are unchanged. Once a card opens it becomes
+   the white card from the file: both halves white, the photo fading up into
+   white, one blue pill instead of the two resting buttons.
+   ========================================================================== */
+
+.programme.is-active .detail__media,
+.programme.is-active .detail__panel { background: #fff; }
+.programme.is-active .detail__steps span { background: #fff; }
+
+.programme.is-active .detail__fade {
+  height: 164.3px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #fff 147.71%);
+}
+
+.programme.is-active .detail__panel { padding: 40px 34px; }
+.programme.is-active .detail__body { gap: 40px; }
+.programme.is-active .features { gap: 16px; }
+
+/* one CTA: 252px column, 28px pill, #0052ff */
+.detail__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px 14px 32px;
+  border-radius: 28px;
+  background: var(--p-brand);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: normal;
+  text-decoration: none;
+}
+
+.detail__cta svg { flex: none; width: 18px; height: 18px; }
+
+.programme.is-active .detail__cta:hover {
+  background: #1a64ff;
+  box-shadow: 0 12px 30px -12px rgba(0, 82, 255, 0.7);
+}
+
+.programme.is-active .detail__cta:hover svg { transform: translateX(3px); }
+
+/* --------------------------------------------------------------------------
+   Pointer tilt: the open card turns toward the cursor, and the layers inside
+   it travel by different amounts, so the photo sits in front of the logo and
+   the logo in front of the panel. --nx/--ny/--rx/--ry are eased every frame in
+   programmes.js; every layer reads the same pair, only the multiplier differs.
+   -------------------------------------------------------------------------- */
+
+.programmes__row { perspective: 1800px; }
+
+.programme.is-active {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  box-shadow:
+    calc(var(--nx, 0) * -26px) calc(16px + var(--ny, 0) * -10px) 54px -26px rgba(6, 18, 63, 0.3);
+}
+
+/* behind the photo (which follows the pointer at full --mx) and the logo (-0.5) */
+.programme.is-active .detail__body    { translate: calc(var(--mx, 0px) * -0.22) calc(var(--my, 0px) * -0.18); }
+.programme.is-active .detail__actions { translate: calc(var(--mx, 0px) * -0.34) calc(var(--my, 0px) * -0.26); }
+
+@media (prefers-reduced-motion: reduce) {
+  .programme.is-active { transform: none; }
+  .programme.is-active .detail__body,
+  .programme.is-active .detail__actions { translate: none; }
+}
+
+/* the intro is one row in the new file: logo left, the line of context at the far
+   end of a 650px band centred in the 751px media half, both sitting on one baseline */
+.programme.is-active .detail__intro {
+  left: 50%;
+  top: calc(45 * var(--u));
+  translate: calc(-50% + var(--mx, 0px) * -0.5) calc(var(--my, 0px) * -0.4);
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: calc(24 * var(--u));
+  width: calc(650 * var(--u));
+  max-width: none;
+}
+
+.programme.is-active .detail__logo img { width: auto; height: calc(75 * var(--u)); }
+.programme--intensive.is-active .detail__logo img { height: calc(74 * var(--u)); }
+.programme--niat.is-active .detail__logo img { height: calc(69 * var(--u)); }
+
+.programme.is-active .detail__text {
+  max-width: calc(240 * var(--u));
+  font-size: calc(16 * var(--u));
+}
+
+/* the pixel-step edge belonged to the older card; the new one ends on the panel line */
+.programme.is-active .detail__steps { display: none; }
