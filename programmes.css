@@ -974,3 +974,85 @@
   border-color: #2563eb;
   box-shadow: none;
 }
+
+/* ==========================================================================
+   Card placement from the Figma file (CCBP-v02, node 1030:488), desktop row.
+   Every number below is a Figma px on the 602px-tall card, multiplied by --u
+   so the whole card scales with the row. The motion above is unchanged: this
+   only says where each picture, logo and button sits in each state.
+   ========================================================================== */
+@media (min-width: 900px) {
+  /* the Figma card is 602 tall; the row keeps that ratio as it narrows */
+  .programmes__row { height: min(602px, calc((100vw - 90px) * 602 / 1345)); }
+
+  /* resting card: the black-and-white cutout, bottom-anchored, off-centre as in the file */
+  .programme--academy   { --rp-x: -36.5;  --rp-b: -40.66; --rp-w: 494.56; }
+  .programme--intensive { --rp-x: -45.93; --rp-b: 109;    --rp-w: 716.64; }
+  .programme--niat      { --rp-x: -55.39; --rp-b: 15.6;   --rp-w: 780.32; }
+  .programme__photo--default {
+    left: calc(50% + var(--rp-x) * var(--u));
+    bottom: calc(var(--rp-b) * var(--u));
+    width: calc(var(--rp-w) * var(--u));
+    height: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .programme__fade,
+  .programmes__row.has-active .programme__fade {
+    height: calc(325.14 * var(--u));
+    background: linear-gradient(to bottom, var(--tint-0) 0%, var(--tint) 75.8%);
+  }
+  .programme--academy   { --logo-w: calc(199 * var(--u));   --logo-y: calc(49 * var(--u)); }
+  .programme--intensive { --logo-w: calc(201.6 * var(--u)); --logo-y: calc(48 * var(--u)); }
+  .programme--niat      { --logo-w: calc(207.2 * var(--u)); --logo-y: calc(46.84 * var(--u)); }
+
+  /* resting CTAs: a 252px stack, 27px off the bottom */
+  .programme__actions {
+    left: calc(31 * var(--u));
+    right: calc(31 * var(--u));
+    bottom: calc(26.67 * var(--u));
+    gap: 12px;
+  }
+  .programme__btn { height: 44px; border-radius: 12px; font-size: 14px; }
+  .programme__btn--ghost { height: 46px; background: #f6f5fa; border-color: #cbd5e1; }
+
+  /* open card: the colour photo in the 751px media half, the side panel in the card's tint */
+  .programme--academy   { --op-x: -103.9;  --op-b: -299.0; --op-w: 827.8; }
+  .programme--intensive { --op-x: -270.6;  --op-b: -62.3;  --op-w: 1227.2; }
+  .programme--niat      { --op-x: -150.87; --op-b: -69.38; --op-w: 1066.56; }
+  .detail__photo {
+    left: calc(var(--op-x) * var(--u));
+    bottom: calc(var(--op-b) * var(--u));
+    width: calc(var(--op-w) * var(--u));
+  }
+  .programme.is-active .detail__panel { background: var(--tint); }
+
+  /* the logo alone, large and centred over the photo */
+  .programmes__row .programme.is-active .detail__intro {
+    top: calc(70.49 * var(--u));
+    width: max-content;
+    justify-content: center;
+  }
+  .programmes__row .programme.is-active .detail__logo img { width: auto; height: calc(108.36 * var(--u)); }
+  .programme.is-active .detail__text,
+  .programme.is-active .detail__mode { display: none; }
+
+  /* open-card CTAs match the resting ones in the file */
+  .detail__actions { gap: 12px; }
+  .detail__cta {
+    height: 44px;
+    padding: 0 32px;
+    border-radius: 12px;
+    background: #2563eb;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .detail__cta--ghost {
+    height: 46px;
+    padding: 0 32px;
+    background: #f6f5fa;
+    border-color: #cbd5e1;
+  }
+  .programme.is-active .detail__cta:hover { background: #1d4ed8; }
+  .programme.is-active .detail__cta--ghost:hover { background: #eef2fb; }
+}
