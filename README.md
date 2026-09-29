@@ -56,19 +56,22 @@ It also works unchanged on GitHub Pages or Netlify.
 - `career/` — styles and scripts for the lower sections (scoped to `.cs`, `.mc`, `.nr`, `.ft`)
 - `vendor/` — Lenis, GSAP + ScrollTrigger, Three.js r128 (particle hero) and r170 (National Recognition
   backdrop), self-hosted fonts; nothing but Google Fonts loads from another site
-- `assets/` — section 2 images (see `assets/README.md`) and the v02 images, logos and films
+- `assets/` — section 2 images (see `assets/README.md`) and the v02 images, logos and films;
+  `assets/logos-wall/` holds the white logo silhouettes the hero's screen-2 ticker runs
 - `vercel.json` — Vercel headers and URL settings
 - `beats/` — one image + one depth map per section
   - `hero.webp` / `d-hero.webp` — 1 · AI changed tech hiring
-  - `story2.webp` / `d-story2.webp` — 2 · 3,000+ companies: we know who's hiring
+  - `story2.webp` / `d-story2.webp` — 2 · 3,000+ companies: we know who's hiring (the student only:
+    the wall of logos above him is a live ticker, not part of the picture)
   - `story3.webp` / `d-story3.webp` — 3 · Always current: the curriculum moves with the market
   - `story4.webp` / `d-story4.webp` — 4 · Taught by doers: people who still do the job
   - `story5.webp` / `d-story5.webp` — 5 · Involve, learn, grow: you build
   - `story6.webp` / `d-story6.webp` — 6 · The real reward: the first offer changes more than a salary
   - `story7.webp` / `d-story7.webp` — 7 · Join the 16,000+
 
-  Screen 2's wall is the real company logos from `assets/logos/`, composited in as one pale
-  blue-white tone with a soft bloom (not generated, so no garbled lettering).
+  Screen 2's wall is a ticker: three rows of the real company logos running over the particles
+  (`assets/logos-wall/`, made from the same files the logo section below uses, each reduced to one
+  white silhouette). Nothing is generated, so no garbled lettering.
 
   Photos 2–7 were generated in Magnific on a pure black background so they blend into the page.
   Depth maps come from Depth Anything V2 (Base), inverted so darker = nearer, which is what the

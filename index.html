@@ -627,8 +627,31 @@ html.lenis,html.lenis body{height:auto}
 #hero .copy.bl{left:var(--gutter);bottom:12%}
 #hero .copy.c{left:50%;bottom:7%;transform:translateX(-50%);text-align:center}
 #hero .copy.c .sub{margin-inline:auto}
+/* screen 2: the 3,000+ companies, as three ticker rows over the particles. The logos are real
+   (assets/logos-wall, drawn from the same files the section below uses), reduced to one white
+   silhouette each so the rows read as one material instead of 32 different brand colours. */
+#hero .wall{position:absolute;left:var(--page-edge);right:var(--page-edge);top:16%;height:26%;
+  display:flex;flex-direction:column;justify-content:space-between;gap:clamp(12px,1.6vw,26px);
+  pointer-events:none;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+#hero .wall-r{flex:1;min-height:0;position:relative;overflow:hidden}
+#hero .wall-t{position:absolute;inset:0;display:flex;align-items:center;gap:clamp(34px,4.4vw,72px);
+  width:max-content;will-change:transform;animation:wall-run var(--dur,46s) linear infinite}
+#hero .wall-r:nth-child(2) .wall-t{animation-direction:reverse}
+#hero .wall-t img{height:clamp(18px,2vw,30px);width:auto;display:block;opacity:.72;
+  filter:drop-shadow(0 0 14px rgba(130,189,255,.35))}
+#hero .wall-r:nth-child(2) .wall-t img{opacity:.6}
+#hero .wall-r:nth-child(3) .wall-t img{opacity:.48}
+@keyframes wall-run{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@media (prefers-reduced-motion:reduce){ #hero .wall-t{animation:none} }
 .nogl{position:fixed;inset:0;z-index:1;display:grid;place-items:center;color:var(--w-muted);background:var(--w-ink);font-family:var(--font);font-size:13px;letter-spacing:.02em;text-align:center;padding-inline:24px}
 @media (max-width:760px){
+  #hero .wall{left:0;right:0;top:9%;height:22%;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+  #hero .wall-t{gap:30px}
+  #hero .wall-t img{height:20px}
   #hero .copy,#hero .copy.l,#hero .copy.r,#hero .copy.bl,#hero .copy.c{left:var(--page-pad);right:var(--page-pad);top:auto;bottom:8%;transform:none;max-width:none}
   #hero .copy h1,#hero .copy h2{font-size:clamp(26px,7.4vw,34px)}
   #hero .copy h1 span,#hero .copy h2 span{white-space:normal}
@@ -666,10 +689,14 @@ html.lenis,html.lenis body{height:auto}
     <h1><span>AI changed tech hiring.</span><span class="blue">We changed how you learn.</span></h1>
     <div class="stats"><div><b>16,000+</b><small>Learners Hired</small></div><i></i><div><b>3000+</b><small>Companies Hiring</small></div></div>
   </div></section>
-  <section class="sec"><div class="copy r">
-    <p class="era">3,000+ companies</p>
-    <h2><span>We know who's hiring.</span><span>And what they hire for.</span></h2>
-  </div></section>
+  <section class="sec">
+    <!-- the 3,000+ companies, running as a ticker over the particles (real logos, see assets/logos-wall) -->
+    <div class="wall" aria-label="Companies that hire NxtWave learners" data-wall></div>
+    <div class="copy r">
+      <p class="era">3,000+ companies</p>
+      <h2><span>We know who's hiring.</span><span>And what they hire for.</span></h2>
+    </div>
+  </section>
   <section class="sec"><div class="copy l">
     <p class="era">Always current</p>
     <h2><span>So the curriculum moves</span><span>when the market moves.</span></h2>
@@ -1896,12 +1923,15 @@ const S = 7;
 const SEC = [
   // boost = [u0, v0, u1, v1, factor]: a region that gets extra particles and light (the hoodie logo)
   { img: 'hero.webp',      dep: 'd-hero.webp',   rect: [.41, .1, .97, 1],     focus: [.55, .45], relief: 0,  lift: .85, gain: 1.1, res: 1600, boost: [.61, .66, .71, .75, 5] },
-  // these five are 16:9 plates, so each rect is kept close to 16:9 too and the picture is barely cropped
-  { img: 'story2.webp',    dep: 'd-story2.webp', rect: [0, .18, .68, .83],    focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1.1, res: 1200 },
-  { img: 'story3.webp',    dep: 'd-story3.webp', rect: [.32, .17, 1.02, .84], focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1.1, res: 1100 },
-  { img: 'story4.webp',    dep: 'd-story4.webp', rect: [.30, .16, 1.02, .85], focus: [.85, .5],  relief: 0,  lift: .8,  gain: 1.1, res: 1100 },
+  // these five are 16:9 plates, so each rect is kept close to 16:9 too and the picture is barely cropped.
+  // edge: true ends the rect on the page's content edge (the 1400px column's padding) instead of the
+  // window, so the picture lines up with the sections below it. 5 is left bleeding: its subject already
+  // sits well inside its own plate, so pulling it in would leave a gap on the right.
+  { img: 'story2.webp',    dep: 'd-story2.webp', rect: [0, .30, .56, 1.02],   focus: [.40, .62], relief: 0,  lift: .8,  gain: 1.1, res: 1200 },
+  { img: 'story3.webp',    dep: 'd-story3.webp', rect: [.38, .17, 1, .84],    focus: [.56, .5],  relief: 0,  lift: .8,  gain: 1.1, res: 1100, edge: true },
+  { img: 'story4.webp',    dep: 'd-story4.webp', rect: [.30, .16, 1, .85],    focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1.1, res: 1100, edge: true },
   { img: 'story5.webp',    dep: 'd-story5.webp', rect: [.32, .17, 1.02, .84], focus: [.55, .5],  relief: 0,  lift: .8,  gain: 1,   res: 1100 },
-  { img: 'story6.webp',    dep: 'd-story6.webp', rect: [.32, .17, 1.02, .84], focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1,   res: 1100 },
+  { img: 'story6.webp',    dep: 'd-story6.webp', rect: [.32, .17, 1, .84],    focus: [.5, .5],   relief: 0,  lift: .8,  gain: 1,   res: 1100, edge: true },
   { img: 'story7.webp',    dep: 'd-story7.webp', rect: [0, 0, 1, 1],          focus: [.5, .5],   relief: 0,  lift: .75, gain: 1,   res: 1200 },
 ];
 const MOBILE_RECT = [0, .06, 1, .66];
@@ -2206,8 +2236,16 @@ let loadedAt = -1;
 })();
 
 /* ---------- layout: section rect → world rect ---------- */
+/* the page's own side padding, as a fraction of the window: max(clamp(20px,5vw,80px), half the
+   gutter left by the 1400px column) — the same sum --page-edge makes in CSS */
+function pageEdge() {
+  const w = innerWidth;
+  return Math.max(Math.min(Math.max(20, w * .05), 80), (w - 1400) / 2) / w;
+}
 function rectOf(k) {
-  const r = MOBILE || aspect < .9 ? MOBILE_RECT : SEC[k].rect, vw = VH * aspect;
+  let r = MOBILE || aspect < .9 ? MOBILE_RECT : SEC[k].rect;
+  if (!MOBILE && aspect >= .9 && SEC[k].edge) r = [r[0], r[1], r[2] - pageEdge(), r[3]];
+  const vw = VH * aspect;
   const w = (r[2] - r[0]) * vw, h = (r[3] - r[1]) * VH;
   return [((r[0] + r[2]) / 2 - .5) * vw, (.5 - (r[1] + r[3]) / 2) * VH, w, h];
 }
@@ -2279,6 +2317,25 @@ function frame(now) {
 }
 requestAnimationFrame(frame);
 })();
+</script>
+<script>
+  /* fill the screen-2 ticker: 32 real logos dealt into three rows, each row's strip written twice
+     so the -50% keyframe loops seamlessly. Rows run at different speeds, the middle one backwards. */
+  (() => {
+    const wall = document.querySelector('[data-wall]');
+    if (!wall) return;
+    const N = 32, ROWS = 3, DUR = ['52s', '64s', '46s'];
+    const order = [...Array(N).keys()];
+    for (let i = N - 1; i > 0; i--) {                    // one fixed shuffle: the same wall every visit
+      const j = (i * 7 + 3) % (i + 1); [order[i], order[j]] = [order[j], order[i]];
+    }
+    for (let r = 0; r < ROWS; r++) {
+      const ids = order.filter((_, i) => i % ROWS === r);
+      const strip = ids.map(i => `<img src="assets/logos-wall/w-${String(i).padStart(2, '0')}.webp" alt="" loading="lazy" decoding="async">`).join('');
+      wall.insertAdjacentHTML('beforeend',
+        `<div class="wall-r"><div class="wall-t" style="--dur:${DUR[r]}">${strip}${strip}</div></div>`);
+    }
+  })();
 </script>
 <script src="programmes.js"></script>
 <script src="vendor/gsap.min.js"></script>
