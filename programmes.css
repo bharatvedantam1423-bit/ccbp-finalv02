@@ -982,8 +982,10 @@
    only says where each picture, logo and button sits in each state.
    ========================================================================== */
 @media (min-width: 900px) {
-  /* the Figma card is 602 tall; the row keeps that ratio as it narrows */
-  .programmes__row { height: min(602px, calc((100vw - 90px) * 602 / 1345)); }
+  /* the Figma card is 602 tall on a 1385 row: the height follows the row's real width (the page
+     column, 1296px on a 1440 window), so the card keeps the file's proportions at every size */
+  .programmes__inner { container-type: inline-size; }
+  .programmes__row { height: calc((100cqw - 40px) * 602 / 1345); }
 
   /* resting card: the black-and-white cutout, bottom-anchored, off-centre as in the file */
   .programme--academy   { --rp-x: -36.5;  --rp-b: -40.66; --rp-w: 494.56; }
@@ -1105,4 +1107,77 @@
    (the translate itself is set with the desktop placement above) */
 @media (min-width: 900px) and (prefers-reduced-motion: reduce) {
   .programmes__row .programme .detail__intro { translate: -50% 0; }
+}
+
+/* ==========================================================================
+   The open card as a scaled copy of the Figma frame (1070 x 602): the side
+   panel, its type, icons and buttons take the same --u as the width and the
+   height, so nothing drifts from the file when the row is narrower than 1385.
+   ========================================================================== */
+@media (min-width: 900px) {
+  .programmes__row .programme .detail__panel {
+    flex: 0 0 calc(320 * var(--u));
+    padding: calc(40 * var(--u)) calc(34 * var(--u));
+  }
+  .programmes__row .programme .detail__body { gap: calc(40 * var(--u)); }
+  .programmes__row .programme .detail__headline { font-size: calc(22 * var(--u)); }
+  .programmes__row .programme .features { gap: calc(16 * var(--u)); max-width: calc(235 * var(--u)); }
+  /* the site's Inter sets a touch wider than Figma's; -0.01em gives the file's line breaks back */
+  .programmes__row .programme .features li { gap: calc(16 * var(--u)); font-size: calc(15 * var(--u)); letter-spacing: -0.01em; }
+  .programmes__row .programme .features__icon {
+    width: calc(40 * var(--u));
+    height: calc(40 * var(--u));
+    border-radius: calc(12 * var(--u));
+  }
+  .programmes__row .programme .features__icon svg { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
+  .programmes__row .programme .detail__actions { gap: calc(12 * var(--u)); margin-top: 0; }
+  .programmes__row .programme .detail__cta {
+    height: calc(44 * var(--u));
+    padding: 0 calc(32 * var(--u));
+    border-radius: calc(12 * var(--u));
+    font-size: calc(14 * var(--u));
+  }
+  .programmes__row .programme .detail__cta--ghost { height: calc(46 * var(--u)); }
+}
+
+/* ==========================================================================
+   Open card, Figma revision (CCBP-v02, node 1030:488, frames 1028:148,
+   1028:207, 1029:332): #f8f8f8 media half and card, a white side panel,
+   a smaller logo, per-programme icon tiles and a per-programme primary
+   button. Figma px, scaled by --u like the rest of the card.
+   ========================================================================== */
+.programme--academy   { --o-icon: #0052ff; --o-tile: #e8efff; --o-cta: #2563eb; --o-cta-hover: #1d4ed8; }
+.programme--intensive { --o-icon: #6138d3; --o-tile: #ede6ff; --o-cta: #6138d3; --o-cta-hover: #5028c0; }
+.programme--niat      { --o-icon: #991b1b; --o-tile: #fff7e2; --o-cta: #991b1b; --o-cta-hover: #7f1515; }
+
+@media (min-width: 900px) {
+  .programme.is-active { background-color: #f8f8f8; }
+  .programme.is-active .detail__media { background: #f8f8f8; }
+  .programmes__row .programme .detail__panel { background: #fff; }
+  .programme.is-active .detail__fade {
+    height: calc(164.31 * var(--u));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #fff 100%);
+  }
+
+  /* photos, re-placed in the file */
+  .programme--academy   { --op-x: -128.1; --op-b: -314.5; --op-w: 870.8; }
+  .programme--intensive { --op-x: -284.7; --op-b: -62.3;  --op-w: 1222.0; }
+  .programme--niat      { --op-x: -107.4; --op-b: -44.2;  --op-w: 965.8; }
+
+  /* logo: 59.4 tall (NIAT 66.4), 60.7 from the top */
+  .programmes__row .programme .detail__intro { top: calc(60.67 * var(--u)); }
+  .programmes__row .programme .detail__logo img { height: calc(59.4 * var(--u)); }
+  .programmes__row .programme--niat .detail__logo img { height: calc(66.43 * var(--u)); }
+
+  .programmes__row .programme .features__icon { background: var(--o-tile); color: var(--o-icon); }
+
+  .programmes__row .programme .detail__cta { background: var(--o-cta); }
+  .programme.is-active .detail__cta:hover { background: var(--o-cta-hover); box-shadow: none; }
+  .programmes__row .programme .detail__cta--ghost {
+    background: #fff;
+    border-color: #cbd5e1;
+    color: #1f2e5c;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  }
+  .programme.is-active .detail__cta--ghost:hover { background: #f8fafc; border-color: #94a3b8; }
 }
