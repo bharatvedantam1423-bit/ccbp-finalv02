@@ -2054,12 +2054,15 @@ const uniforms = {
   uCol: { value: new THREE.Color(.8, .88, 1.0) }, uBlueCol: { value: new THREE.Color(.2, .45, 1.0) },
   // the pointer, in world units on the image plane: uMouse where it is, uFollow a point easing after it
   uMouse: { value: new THREE.Vector2() }, uFollow: { value: new THREE.Vector2() },
-  uMove: { value: 0 }, uStill: { value: 0 }, uReal: { value: 0 }, uMR: { value: .3 },
+  uMove: { value: 0 }, uStill: { value: 0 }, uReal: { value: 0 }, uMR: { value: .34 },
+  // the shine: x = where the band is across the picture (0..1 along its diagonal), y = strength
+  uShine: { value: new THREE.Vector2() }, uShineR: { value: new THREE.Vector4() }, uShineY: { value: 0 },
 };
 const vert = `
 uniform float uMorph, uTime, uYA, uYB, uGA, uGB, uVW, uVH, uSize, uPx, uGain, uMotion, uLoose, uWave, uCalm;
-uniform float uMove, uStill, uReal, uMR;
-uniform vec2 uMouse, uFollow;
+uniform float uMove, uStill, uReal, uMR, uShineY;
+uniform vec2 uMouse, uFollow, uShine;
+uniform vec4 uShineR;
 uniform vec4 uRA, uRB, uFA, uFB;
 uniform vec3 uCol, uBlueCol;
 attribute vec4 aA, aB, aSeed;
@@ -2124,24 +2127,50 @@ void main(){
   P += vec3(.7071, -.7071, 0.) * (sl - .5) * .7 * streak * uMotion;
   bright *= mix(1., .28 * sin(sl * 3.14159), streak);
 
+  // the shine, on the particles of a picture that has just broken up: the same diagonal band of blue
+  // light as on the photo, measured across that picture's rect
+  vec2 sq = (P.xy - vec2(uShineR.x, uShineR.y + uShineY)) / max(uShineR.zw, vec2(1e-3)) + .5;
+  float shn = uShine.y * (1. - dust) * exp(-pow(((sq.x + 1. - sq.y) * .5 - uShine.x) / .09, 2.))
+            * step(0., sq.x) * step(sq.x, 1.) * step(0., sq.y) * step(sq.y, 1.);
+  bright *= 1. + shn * 4.;
+
+  vec4 mv = modelViewMatrix * vec4(P, 1.);
+
   // the pointer. While it moves, a share of the particles near it gather and trail after it (uFollow
   // eases behind the pointer); once it rests, the ones around it spread out and ripple in slow rings.
-  // Both are measured at each particle's own depth, so near and far particles line up under it.
-  float dep = (5. - P.z) / 5.;
-  vec2 tf = P.xy - uFollow * dep;
-  float fol = step(aSeed.w, .4) * uMove * exp(-pow(length(tf) / uMR, 2.));
-  P.xy -= tf * fol * .72;
-  vec2 tm = P.xy - uMouse * dep;
+  // Worked in camera space (after the cloud's own turn) and scaled to each particle's depth, so near
+  // and far particles all line up under the pointer.
+  float dep = -mv.z / 5.;
+  vec2 tf = mv.xy - uFollow * dep;
+  float fol = step(aSeed.w, .5) * uMove * exp(-pow(length(tf) / uMR, 2.));
+  mv.xy -= tf * fol * .76;
+  vec2 tm = mv.xy - uMouse * dep;
   float dm = length(tm) + 1e-4;
   float ring = sin(dm * 42. - uReal * 4.5);
   float rip = uStill * exp(-pow(dm / (uMR * 1.4), 2.));   // gaussian: nothing moves outside the ripple
-  P.xy += tm / dm * rip * (.12 + .025 * ring);
+  mv.xy += tm / dm * rip * (.14 + .03 * ring);
   float lit = clamp(fol + rip * (.5 + .5 * ring), 0., 1.);
-  bright *= 1. + fol * 1.2 + rip * .8 * max(ring, 0.);
+  // In the dark there is little to move, so a small share of the star dust is on call: those within
+  // reach drift in to swirl round the pointer while it moves, and ride out on the rings when it rests.
+  // Each rides its own ring outward and starts again small, dimmed at both ends so the restart is unseen.
+  float sw = dust * step(.075, aSeed.x) * step(aSeed.x, .145);
+  float reach = sw * exp(-pow(length(mv.xy - uFollow * dep) / (uMR * 3.5), 2.));
+  float an = aSeed.y * 6.2832 + uReal * (.4 + .8 * aSeed.z);
+  vec2 orbit = uFollow * dep + vec2(cos(an), sin(an)) * uMR * (.12 + .5 * aSeed.w);
+  float rr = fract(aSeed.w + uReal * .22);
+  vec2 ringP = uMouse * dep + vec2(cos(an), sin(an)) * uMR * (.2 + 1.8 * rr);
+  float gM = reach * uMove, gS = reach * uStill * (1. - uMove);
+  mv.xy = mix(mv.xy, orbit, gM);
+  mv.xy = mix(mv.xy, ringP, gS);
+  float call = gM + gS * sin(rr * 3.14159);
+  bright *= 1. + call * 8.;
+  lit = max(lit, call);
+  // star dust is sparse and faint, so it gets the larger lift: the effect reads in the dark areas too
+  bright *= 1. + (fol * 1.6 + rip * 1.1 * max(ring, 0.)) * (1. + 4. * dust);
 
-  vec4 mv = modelViewMatrix * vec4(P, 1.);
   float px = uPx / max(.05, -mv.z);
   float sz = uSize * mix(.55 + .7 * aSeed.z, 2.2 + 1.2 * aSeed.z, star) * px * mix(1., 1.5, dust) * (1. + ember * 3.5) * (1. + aura * .4);
+  sz *= (1. + .9 * lit * dust) * (1. + 1.6 * call);               // dust the pointer touches grows a little; the on-call share more
   sz = mix(max(sz, 1.3), clamp((.16 + .3 * aSeed.y) * px, 20., 160.), streak);
   gl_PointSize = sz;
   gl_Position = projectionMatrix * mv;
@@ -2161,6 +2190,7 @@ void main(){
   vec3 nxt = vec3(.16, .45, 1.);
   col = mix(col, nxt, aura * .9);  bright = mix(bright, max(bright, .55) * 1.25, aura);
   col = mix(col, elec, mid * .85);                                 // BLUE LAYER 3 · particles turn electric blue in flight
+  col = mix(col, vec3(.35, .66, 1.), min(1., shn * .9));             // the shine
   col = mix(col, mix(nxt, elec, aSeed.y), ember);  bright = mix(bright, (.35 + .5 * aSeed.w) * emberFade, ember);
   // while the photo is up, the figure particles dim to a sparkle over it; stars, embers and dust carry on
   // The dimming follows position in the picture that is showing: 0 at its centre, 1 at its edge. Across
@@ -2205,7 +2235,7 @@ const pvert = `
 uniform vec4 uR, uF;
 uniform float uY;
 attribute float aZ;
-varying vec2 vUv, vE;
+varying vec2 vUv, vE, vQ;
 void main(){
   vec2 a = vec2(uv.x, 1. - uv.y);
   float ra = uR.z / uR.w, ia = uF.z;
@@ -2214,6 +2244,7 @@ void main(){
   vec2 p = (a - .5) * size - shift;
   p.y = -p.y;
   vE = uR.zw * .5 - abs(p);
+  vQ = p / uR.zw + .5;          // where in the picture's slot (0..1, y up), as the particles measure it
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(uR.x + p.x, uR.y + p.y + uY, (aZ - .45) * uF.w * uR.w, 1.);
 }`;
@@ -2221,18 +2252,24 @@ const pfrag = `
 uniform sampler2D uTex;
 uniform vec4 uR;
 uniform float uOp;
-varying vec2 vUv, vE;
+uniform vec2 uShine;
+varying vec2 vUv, vE, vQ;
 void main(){
   float a = uOp * smoothstep(0., uR.w * .1, vE.x) * smoothstep(0., uR.w * .08, vE.y);
   if (a < .003) discard;
   // the photo adds its light to the page (additive), so its near-black backdrop adds nothing and no
   // rectangle shows around it; the deepest tones are pulled to zero first so the backdrop truly vanishes
   vec3 c = max(texture2D(uTex, vUv).rgb - .035, 0.) / .965;
+  // the shine: a band of blue light crosses the picture once it has fully formed. It is weighted by
+  // the picture's own light, so it lights the people and objects, not the dark around them
+  float lum = dot(c, vec3(.3, .55, .15));
+  float sh = uShine.y * exp(-pow(((vQ.x + 1. - vQ.y) * .5 - uShine.x) / .07, 2.))   /* top-left to bottom-right, as on the particles */ * (.06 + 1.6 * lum);
+  c += vec3(.3, .62, 1.) * sh;
   gl_FragColor = vec4(c * a, 1.);
 }`;
 const photoLayer = () => {
   const m = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.ShaderMaterial({
-    uniforms: { uTex: { value: null }, uR: { value: new THREE.Vector4() }, uF: { value: new THREE.Vector4() }, uY: { value: 0 }, uOp: { value: 0 } },
+    uniforms: { uTex: { value: null }, uR: { value: new THREE.Vector4() }, uF: { value: new THREE.Vector4() }, uY: { value: 0 }, uOp: { value: 0 }, uShine: { value: new THREE.Vector2() } },
     vertexShader: pvert, fragmentShader: pfrag, transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending }));
   m.frustumCulled = false; m.visible = false; m.renderOrder = 0;
   points.add(m);                 // a child of the particles, so it turns with them
@@ -2358,6 +2395,7 @@ if (!MOBILE && !REDUCE) {
 }
 
 let prev = performance.now();
+let shownSec = -1, shineSec = -1, shineKind = 0, shineAt = -1e9;   // see the shine in frame()
 /* the particle clock: the drift answers the scroll instead of running on its own. When the page is
    still it creeps at a fraction of real time; each scroll moves it on by how far the reader went. */
 const IDLE_RATE = .3, SCROLL_RATE = 2.4;
@@ -2393,6 +2431,23 @@ function frame(now) {
   const shown = 1 - sstep(0, .3, intro);
   const opA = (1 - sstep(0, .22, morph)) * shown, opB = sstep(.8, 1, morph) * shown;
   setPhoto(photoA, k, uniforms.uRA, uniforms.uFA, uniforms.uYA.value, opA);
+  // the shine: when a picture has fully formed, a band of blue light sweeps across it (kind 1, on the
+  // photo); when it breaks up again, the same band sweeps across its particles (kind 2)
+  const cur = opA > .97 ? k : opB > .97 ? k + 1 : -1;
+  if (cur !== shownSec) {
+    if (!REDUCE) {
+      if (cur >= 0) { shineSec = cur; shineKind = 1; shineAt = now; }
+      else { shineSec = shownSec; shineKind = 2; shineAt = now; }
+    }
+    shownSec = cur;
+  }
+  const sp = clamp((now - shineAt) / 1600);
+  const sPos = mix(-.2, 1.2, sstep(0, 1, sp)), sAmp = sstep(0, .12, sp) * (1 - sstep(.82, 1, sp));
+  photoA.material.uniforms.uShine.value.set(sPos, shineKind === 1 && shineSec === k ? sAmp : 0);
+  photoB.material.uniforms.uShine.value.set(sPos, shineKind === 1 && shineSec === k + 1 ? sAmp : 0);
+  const onA = shineSec === k, onB = shineSec === k + 1;
+  uniforms.uShine.value.set(sPos, shineKind === 2 && (onA || onB) ? sAmp : 0);
+  if (onA || onB) { uniforms.uShineR.value.copy(onA ? uniforms.uRA.value : uniforms.uRB.value); uniforms.uShineY.value = onA ? uniforms.uYA.value : uniforms.uYB.value; }
   setPhoto(photoB, k + 1, uniforms.uRB, uniforms.uFB, uniforms.uYB.value, opB);
   uniforms.uCalm.value = Math.max(opA, opB);
   uniforms.uLoose.value = .0015 + intro * 1.4;
