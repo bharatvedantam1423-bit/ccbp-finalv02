@@ -85,10 +85,16 @@
     });
   });
 
+  // a short grace period so crossing the gap between cards never snaps the row shut
+  let closeTimer;
+  row.addEventListener("mouseenter", () => clearTimeout(closeTimer));
   row.addEventListener("mouseleave", () => {
     if (!canHover.matches || stacked.matches) return;
-    if (row.contains(document.activeElement)) document.activeElement.blur();
-    setActive(null);
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => {
+      if (row.contains(document.activeElement)) document.activeElement.blur();
+      setActive(null);
+    }, 140);
   });
 
   row.addEventListener("focusout", (e) => {
@@ -107,12 +113,12 @@
     const media = card.querySelector(".detail__media");
     const target = { x: 0, y: 0, s: 1, o: 0, nx: 0, ny: 0 };
     const cur = { ...target };
-    let frame = 0;
+    let frame = 0, leaving = false;
 
     const tick = () => {
       let moving = false;
       for (const k in cur) {
-        cur[k] += (target[k] - cur[k]) * 0.08;
+        cur[k] += (target[k] - cur[k]) * (leaving ? 0.05 : 0.08);
         if (Math.abs(target[k] - cur[k]) > 0.0005) moving = true;
         else cur[k] = target[k];
       }
@@ -152,7 +158,9 @@
       run();
     });
 
+    card.addEventListener("pointerenter", () => { leaving = false; });
     card.addEventListener("pointerleave", () => {
+      leaving = true;
       Object.assign(target, { x: 0, y: 0, s: 1, o: 0, nx: 0, ny: 0 });
       run();
     });

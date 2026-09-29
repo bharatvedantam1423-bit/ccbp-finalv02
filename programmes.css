@@ -21,8 +21,8 @@
   --intensive: #e4e0fc;
   --niat: #ecd3d4;
 
-  --ease: cubic-bezier(0.65, 0.05, 0.25, 1);
-  --dur: 0.7s;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur: 0.85s;
 }
 
 .programmes,
@@ -139,7 +139,8 @@
   transition:
     flex-basis var(--dur) var(--ease),
     border-color 0.4s ease,
-    box-shadow 0.4s ease;
+    box-shadow 0.9s var(--ease),
+    transform 0.9s var(--ease);
 }
 
 .programme:focus-visible {
@@ -167,7 +168,7 @@
 .programme__preview {
   position: absolute;
   inset: 0;
-  transition: opacity 0.35s ease 0.2s;
+  transition: opacity 0.6s ease 0.1s;
 }
 
 .programme.is-active .programme__preview {
@@ -182,7 +183,6 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  height: auto;
   transform: translateX(-50%);
   transform-origin: bottom center;
   transition: opacity 0.45s ease, transform 0.6s var(--ease);
@@ -190,6 +190,9 @@
 
 .programme__photo--default {
   width: calc(var(--w-default) - 2px);
+  height: var(--ph-h);
+  object-fit: cover;
+  object-position: var(--ph-x) 100%;
 }
 
 /* soften the top edge where the photo's background meets the card tint */
@@ -200,11 +203,19 @@
 
 .programme__photo--collapsed {
   width: calc(var(--w-collapsed) - 2px);
+  height: var(--pc-h);
+  object-fit: cover;
+  object-position: var(--pc-x) 100%;
   opacity: 0;
 }
 
+/* the Figma cutouts, framed like the crops they replace (box size + where the people sit in it) */
+.programme--academy   { --ph-h: 380px; --ph-x: 62%; --pc-h: 314px; --pc-x: 66%; }
+.programme--intensive { --ph-h: 372px; --ph-x: 52%; --pc-h: 320px; --pc-x: 52%; }
+.programme--niat      { --ph-h: 391px; --ph-x: 50%; --pc-h: 313px; --pc-x: 46%; }
+
 .programmes__row.has-active .programme__photo--default { opacity: 0; }
-.programmes__row.has-active .programme__photo--collapsed { opacity: 1; transition-delay: 0.15s; }
+.programmes__row.has-active .programme__photo--collapsed { opacity: 1; transition-delay: 0.1s; }
 
 .programmes__row:not(.has-active) .programme:hover .programme__photo--default {
   transform: translateX(-50%) scale(1.03);
@@ -307,7 +318,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: opacity 0.3s ease 0.3s, transform 0.4s var(--ease) 0.3s;
+  transition: opacity 0.5s ease 0.15s, transform 0.6s var(--ease) 0.15s;
 }
 
 .programmes__row.has-active .programme__actions {
@@ -373,7 +384,7 @@
   display: flex;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 
 .programme.is-active .programme__detail {
@@ -506,7 +517,7 @@
 .detail__intro > * {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.45s ease, transform 0.6s var(--ease);
 }
 
 .programme.is-active .detail__intro > * {
@@ -646,7 +657,7 @@
 .programme__cta {
   opacity: 0;
   transform: translateX(16px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.45s ease, transform 0.6s var(--ease);
 }
 
 .programme.is-active .detail__headline,
@@ -949,3 +960,17 @@
 
 /* the pixel-step edge belonged to the older card; the new one ends on the panel line */
 .programme.is-active .detail__steps { display: none; }
+
+/* both resting CTAs stay on the open card: Request Callback (filled) + Know More (outlined) */
+.detail__actions { gap: 10px; }
+.detail__cta--ghost {
+  background: #fff;
+  border: 1px solid #d4d9e6;
+  color: #1d4ed8;
+  padding: 13px 28px;
+}
+.programme.is-active .detail__cta--ghost:hover {
+  background: #f5f8ff;
+  border-color: #2563eb;
+  box-shadow: none;
+}
