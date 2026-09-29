@@ -1056,3 +1056,47 @@
   .programme.is-active .detail__cta:hover { background: #1d4ed8; }
   .programme.is-active .detail__cta--ghost:hover { background: #eef2fb; }
 }
+
+/* ==========================================================================
+   Opening, as one movement. The resting card and the open card crossfade over
+   the same stretch of time while the card grows: the tint eases to the white
+   of the open card, the black-and-white preview fades out as the colour photo
+   fades in, with no gap between them (before, the preview went in 0.25s and
+   the open layer only started 0.18s later, so the bare tint flashed through).
+   Only the opening transitions change; closing keeps its own timing.
+   Depth follows the file: the photo is in front, the logo behind it.
+   ========================================================================== */
+.programme {
+  transition:
+    flex-basis var(--dur) var(--ease),
+    border-color 0.4s ease,
+    box-shadow 0.9s var(--ease),
+    transform 0.9s var(--ease),
+    background-color 0.7s ease;
+}
+.programme.is-active { background-color: #fff; }
+
+.programme.is-active .programme__preview {
+  opacity: 0;
+  transition: opacity 0.42s ease;
+}
+.programme.is-active .programme__detail {
+  transition: opacity 0.6s ease;
+}
+
+/* the open photo is in colour from the first frame, so the colour arrives once, with the fade */
+.detail__photo img,
+.programme.is-active .detail__photo img { filter: none; }
+
+/* photo in front of the logo; the white fade stays on top of the photo's lower edge */
+.detail__photo { z-index: 1; }
+.detail__fade { z-index: 2; }
+.detail__intro { z-index: 0; }
+
+/* the logo is the far layer now: it follows the pointer the same way as the photo, but less */
+.programme.is-active .detail__intro {
+  translate: calc(-50% + var(--mx, 0px) * 0.35) calc(var(--my, 0px) * 0.3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .programme.is-active .detail__intro { translate: -50% 0; }
+}
