@@ -61,8 +61,8 @@ It also works unchanged on GitHub Pages or Netlify.
 - `vercel.json` — Vercel headers and URL settings
 - `beats/` — one image + one depth map per section
   - `hero.webp` / `d-hero.webp` — 1 · AI changed tech hiring
-  - `story2.webp` / `d-story2.webp` — 2 · 3,000+ companies: we know who's hiring (the student only:
-    the wall of logos above him is a live ticker, not part of the picture)
+  - `story2.webp` / `d-story2.webp` — 2 · 3,000+ companies: we know who's hiring (the student alone,
+    cropped tight; the wall of logos above him is a live ticker, not part of the picture)
   - `story3.webp` / `d-story3.webp` — 3 · Always current: the curriculum moves with the market
   - `story4.webp` / `d-story4.webp` — 4 · Taught by doers: people who still do the job
   - `story5.webp` / `d-story5.webp` — 5 · Involve, learn, grow: you build
@@ -71,7 +71,13 @@ It also works unchanged on GitHub Pages or Netlify.
 
   Screen 2's wall is a ticker: three rows of the real company logos running over the particles
   (`assets/logos-wall/`, made from the same files the logo section below uses, each reduced to one
-  white silhouette). Nothing is generated, so no garbled lettering.
+  white silhouette and normalised on optical size, so a long wordmark does not read twice as big as
+  a compact one). Nothing is generated, so no garbled lettering. The rows fade up once the screen
+  is in view, a beat after the picture.
+
+  Each of 2-6 carries a `keep` side in `SEC`: the picture is pushed clear of that screen's own
+  headline before it takes whatever room is left, so the words never land on a face however wide
+  the window is (the headline is nowrap and stays one size while the picture's slot grows).
 
   Photos 2–7 were generated in Magnific on a pure black background so they blend into the page.
   Depth maps come from Depth Anything V2 (Base), inverted so darker = nearer, which is what the
