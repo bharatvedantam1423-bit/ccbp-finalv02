@@ -524,7 +524,7 @@ a{color:inherit;text-decoration:none}
 .dn-num{font:600 12px/1 var(--font-sub);letter-spacing:.08em;color:var(--muted)}
 .dn-name{font-family:var(--font-head);font-weight:600;font-size:18px;line-height:1.25;
   letter-spacing:-.01em;margin-top:9px;color:#0d254e}
-.dn-desc{font-family:var(--font-sub);font-size:14px;line-height:1.62;color:#475569;margin-top:10px}
+.dn-desc{font-family:var(--font-sub);font-size:14px;line-height:1.62;color:#475569;margin-top:10px;white-space:pre-line}
 .dn-list{margin-top:14px;padding-top:13px;border-top:1px solid var(--line);display:grid;gap:11px}
 .dn-list[hidden]{display:none}
 .dn-list h4{font:600 10px/1 var(--font-sub);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
@@ -2492,16 +2492,24 @@ requestAnimationFrame(frame);
        is built and then appears on its own. */
     const NOTES = [
       { id: 'hero', name: 'Hero',
-        desc: `A scroll-driven story instead of a static banner. The visitor learns what NxtWave is by moving through it, so understanding arrives in seconds rather than after reading a claim. The motion gives a reason to keep scrolling, which lifts scroll depth on the one section that decides whether the rest of the page gets seen at all. The emotional peak is the family. “An offer letter changes more than one life” sits just before the ask, because for most learners this decision is made together. Belief first, action last. 16,000+ hired and 3,000+ companies land early; the button appears once the whole path has been seen.`,
+        desc: `A scroll-driven story showing how NxtWave connects learning to a career in tech—from hiring needs and hands-on learning to a first offer and its impact on the family.
+
+Dark visuals and responsive particles connect each beat. Hiring figures and company logos build credibility, while the family moment adds emotional meaning before programme selection.`,
         principles: [
-          ['Serial Position', `The opening is what people remember best.`],
-          ['Peak-End Rule', `The story peaks at the offer letter and ends on 16,000+, right before the programmes.`] ] },
+          ['Progressive Disclosure', `One message at a time keeps the story easy to follow.`],
+          ['Social Proof', `Hiring figures and company logos build trust.`],
+          ['Interaction Feedback', `Particles respond to the visitor, making the story feel interactive.`],
+          ['Peak-End Rule', `The family creates the emotional peak; closing proof reinforces confidence.`] ] },
 
       { id: 'programmes', name: 'Three Programmes',
-        desc: `Built to be scanned. Each card leads with the information that decides fit, so a visitor recognises their programme in one look. Hover and parallax make the choice feel interactive and invite engagement instead of a skim. Only what matters for choosing appears on the card, so the eye reaches a decision with nothing to wade through.`,
+        desc: `Three clear choices, explored one at a time. Hover reveals a programme’s benefits, details, and next actions while keeping the other options visible.
+
+Parallax adds depth and responsiveness. The reveal helps visitors understand each programme before choosing to learn more or request a callback.`,
         principles: [
-          ['Hick’s Law', `Three options with an identical action pattern is a single decision.`],
-          ['Recognition over Recall', `Eligibility is on the card, so qualifying is obvious at a glance.`] ] },
+          ['Progressive Disclosure', `Details appear when visitors explore a programme.`],
+          ['Hick’s Law', `Three distinct paths and consistent actions simplify the choice.`],
+          ['Recognition over Recall', `Visible programme identities make switching between options easy.`],
+          ['Visual Hierarchy', `The active programme draws attention to its benefits and next action.`] ] },
 
       { id: 'recognised-by', name: 'Recognised By',
         desc: `Confidence arrives at the exact moment it is most useful: right after the visitor has picked a programme and is deciding whether to act. Government and industry bodies do this in a single glance, with no reading required.`,
