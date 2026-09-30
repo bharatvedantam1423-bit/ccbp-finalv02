@@ -1287,3 +1287,20 @@
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
   }
 }
+
+/* No tint fade at the foot of the closed cards either (resting and collapsed): the photos run clean
+   to the card's edge, with the buttons sitting on them. */
+.programmes__row .programme .programme__fade { display: none; }
+/* With no fade to hide it, a closed photo must reach the card's foot. Academy already runs past it;
+   Intensive (1.3x, heads now ~240 from the top) and NIAT (808 wide) are sized to land on it. */
+@media (min-width: 900px) {
+  .programme--intensive { --rp-x: -45.93; --rp-b: 0; --rp-w: 931.6; }
+  .programme--niat      { --rp-x: -55.39; --rp-b: 0; --rp-w: 808.2; }
+}
+@media (min-width: 900px) {
+  /* the Academy cutout's lower edge is curved (it ends at 65-92% of the plate's height), so the
+     collapsed strip is made taller and dropped by the part that runs short under his face: it reaches
+     the foot, his whole head stays in the strip, and at the height it had before */
+  .programme--academy { --pc-h: 440px; --pc-x: 68%; }
+  .programme--academy .programme__photo--collapsed { bottom: -118px; }
+}
