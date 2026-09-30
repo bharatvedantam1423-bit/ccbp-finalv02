@@ -214,6 +214,11 @@ a{color:inherit;text-decoration:none}
   transition:transform .26s cubic-bezier(.22,.61,.36,1)}
 .hx-login:hover::after,.hx-login:focus-visible::after{transform:scaleX(1)}
 .hx-login:hover,.hx-login:focus-visible{color:#bcd4ff;text-shadow:0 0 14px rgba(64,107,219,.55)}
+/* an arrow after the word: every 5s it nudges right and bounces back once, then rests */
+.hx-login{display:flex;align-items:center;gap:6px}
+.hx-login-arrow{flex:none;display:block;animation:hx-nudge 5s ease-in-out infinite}
+@keyframes hx-nudge{0%,86%,100%{transform:translateX(0)}90%{transform:translateX(5px)}94%{transform:translateX(0)}97%{transform:translateX(2px)}}
+@media (prefers-reduced-motion:reduce){ .hx-login-arrow{animation:none} }
 
 @media (max-width:1180px){ .hx-nav ul{gap:12px} .hx-nl{padding:9px 12px;font-size:12px;letter-spacing:-.01em} }
 @media (prefers-reduced-motion:reduce){
@@ -673,7 +678,7 @@ html.lenis,html.lenis body{height:auto}
           <li><a class="hx-nl" href="#career-transformations">Success Stories<span class="hx-nl-ring" aria-hidden="true"></span></a></li>
           <li><a class="hx-nl" href="#" data-blank>Hire With Us<span class="hx-nl-ring" aria-hidden="true"></span></a></li>
           <li><a class="hx-nl" href="#" data-blank>About Us<span class="hx-nl-ring" aria-hidden="true"></span></a></li>
-          <li><a class="hx-login" href="#" data-blank>Login</a></li>
+          <li><a class="hx-login" href="#" data-blank>Login<svg class="hx-login-arrow" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M3 8h9.5M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
         </ul>
       </div>
     </nav>
