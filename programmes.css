@@ -1287,3 +1287,13 @@
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
   }
 }
+
+/* Closed cards: a firmer fade, so the buttons sit on clean tint. It starts higher (342 up from the
+   foot) and is solid from 52% down, i.e. ~160 up, before the buttons' top at 129. */
+@media (min-width: 900px) {
+  .programmes__row .programme__fade,
+  .programmes__row.has-active .programme__fade {
+    height: calc(342 * var(--u));
+    background: linear-gradient(to bottom, var(--tint-0) 0%, var(--tint) 52%, var(--tint) 100%);
+  }
+}
