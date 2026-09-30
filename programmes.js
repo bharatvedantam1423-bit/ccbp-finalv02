@@ -48,16 +48,21 @@
     if (img.complete && img.currentSrc && img.naturalWidth === 0 && !img.src.endsWith(".svg")) markMissing();
   });
 
+  // On phones (the stacked layout) every card is shown open, so every open layer is live and the
+  // resting CTAs, which are hidden there, are not.
   const setActive = (card) => {
     cards.forEach((c) => {
       const on = c === card;
       c.classList.toggle("is-active", on);
-      c.querySelector(".programme__detail").inert = !on;
+      c.querySelector(".programme__detail").inert = !on && !stacked.matches;
       // resting CTAs: hidden on the open card, and on every card in the wide row once one is open
-      c.querySelector(".programme__actions").inert = on || (Boolean(card) && !stacked.matches);
+      c.querySelector(".programme__actions").inert = stacked.matches || on || Boolean(card);
     });
     row.classList.toggle("has-active", Boolean(card));
   };
+  const syncStacked = () => setActive(cards.find((c) => c.classList.contains("is-active")) || null);
+  syncStacked();
+  stacked.addEventListener("change", syncStacked);
 
   cards.forEach((card) => {
     card.addEventListener("mouseenter", () => {
@@ -69,7 +74,7 @@
     });
 
     card.addEventListener("click", (e) => {
-      if (e.target.closest("a")) return;
+      if (e.target.closest("a") || stacked.matches) return;
       const isOpen = card.classList.contains("is-active");
       if (!isOpen) setActive(card);
       else if (stacked.matches || !canHover.matches) setActive(null);

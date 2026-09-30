@@ -1188,3 +1188,102 @@
 @media (min-width: 900px) {
   .programme--academy { --op-x: -75.9; --op-b: -245.6; --op-w: 766.3; }
 }
+
+/* No white fade at the foot of the open photos: the pictures run clean to the card's edge. */
+.programmes__row .programme .detail__fade { display: none; }
+
+/* ==========================================================================
+   Phones: every card is its open state, stacked. The media half keeps the
+   Figma frame's proportions (751 x 600, so --u is the card's own width over
+   751) with the same photo and logo placements, and the panel follows below:
+   headline, features, the two buttons. No tap-to-open, no resting layer, no
+   extra lines. programmes.js keeps every open layer live here.
+   ========================================================================== */
+@media (max-width: 899px) {
+  .programme--academy   { --op-x: -75.9;   --op-b: -245.6; --op-w: 766.3; }
+  .programme--intensive { --op-x: -284.7;  --op-b: -62.3;  --op-w: 1222.0; }
+  .programme--niat      { --op-x: -107.4;  --op-b: -44.2;  --op-w: 965.8; }
+
+  .programmes__row .programme,
+  .programmes__row.has-active .programme,
+  .programmes__row.has-active .programme.is-active {
+    height: auto;
+    container-type: inline-size;
+    background: #f8f8f8;
+    border-color: #e8e8e8;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+  }
+  .programmes__row .programme .programme__preview,
+  .programmes__row .programme .programme__actions { display: none; }
+
+  .programmes__row .programme .programme__detail {
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+    opacity: 1;
+    pointer-events: auto;
+    animation: none;
+  }
+
+  .programmes__row .programme .detail__media {
+    --u: calc(100cqw / 751);
+    flex: none;
+    height: auto;
+    aspect-ratio: 751 / 600;
+    background: #f8f8f8;
+  }
+  .programmes__row .programme .detail__photo {
+    left: calc(var(--op-x) * var(--u));
+    bottom: calc(var(--op-b) * var(--u));
+    width: calc(var(--op-w) * var(--u));
+    transform: none;
+  }
+  .programmes__row .programme .detail__photo img { animation: none; transform: none; }
+  .programmes__row .programme .detail__steps { display: none; }
+  .programmes__row .programme .detail__intro {
+    left: 50%;
+    top: calc(60.67 * var(--u));
+    translate: -50% 0;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0;
+    width: max-content;
+    max-width: none;
+  }
+  .programmes__row .programme .detail__intro > * { opacity: 1; transform: none; }
+  .programmes__row .programme .detail__logo img { width: auto; height: calc(59.4 * var(--u)); }
+  .programmes__row .programme--niat .detail__logo img { height: calc(66.43 * var(--u)); }
+  .programmes__row .programme .detail__text,
+  .programmes__row .programme .detail__mode { display: none; }
+
+  .programmes__row .programme .detail__panel {
+    flex: none;
+    background: #fff;
+    padding: 28px 24px 24px;
+    gap: 28px;
+  }
+  .programmes__row .programme .detail__body { gap: 24px; }
+  .programmes__row .programme .detail__headline,
+  .programmes__row .programme .features li,
+  .programmes__row .programme .programme__cta { opacity: 1; transform: none; }
+  .programmes__row .programme .features { gap: 16px; max-width: none; }
+  .programmes__row .programme .features__icon { background: var(--o-tile); color: var(--o-icon); }
+  .programmes__row .programme .detail__actions { gap: 12px; margin-top: 0; }
+  .programmes__row .programme .detail__cta {
+    height: 44px;
+    padding: 0 32px;
+    border-radius: 12px;
+    background: var(--o-cta);
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .programmes__row .programme .detail__cta--ghost {
+    height: 46px;
+    background: #fff;
+    border-color: #cbd5e1;
+    color: #1f2e5c;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  }
+}
