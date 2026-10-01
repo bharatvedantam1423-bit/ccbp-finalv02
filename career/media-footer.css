@@ -8,7 +8,7 @@
 .fm__press-item img{display:block;height:28px;width:auto;max-width:168px;opacity:.92}
 /* 12-col grid: featured (7 cols, 2 rows) + two stacked (5 cols), then pairs (6 + 6).
    Rows have a floor and grow with the longest headline, so cards in a row always end level. */
-.fm__grid{list-style:none;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(2,minmax(248px,auto));grid-auto-rows:minmax(200px,auto);gap:16px;max-width:1200px;margin:0 auto;padding:0 var(--m);box-sizing:content-box}
+.fm__grid{list-style:none;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(2,minmax(220px,auto));grid-auto-rows:minmax(190px,auto);gap:16px;max-width:1200px;margin:0 auto;padding:0 var(--m);box-sizing:content-box}
 .fm__card{grid-column:span 3}
 .fm__card:nth-child(2),.fm__card:nth-child(3){grid-column:span 5}
 .fm__card--feat{grid-column:span 7;grid-row:span 2}   /* dominant: ~58% wide, two tall rows */

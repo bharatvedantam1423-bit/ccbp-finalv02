@@ -75,7 +75,9 @@
     grid.querySelectorAll('.fm__logo:not([style])').forEach(im => im.complete ? fit(im) : im.addEventListener('load', () => fit(im), { once: true }));
     more.hidden = shown >= A.length;
   };
-  add(11);                                  // featured + 2 stacked + two rows of four
+  // featured + 2 stacked + one row of four; on a phone (one card per row) just the first three.
+  // View More adds the rest, four at a time
+  add(matchMedia('(max-width:640px)').matches ? 3 : 7);
   more.addEventListener('click', () => add(4));
 
   /* "Featured in" — publication marks under the section title (ccbp.in press strip) */

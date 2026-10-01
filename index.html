@@ -41,7 +41,7 @@
               linear-gradient(100deg,#1d4ed8 0%,#2a6af0 60%,#3b8cff 100%);
   --head-grad-dark:linear-gradient(193deg,#b9c3d6 12%,#ffffff 52%,#aeb9cd 115%);
   --title-grad:var(--head-grad);                   /* the supplied build's name for the same fill */
-  --sec-y:clamp(56px,6.5vw,96px);                  /* vertical breathing room above/below a section */
+  --sec-y:clamp(44px,4.6vw,68px);                  /* vertical breathing room above/below a section */
   --head-size:clamp(32px,3.9vw,56px);              /* section headings below the fold */
   --sub-size:clamp(15px,1.2vw,18px);               /* the subhead under a section heading */
   --sub-ink:#3b4a63;                               /* every subheading, one slate */
@@ -338,7 +338,7 @@ a{color:inherit;text-decoration:none}
    S3 — MENTORS: scroll-scrubbed video ("Taught by people who have done the job")
    ===================================================================== */
 .mentors{position:relative;background:#fff}
-.mw-track{position:relative;height:var(--mw-track,340vh)}
+.mw-track{position:relative;height:var(--mw-track,240vh)}
 /* heading + film pin together: the heading stays in view for the whole scrub, the film takes
    the room left beneath it */
 .mw-stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;
@@ -379,7 +379,7 @@ a{color:inherit;text-decoration:none}
 .mw-screen.frames video{visibility:hidden}
 
 @media (max-width:860px){
-  .mentors{--mw-track:240vh}
+  .mentors{--mw-track:180vh}
   .mw-head{gap:12px}
   /* on a phone the film is far wider than it is tall: heading + film sit together in the middle
      of the screen rather than the film dropping to the bottom with a gap above it */
@@ -564,7 +564,7 @@ a{color:inherit;text-decoration:none}
 .aw-wall{width:min(100%,var(--page-max))}
 .aw-cards{width:100%}   /* the photo cards span the column, edge to edge with the panel above */
 /* National Level Recognition: a tinted band, padded top and bottom */
-.nr{padding-block:var(--sec-y)}
+.nr{padding-block:var(--sec-y);min-height:0}   /* sized by its content, not a full screen */
 .nr .nr-wrap{width:calc(100% - 2 * var(--page-pad));max-width:var(--page-max)}
 /* 3,000+ companies */
 .companies{padding:var(--sec-y) var(--page-pad) clamp(24px,3vw,48px)}
@@ -667,6 +667,23 @@ html.lenis,html.lenis body{height:auto}
   #hero .copy,#hero .copy.l,#hero .copy.r,#hero .copy.bl,#hero .copy.c,#hero .copy.bc{left:var(--page-pad);right:var(--page-pad);top:auto;bottom:8%;transform:none;max-width:none}
   #hero .copy h1,#hero .copy h2{font-size:clamp(28px,7.8vw,39px)}
   #hero .copy h1 span,#hero .copy h2 span{white-space:normal}
+}
+/* Shorter beats. Each beat scrolls past in --beat (72% of a screen) instead of a full screen, so
+   the hero is ~5 screens long, not 7, and the particles morph a little faster. Everything in a beat
+   is still placed against a full-screen frame that starts at the beat's top, so when a beat is up
+   it looks exactly as before; the frame just runs on past the beat's end. The copy of each beat
+   fades in and out around its own moment (index.html, frame()), so a neighbour's words never show. */
+#hero{--beat:72svh}
+#hero .sec{height:var(--beat);min-height:0}
+#hero .sec:last-child{--beat:100svh}   /* the last beat keeps a whole screen: the programmes follow it, not another beat */
+#hero .copy.l,#hero .copy.r{top:50svh}
+#hero .copy.bl{bottom:calc(var(--beat) - 91svh)}
+#hero .copy.c{bottom:calc(var(--beat) - 93svh)}
+#hero .copy.bc{bottom:calc(var(--beat) - 89svh)}
+#hero .wall{top:9svh;height:31svh}
+@media (max-width:760px){
+  #hero .copy,#hero .copy.l,#hero .copy.r,#hero .copy.bl,#hero .copy.c,#hero .copy.bc{top:auto;bottom:calc(var(--beat) - 92svh)}
+  #hero .wall{top:9svh;height:22svh}
 }
 </style>
 </head>
@@ -2400,6 +2417,13 @@ function frame(now) {
   const t = pClock;
   const hgt = secs[0].offsetHeight || innerHeight;
   const Sc = clamp(scrollPos() / hgt, 0, S - 1);
+  // each beat's words (and the logo rows) are fully up within a third of a beat of their moment and
+  // gone by two thirds: one message at a time, and a neighbour's words never show over a picture
+  const sAt = scrollPos() / hgt;
+  for (let i = 0; i < secs.length && i < S; i++) {
+    const o = 1 - sstep(.3, .62, Math.abs(sAt - i));
+    if (secs[i]._o !== o) { secs[i].style.opacity = o.toFixed(3); secs[i]._o = o; }
+  }
   const k = Math.min(S - 2, Math.floor(Sc)), f = Sc - k;
   // once the programmes section reaches the top, hide the header and stop drawing the particles it covers
   const pTop = progs ? progs.getBoundingClientRect().top : Infinity;
@@ -2410,8 +2434,10 @@ function frame(now) {
   // in between, the particles melt out of one picture and re-form into the next.
   bind(k);
   setSec(uniforms.uRA, uniforms.uFA, k); setSec(uniforms.uRB, uniforms.uFB, k + 1);
-  uniforms.uYA.value = f * VH;
-  uniforms.uYB.value = -(1 - f) * VH;
+  // a beat is hgt tall, the picture frame a full screen: the pictures travel exactly with their words
+  const bh = hgt / innerHeight;
+  uniforms.uYA.value = f * VH * bh;
+  uniforms.uYB.value = -(1 - f) * VH * bh;
   uniforms.uGA.value = gainOf(k); uniforms.uGB.value = gainOf(k + 1);
   const morph = sstep(.03, .97, f);
   uniforms.uMorph.value = morph;

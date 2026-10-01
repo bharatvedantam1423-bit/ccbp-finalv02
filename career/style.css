@@ -75,7 +75,7 @@
 .wl__sub{font-family:"InterVariable","Inter",system-ui,sans-serif;font-size:16px;font-weight:500;line-height:1.5;color:#757373;margin-top:12px}
 
 /* layout — 578 : 606 of the 1200 content box, same 16px gutter as Figma */
-.wl__grid{display:flex;align-items:stretch;gap:16px;min-height:721px}
+.wl__grid{display:flex;align-items:stretch;gap:16px;min-height:640px}   /* was 721: the art scales down to fit */
 .wl__col{flex:606 1 0;min-width:0;display:flex;flex-direction:column;gap:16px}
 .wl__col>.wl__card{flex:1 1 0;min-height:0}
 .wl__card{position:relative;overflow:hidden;border-radius:16px;margin:0}
