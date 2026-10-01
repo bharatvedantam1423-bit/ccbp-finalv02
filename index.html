@@ -205,27 +205,15 @@ a{color:inherit;text-decoration:none}
 .hx-nl:hover .hx-nl-top .hx-ch,.hx-nl:focus-visible .hx-nl-top .hx-ch{transform:translateY(-105%)}
 .hx-nl:hover .hx-nl-dup .hx-ch,.hx-nl:focus-visible .hx-nl-dup .hx-ch{transform:translateY(0)}
 
-/* Login stays a plain link (Figma 869:158): Geist Medium 14 */
-.hx-login{position:relative;display:block;padding:0 8px 3px;font:500 14px/normal Geist,var(--font);
-  transition:color .25s ease,text-shadow .25s ease}
-/* a rule that draws in from the left on hover */
-.hx-login::after{content:"";position:absolute;left:8px;right:8px;bottom:0;height:1.5px;
-  background:currentColor;border-radius:2px;transform:scaleX(0);transform-origin:left center;
-  transition:transform .26s cubic-bezier(.22,.61,.36,1)}
-.hx-login:hover::after,.hx-login:focus-visible::after{transform:scaleX(1)}
-.hx-login:hover,.hx-login:focus-visible{color:#bcd4ff;text-shadow:0 0 14px rgba(64,107,219,.55)}
-/* an arrow after the word: every 3s it nudges right, brightening, and bounces back once, then rests.
-   The word is set exactly like the nav items beside it: Geist 600, 12px, capitals. */
-.hx-login{display:flex;align-items:center;gap:6px;text-transform:uppercase;font-size:12px;font-weight:600}
-.hx-login-arrow{flex:none;display:block;animation:hx-nudge 3s ease-in-out infinite}
-@keyframes hx-nudge{
-  0%,77%,100%{transform:translateX(0);filter:none}
-  83%{transform:translateX(7px);filter:drop-shadow(0 0 6px rgba(130,189,255,.9))}
-  90%{transform:translateX(0);filter:drop-shadow(0 0 3px rgba(130,189,255,.5))}
-  95%{transform:translateX(3px);filter:none}}
-@media (prefers-reduced-motion:reduce){ .hx-login-arrow{animation:none} }
+/* Login is a nav pill like the others (.hx-nl gives the stroke, glow, ring and label roll), with an
+   arrow after the label that nudges right while the pointer is on it */
+.hx-login{display:flex;align-items:center;gap:6px}
+.hx-login-arrow{flex:none;display:block;transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+.hx-login:hover .hx-login-arrow,.hx-login:focus-visible .hx-login-arrow{animation:hx-nudge .9s ease-in-out infinite}
+@keyframes hx-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+@media (prefers-reduced-motion:reduce){ .hx-login:hover .hx-login-arrow,.hx-login:focus-visible .hx-login-arrow{animation:none} }
 
-@media (max-width:1180px){ .hx-nav ul{gap:12px} .hx-nl{padding:9px 12px;font-size:12px;letter-spacing:-.01em} .hx-login{letter-spacing:-.01em} }
+@media (max-width:1180px){ .hx-nav ul{gap:12px} .hx-nl{padding:9px 12px;font-size:12px;letter-spacing:-.01em} }
 @media (prefers-reduced-motion:reduce){
   .hx-nl,.hx-nl::after,.hx-nl-ring,.hx-ch{transition-duration:.01s;transition-delay:0s}
   .hx-nl:hover::after,.hx-nl:hover .hx-nl-ring::before{animation:none}
@@ -700,7 +688,7 @@ html.lenis,html.lenis body{height:auto}
           <li><a class="hx-nl" href="#career-transformations">Success Stories<span class="hx-nl-ring" aria-hidden="true"></span></a></li>
           <li><a class="hx-nl" href="#" data-blank>Hire With Us<span class="hx-nl-ring" aria-hidden="true"></span></a></li>
           <li><a class="hx-nl" href="#" data-blank>About Us<span class="hx-nl-ring" aria-hidden="true"></span></a></li>
-          <li><a class="hx-login" href="#" data-blank>Login<svg class="hx-login-arrow" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><path d="M3 8h9.5M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+          <li><a class="hx-nl hx-login" href="#" data-blank>Login<span class="hx-nl-ring" aria-hidden="true"></span><svg class="hx-login-arrow" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><path d="M3 8h9.5M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
         </ul>
       </div>
     </nav>
