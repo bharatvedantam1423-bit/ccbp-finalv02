@@ -69,7 +69,7 @@
   position: relative;
   width: 100%;
   margin: 0;
-  aspect-ratio: 378.667 / 174.906;
+  aspect-ratio: 16 / 9;        /* taller than the file's 378.667 x 174.906; the width is unchanged */
   border-radius: 16px;
   overflow: hidden;
   background: #eef2f9;
