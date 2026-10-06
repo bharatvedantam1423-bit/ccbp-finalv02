@@ -21,6 +21,25 @@
   padding-top: clamp(24px, calc(53.8 * var(--u)), 56px);   /* logos -> cards, 53.8 in the file */
 }
 
+/* The logos row above the panel is part of the same frame in the file: it shares the awards column
+   and sits centred over the cards. Its plate is flatter than the file's (24.3 : 1 against 22.2 : 1),
+   so it is sized by the height of the marks — 42 of the frame — rather than by the strip's width,
+   which is what makes the logos read at the size they do in the file. */
+.recog-band {
+  --u: calc(100vw / 1707);
+  --rc-col: min(calc(100% - 2 * var(--page-pad)), var(--page-max), calc(1200.33 * var(--u)));
+}
+.recog-band .recog { max-width: var(--rc-col); }
+.recog-band .recog img {
+  height: clamp(24px, calc(44.86 * var(--u)), 48px);   /* 42 of mark + the plate's own 10 of padding */
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+@media (max-width: 640px) {
+  .recog-band .recog img { height: auto; width: min(100%, 360px); }
+}
+
 /* ---- the white block: three press photographs ------------------------ */
 .rc-top {
   position: relative;
