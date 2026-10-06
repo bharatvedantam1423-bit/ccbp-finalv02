@@ -1,28 +1,32 @@
 /* =====================================================================
    S3 — AWARDS & RECOGNITIONS (Figma CCBP-v02, node 1141:8646)
    A white block (the press cards) scooped into a full-bleed navy panel.
-   In the panel: the heading and the five award badges, the roll of awards
+   In the panel: the heading and the five award marks, the roll of awards
    on the left with one open at a time, and the trophy on its plinth on
    the right. The open award and its trophy change together.
+
+   Every measurement below is a pixel of the 1707-wide Figma frame, taken
+   through --u, so the panel keeps the file's proportions at any width.
+   The type keeps the site's own sizes.
    ===================================================================== */
 .rc {
-  --rc-notch: clamp(44px, 7.2vw, 184px);     /* depth of the scoop, 183.7 of 2102 wide in the file */
+  --u: calc(100vw / 1707);                   /* one Figma px of the frame */
+  /* the file's content column, 1200.33 of the 1707 frame, never wider than the page's own column */
+  --rc-col: min(calc(100% - 2 * var(--page-pad)), var(--page-max), calc(1200.33 * var(--u)));
   --rc-ink: #fff;
   --rc-dim: #d1d1d1;
   position: relative;
   z-index: 3;
   background: #fff;
-  padding-top: var(--sec-y);
+  padding-top: clamp(24px, calc(53.8 * var(--u)), 56px);   /* logos -> cards, 53.8 in the file */
 }
 
 /* ---- the white block: three press photographs ------------------------ */
 .rc-top {
   position: relative;
   z-index: 2;                                 /* over the panel it dips into */
-  width: calc(100% - 2 * var(--page-pad));
-  max-width: var(--page-max);
+  width: var(--rc-col);
   margin-inline: auto;
-  padding-bottom: 10px;
 }
 .rc-cards {
   list-style: none;
@@ -30,39 +34,38 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(16px, 2.7vw, 32px);
+  gap: clamp(16px, calc(32 * var(--u)), 32px);
 }
 .rc-cards li {
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
+  gap: clamp(12px, calc(16 * var(--u)), 16px);
   text-align: center;
 }
-/* the corner nicks from the file: a white wedge off the top-right and bottom-left */
+/* the corner nicks from the file: a 45deg chamfer off the top-right and the bottom-left, its legs
+   76.36 of the card's 378.67 width. A mask rather than a clip, so the other two corners stay round. */
 .rc-cards figure {
+  --cut: 14.26cqw;                            /* 76.36 / sqrt(2) / 378.67 */
   position: relative;
   width: 100%;
   margin: 0;
-  aspect-ratio: 378 / 174.6;
+  aspect-ratio: 378.667 / 174.906;
   border-radius: 16px;
   overflow: hidden;
   background: #eef2f9;
-  --nick: 9.5%;
-  -webkit-mask-image: linear-gradient(#000 0 0);
-          mask-image: linear-gradient(#000 0 0);
-  clip-path: polygon(
-    0 0, calc(100% - var(--nick)) 0, 100% calc(var(--nick) * 378 / 174.6 * 0.46),
-    100% 100%, var(--nick) 100%, 0 calc(100% - var(--nick) * 378 / 174.6 * 0.46));
+  -webkit-mask-image:
+    linear-gradient(to bottom left, #0000 0 var(--cut), #000 var(--cut)),
+    linear-gradient(to top right,   #0000 0 var(--cut), #000 var(--cut));
+          mask-image:
+    linear-gradient(to bottom left, #0000 0 var(--cut), #000 var(--cut)),
+    linear-gradient(to top right,   #0000 0 var(--cut), #000 var(--cut));
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
 }
-.rc-cards img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+.rc-cards img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .rc-cards p {
-  margin: 0;
+  margin: 0 auto;
   font: 500 clamp(14px, 1.11vw, 16px)/1.5 "Inter Display", "InterVariable", "Inter", sans-serif;
   color: #818181;
   max-width: 380px;
@@ -71,31 +74,31 @@
 
 /* ---- the navy panel -------------------------------------------------- */
 .rc-panel {
-  --rc-gutter: max(var(--page-pad), (100% - var(--page-max)) / 2);
   position: relative;
-  padding-bottom: clamp(32px, 4vw, 64px);
+  margin-top: calc(-40 * var(--u));           /* the captions end inside the scoop */
+  padding-bottom: clamp(44px, calc(125.6 * var(--u)), 150px);
   background: linear-gradient(149deg, #163b88 0%, #060f22 100%);
   overflow: hidden;
   isolation: isolate;
 }
-/* the scoop itself: white, so it reads as one shape with the block above */
+/* The scoop. Its path is drawn in the panel's own space, which is 2102.62 wide and starts 197.48
+   left of the frame, so the shoulders land at 0.9% and 96.6% of the page - not at the panel's edges. */
 .rc-notch {
   position: absolute;
   top: -1px;
-  left: 0;
-  width: 100%;
-  height: var(--rc-notch);
+  left: calc(-197.48 * var(--u));
+  width: calc(2102.62 * var(--u));
+  height: clamp(52px, calc(183.726 * var(--u)), 220px);
   display: block;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
 }
 .rc-in {
   position: relative;
-  z-index: 3;
-  width: calc(100% - 2 * var(--page-pad));
-  max-width: var(--page-max);
+  z-index: 4;
+  width: var(--rc-col);
   margin-inline: auto;
-  padding-top: calc(var(--rc-notch) + clamp(28px, 4.4vw, 76px));
+  padding-top: clamp(96px, calc(261.76 * var(--u)), 300px);   /* panel top -> title, 261.76 in the file */
 }
 
 /* heading row: the title, and the five awards as small marks beside it */
@@ -103,49 +106,63 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(24px, 4vw, 64px);
-  flex-wrap: wrap;
+  gap: clamp(24px, calc(141 * var(--u)), 150px);
+  flex-wrap: nowrap;
 }
 .rc-title {
   margin: 0;
   font-family: var(--font-head);
   font-weight: 600;
-  font-size: var(--head-size);
+  font-size: clamp(28px, calc(56 * var(--u)), 56px);   /* 56 in the file, so it holds one line beside the marks */
   line-height: 1.2;
   letter-spacing: -.01em;
   color: var(--rc-ink);
+  white-space: nowrap;
 }
+/* each mark at the size the file gives it, so the row keeps its own rhythm */
 .rc-badges {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
-  gap: clamp(18px, 2.7vw, 39px);
+  flex: none;
+  gap: clamp(20px, calc(47 * var(--u)), 52px);
+  margin-right: calc(-58 * var(--u));     /* the row runs past the column's right edge, as in the file */
 }
 .rc-badges li { display: flex; }
 .rc-badges img {
   display: block;
   width: auto;
-  height: clamp(44px, 5.4vw, 78px);
   opacity: .9;
   transition: opacity .4s ease, filter .4s ease;
 }
+.rc-badges li:nth-child(1) img { height: clamp(34px, calc(65 * var(--u)), 72px); }
+.rc-badges li:nth-child(2) img { height: clamp(35px, calc(66 * var(--u)), 73px); }
+.rc-badges li:nth-child(3) img { height: clamp(44px, calc(85 * var(--u)), 94px); }
+.rc-badges li:nth-child(4) img { height: clamp(46px, calc(89 * var(--u)), 98px); }
+.rc-badges li:nth-child(5) img { height: clamp(27px, calc(52 * var(--u)), 58px); }
 .rc-badges li[aria-current="true"] img { opacity: 1; filter: drop-shadow(0 0 14px rgba(150,190,255,.55)); }
 
 /* ---- the body: the roll of awards, and the trophy -------------------- */
 .rc-body {
   position: relative;
-  margin-top: clamp(32px, 5vw, 86px);
-  padding-bottom: clamp(16px, 2.4vw, 40px);
+  margin-top: clamp(28px, calc(78.6 * var(--u)), 88px);      /* title -> roll, 78.6 in the file */
 }
 
-.rc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 1.1vw, 16px); width: min(100%, 470px); }
+.rc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(10px, calc(20 * var(--u)), 22px);
+  width: min(100%, 47%);
+}
 .rc-item {
   position: relative;
   display: grid;
   grid-template-columns: 2px 1fr;
-  gap: clamp(10px, 1.2vw, 20px);
+  gap: clamp(10px, calc(20 * var(--u)), 22px);
   align-items: center;
   padding-block: clamp(14px, 1.7vw, 24px);
   cursor: pointer;
@@ -202,16 +219,15 @@
 .rc-item[aria-current="true"] .rc-name { font-size: clamp(18px, 1.65vw, 24px); }
 
 /* ---- the trophy on its plinth --------------------------------------- */
-/* the trophy stands at the right of the whole panel, its plinth just over the panel's foot. It sits
-   under the scoop, so a tall trophy is cut by the panel's top edge rather than crossing into white */
+/* 871.7 wide in the file, its right edge on the frame's, its foot 36.6 below the panel's. It sits
+   under the scoop, so a tall trophy is cut by the panel's top edge rather than crossing into white. */
 .rc-stage {
   position: absolute;
   z-index: 1;
-  right: calc(var(--rc-gutter) - clamp(0px, 2.2vw, 44px));
-  bottom: calc(-1 * clamp(10px, 1.6vw, 30px));
-  width: clamp(280px, 44%, 600px);
-  max-width: calc(100% - 2 * var(--rc-gutter));
-  aspect-ratio: 872 / 1083;
+  right: 0;
+  bottom: calc(-36.63 * var(--u));
+  width: calc(871.7 * var(--u));
+  aspect-ratio: 871.7 / 1082.97;
   pointer-events: none;
 }
 .rc-stage img {
@@ -223,8 +239,10 @@
   object-position: center bottom;
   display: block;
 }
-.rc-plinth { z-index: 1; }
-/* the trophies are stacked and cross-fade, so the plinth never moves between awards */
+/* the plinth is the near layer, as in the file: it hides the foot of whichever trophy is standing
+   in it, so the award reads as set into the plinth rather than sitting on top of it */
+.rc-plinth { z-index: 3; }
+/* the trophies are stacked behind it and cross-fade, so the plinth never moves between awards */
 .rc-trophy {
   z-index: 2;
   opacity: 0;
@@ -235,10 +253,12 @@
 .rc-trophy[data-on] { opacity: 1; transform: none; }
 
 @media (max-width: 900px) {
+  .rc { --rc-col: calc(100% - 2 * var(--page-pad)); }   /* stacked: the page's own column */
   .rc-cards { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; }
   .rc-head { justify-content: center; text-align: center; }
-  .rc-badges { justify-content: center; flex-wrap: wrap; gap: 20px; }
-  .rc-body { grid-template-columns: 1fr; align-items: stretch; }
+  .rc-head { flex-wrap: wrap; }
+  .rc-badges { justify-content: center; flex-wrap: wrap; gap: 20px; margin-right: 0; }
+  .rc-list { width: 100%; max-width: 520px; margin-inline: auto; }
   /* the plinth flows under the roll here. Both plates are transparent across their top third, so
      the stage is pulled up by that much to close the gap the empty pixels would leave */
   .rc-stage {
@@ -248,7 +268,6 @@
     width: min(100%, 420px);
     margin: clamp(-190px, -34vw, -40px) auto clamp(-30px, -3.2vw, -12px);
   }
-  .rc-list { max-width: 520px; margin-inline: auto; width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
