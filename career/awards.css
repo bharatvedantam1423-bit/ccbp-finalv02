@@ -1,0 +1,257 @@
+/* =====================================================================
+   S3 — AWARDS & RECOGNITIONS (Figma CCBP-v02, node 1141:8646)
+   A white block (the press cards) scooped into a full-bleed navy panel.
+   In the panel: the heading and the five award badges, the roll of awards
+   on the left with one open at a time, and the trophy on its plinth on
+   the right. The open award and its trophy change together.
+   ===================================================================== */
+.rc {
+  --rc-notch: clamp(44px, 7.2vw, 184px);     /* depth of the scoop, 183.7 of 2102 wide in the file */
+  --rc-ink: #fff;
+  --rc-dim: #d1d1d1;
+  position: relative;
+  z-index: 3;
+  background: #fff;
+  padding-top: var(--sec-y);
+}
+
+/* ---- the white block: three press photographs ------------------------ */
+.rc-top {
+  position: relative;
+  z-index: 2;                                 /* over the panel it dips into */
+  width: calc(100% - 2 * var(--page-pad));
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-bottom: 10px;
+}
+.rc-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2.7vw, 32px);
+}
+.rc-cards li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+/* the corner nicks from the file: a white wedge off the top-right and bottom-left */
+.rc-cards figure {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 378 / 174.6;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #eef2f9;
+  --nick: 9.5%;
+  -webkit-mask-image: linear-gradient(#000 0 0);
+          mask-image: linear-gradient(#000 0 0);
+  clip-path: polygon(
+    0 0, calc(100% - var(--nick)) 0, 100% calc(var(--nick) * 378 / 174.6 * 0.46),
+    100% 100%, var(--nick) 100%, 0 calc(100% - var(--nick) * 378 / 174.6 * 0.46));
+}
+.rc-cards img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.rc-cards p {
+  margin: 0;
+  font: 500 clamp(14px, 1.11vw, 16px)/1.5 "Inter Display", "InterVariable", "Inter", sans-serif;
+  color: #818181;
+  max-width: 380px;
+}
+.rc-cards b { font-weight: 600; color: #0f0f0f; }
+
+/* ---- the navy panel -------------------------------------------------- */
+.rc-panel {
+  --rc-gutter: max(var(--page-pad), (100% - var(--page-max)) / 2);
+  position: relative;
+  padding-bottom: clamp(32px, 4vw, 64px);
+  background: linear-gradient(149deg, #163b88 0%, #060f22 100%);
+  overflow: hidden;
+  isolation: isolate;
+}
+/* the scoop itself: white, so it reads as one shape with the block above */
+.rc-notch {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: var(--rc-notch);
+  display: block;
+  z-index: 2;
+  pointer-events: none;
+}
+.rc-in {
+  position: relative;
+  z-index: 3;
+  width: calc(100% - 2 * var(--page-pad));
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-top: calc(var(--rc-notch) + clamp(28px, 4.4vw, 76px));
+}
+
+/* heading row: the title, and the five awards as small marks beside it */
+.rc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(24px, 4vw, 64px);
+  flex-wrap: wrap;
+}
+.rc-title {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--head-size);
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  color: var(--rc-ink);
+}
+.rc-badges {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.7vw, 39px);
+}
+.rc-badges li { display: flex; }
+.rc-badges img {
+  display: block;
+  width: auto;
+  height: clamp(44px, 5.4vw, 78px);
+  opacity: .9;
+  transition: opacity .4s ease, filter .4s ease;
+}
+.rc-badges li[aria-current="true"] img { opacity: 1; filter: drop-shadow(0 0 14px rgba(150,190,255,.55)); }
+
+/* ---- the body: the roll of awards, and the trophy -------------------- */
+.rc-body {
+  position: relative;
+  margin-top: clamp(32px, 5vw, 86px);
+  padding-bottom: clamp(16px, 2.4vw, 40px);
+}
+
+.rc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 1.1vw, 16px); width: min(100%, 470px); }
+.rc-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2px 1fr;
+  gap: clamp(10px, 1.2vw, 20px);
+  align-items: center;
+  padding-block: clamp(14px, 1.7vw, 24px);
+  cursor: pointer;
+  color: var(--rc-dim);
+  transition: color .45s ease;
+}
+.rc-item::before {                            /* the rule down the left of each award */
+  content: "";
+  grid-area: 1 / 1;
+  align-self: stretch;
+  width: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: .55;
+  transition: opacity .45s ease;
+}
+.rc-item[aria-current="true"] { color: var(--rc-ink); }
+.rc-item[aria-current="true"]::before { opacity: 1; }
+.rc-item:hover { color: #eaf1ff; }
+.rc-item:focus-visible { outline: 2px solid #82bdff; outline-offset: 6px; border-radius: 4px; }
+
+.rc-txt { grid-area: 1 / 2; min-width: 0; }
+.rc-name {
+  margin: 0;
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: clamp(15px, 1.35vw, 20px);
+  line-height: 1.2;
+  color: inherit;
+  text-wrap: balance;
+}
+/* the eyebrow and the by-line belong to the open award only: they open and close with it */
+.rc-sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin: 0;
+  transition: grid-template-rows .5s cubic-bezier(.22,.61,.36,1), opacity .35s ease, margin .5s cubic-bezier(.22,.61,.36,1);
+}
+.rc-sub > span { overflow: hidden; display: block; min-height: 0; }
+.rc-item[aria-current="true"] .rc-sub { grid-template-rows: 1fr; opacity: 1; }
+.rc-item[aria-current="true"] .rc-kicker { margin-bottom: clamp(8px, .9vw, 14px); }
+.rc-item[aria-current="true"] .rc-by { margin-top: clamp(8px, .9vw, 14px); }
+.rc-kicker > span,
+.rc-by > span {
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: clamp(14px, 1.25vw, 19px);
+  line-height: 1.2;
+  color: var(--rc-ink);
+}
+.rc-kicker > span { text-transform: uppercase; letter-spacing: .02em; }
+/* the open award's name is a step larger than the rest */
+.rc-item[aria-current="true"] .rc-name { font-size: clamp(18px, 1.65vw, 24px); }
+
+/* ---- the trophy on its plinth --------------------------------------- */
+/* the trophy stands at the right of the whole panel, its plinth just over the panel's foot. It sits
+   under the scoop, so a tall trophy is cut by the panel's top edge rather than crossing into white */
+.rc-stage {
+  position: absolute;
+  z-index: 1;
+  right: calc(var(--rc-gutter) - clamp(0px, 2.2vw, 44px));
+  bottom: calc(-1 * clamp(10px, 1.6vw, 30px));
+  width: clamp(280px, 44%, 600px);
+  max-width: calc(100% - 2 * var(--rc-gutter));
+  aspect-ratio: 872 / 1083;
+  pointer-events: none;
+}
+.rc-stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  display: block;
+}
+.rc-plinth { z-index: 1; }
+/* the trophies are stacked and cross-fade, so the plinth never moves between awards */
+.rc-trophy {
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(14px) scale(.97);
+  transition: opacity .55s ease, transform .7s cubic-bezier(.22,.61,.36,1);
+  will-change: opacity, transform;
+}
+.rc-trophy[data-on] { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .rc-cards { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; }
+  .rc-head { justify-content: center; text-align: center; }
+  .rc-badges { justify-content: center; flex-wrap: wrap; gap: 20px; }
+  .rc-body { grid-template-columns: 1fr; align-items: stretch; }
+  /* the plinth flows under the roll here. Both plates are transparent across their top third, so
+     the stage is pulled up by that much to close the gap the empty pixels would leave */
+  .rc-stage {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(100%, 420px);
+    margin: clamp(-190px, -34vw, -40px) auto clamp(-30px, -3.2vw, -12px);
+  }
+  .rc-list { max-width: 520px; margin-inline: auto; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-trophy, .rc-sub, .rc-item, .rc-badges img { transition-duration: .01ms; }
+  .rc-trophy[data-on] { transform: none; }
+}

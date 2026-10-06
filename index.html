@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="career/media-footer.css">
 <link rel="stylesheet" href="career/masterclass.css">
 <link rel="stylesheet" href="career/transformations.css">
+<link rel="stylesheet" href="career/awards.css">
 <link rel="stylesheet" href="career/national-recognition.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -929,25 +930,90 @@ html.lenis,html.lenis body{height:auto}
 <!-- ===================================================================
      S3 — AWARDS & RECOGNITIONS
      =================================================================== -->
-<section class="record" id="recognition" aria-labelledby="record-title">
-  <div class="aw-inner">
-    <h2 class="record-title reveal-up" id="record-title">Awards &amp; Recognitions</h2>
-    <!-- the film plays forward and back with the scroll -->
-    <div class="aw-wall reveal-up" role="img"
-      aria-label="NxtWave's award wall: World Economic Forum 2024 Technology Pioneer, Times Business Awards 2022, AsiaOne 2021–22, Prime Insights 2023 and Marksmen Daily 2021">
-      <img src="assets/awards-wall.jpg" alt="" loading="lazy">
-      <video data-src="assets/awards-wall.mp4" muted playsinline preload="none" aria-hidden="true"></video>
-      <canvas aria-hidden="true"></canvas>
-      <img class="aw-notch" src="assets/record-notch.svg" alt="" aria-hidden="true">
-    </div>
-    <ul class="aw-cards">
-      <li class="reveal-up" style="--i:0"><img src="assets/award-forbes30.jpg" alt="Anupam Pedarla and Sashank Gujjula on the Forbes India 30 Under 30 cover" loading="lazy" style="object-position:59% 54%">
+<section class="rc" id="recognition" aria-labelledby="record-title">
+  <!-- the press photographs, on white; they dip into the scoop at the panel's top edge -->
+  <div class="rc-top">
+    <ul class="rc-cards">
+      <li class="reveal-up" style="--i:0">
+        <figure><img src="assets/award-forbes30.jpg" alt="Anupam Pedarla and Sashank Gujjula on the Forbes India 30 Under 30 cover" loading="lazy" style="object-position:59% 54%"></figure>
         <p>Founders <b>Mr. Anupam Pedarla</b> &amp; <b>Mr. Sashank Gujjula</b> made it to the prestigious 2024 Forbes India 30 Under 30 list!</p></li>
-      <li class="reveal-up" style="--i:1"><img src="assets/award-times-1.jpg" alt="Sashank Gujjula receiving the Times Business Award on stage" loading="lazy">
+      <li class="reveal-up" style="--i:1">
+        <figure><img src="assets/award-times-1.jpg" alt="Sashank Gujjula receiving the Times Business Award on stage" loading="lazy"></figure>
         <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
-      <li class="reveal-up" style="--i:2"><img src="assets/award-times-2.jpg" alt="Sashank Gujjula receiving an award from the Times Business Awards jury" loading="lazy" style="object-position:50% 62%">
+      <li class="reveal-up" style="--i:2">
+        <figure><img src="assets/award-times-2.jpg" alt="Sashank Gujjula receiving an award from the Times Business Awards jury" loading="lazy" style="object-position:50% 62%"></figure>
         <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
     </ul>
+  </div>
+
+  <div class="rc-panel">
+    <!-- the scoop: the white shape cut into the panel's top edge (Figma vector 1400) -->
+    <svg class="rc-notch" viewBox="0 0 2102.62 184" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#fff" d="M213.227 0H1846.76c-33.84 0-66.21 13.832-89.6 38.289L1654.67 145.438c-23.4 24.456-55.77 38.288-89.61 38.288H494.932c-33.842 0-66.215-13.832-89.607-38.288L302.835 38.289C279.442 13.832 247.07 0 213.227 0Z"/>
+    </svg>
+
+    <div class="rc-in">
+      <div class="rc-head">
+        <h2 class="rc-title" id="record-title">Awards &amp; Recognitions</h2>
+        <ul class="rc-badges">
+          <li aria-current="false"><img src="assets/awards/b-mpb.webp" alt="Most Preferred Brands 2021" loading="lazy"></li>
+          <li aria-current="false"><img src="assets/awards/b-asia.webp" alt="India’s Greatest Brands &amp; Leaders 2021-22" loading="lazy"></li>
+          <li aria-current="false"><img src="assets/awards/b-prime.webp" alt="Prime Insights Trusted Brand in Education" loading="lazy"></li>
+          <li aria-current="false"><img src="assets/awards/b-star.webp" alt="Times Business Awards trophy" loading="lazy"></li>
+          <li aria-current="false"><img src="assets/awards/b-wef.webp" alt="World Economic Forum" loading="lazy"></li>
+        </ul>
+      </div>
+
+      <div class="rc-body">
+        <ol class="rc-list">
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-txt">
+              <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
+              <p class="rc-name">Most Preferred Brands</p>
+              <span class="rc-sub rc-by"><span>by Marksmen Daily in 2021</span></span>
+            </span>
+          </li>
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-txt">
+              <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
+              <p class="rc-name">India’s Greatest Brands &amp; Leaders</p>
+              <span class="rc-sub rc-by"><span>by Asia One in 2021-22</span></span>
+            </span>
+          </li>
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-txt">
+              <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
+              <p class="rc-name">Trusted Brand in Education</p>
+              <span class="rc-sub rc-by"><span>by Prime Insights in 2023</span></span>
+            </span>
+          </li>
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-txt">
+              <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
+              <p class="rc-name">Best Tech Skilling EdTech Company</p>
+              <span class="rc-sub rc-by"><span>by Times Business Awards in 2022</span></span>
+            </span>
+          </li>
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-txt">
+              <span class="rc-sub rc-kicker"><span>We are honoured to be a</span></span>
+              <p class="rc-name">2024 Technology Pioneer</p>
+              <span class="rc-sub rc-by"><span>100 Startups worldwide made the cut.</span></span>
+            </span>
+          </li>
+        </ol>
+
+      </div>
+    </div>
+
+    <div class="rc-stage">
+      <img class="rc-plinth" src="assets/awards/pedestal.webp" alt="" loading="lazy">
+      <img class="rc-trophy" src="assets/awards/t-mpb.webp" alt="" loading="lazy">
+      <img class="rc-trophy" src="assets/awards/t-asia.webp" alt="" loading="lazy">
+      <img class="rc-trophy" src="assets/awards/t-prime.webp" alt="" loading="lazy">
+      <img class="rc-trophy" src="assets/awards/t-star.webp" alt="" loading="lazy">
+      <img class="rc-trophy" src="assets/awards/t-wef.webp" alt="" loading="lazy">
+    </div>
   </div>
 </section>
 
@@ -2466,6 +2532,7 @@ requestAnimationFrame(frame);
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="career/script.js"></script>
 <script src="career/media-footer.js"></script>
+<script src="career/awards.js"></script>
 <script src="career/masterclass.js"></script>
 <script src="career/transformations.js"></script>
 <script type="module" src="career/national-recognition.js"></script>
