@@ -9,16 +9,24 @@
   const trophies = [...sec.querySelectorAll('.rc-trophy')];
   if (!items.length) return;
 
-  const HOLD = 4200;                       // how long an award stays open
+  const HOLD = 2600, FADE = 380;           // how long an award holds, and the dissolve between them
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   let at = -1, timer = 0, inView = false, held = false;
 
+  // the plate going out holds at full opacity under the one coming in, so the plinth they share
+  // never dips; it is dropped once the incoming plate has covered it
+  let settle = 0;
   const show = i => {
     if (i === at) return;
+    const was = at;
     at = i;
     items.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
     badges.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
+    trophies.forEach(el => el.removeAttribute('data-prev'));
+    if (was >= 0) trophies[was].setAttribute('data-prev', '');
     trophies.forEach((el, k) => k === i ? el.setAttribute('data-on', '') : el.removeAttribute('data-on'));
+    clearTimeout(settle);
+    settle = setTimeout(() => trophies.forEach(el => el.removeAttribute('data-prev')), FADE + 60);
   };
 
   const stop = () => { clearTimeout(timer); timer = 0; };

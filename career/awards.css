@@ -258,18 +258,18 @@
   object-position: center bottom;
   display: block;
 }
-/* the plinth is the near layer, as in the file: it hides the foot of whichever trophy is standing
-   in it, so the award reads as set into the plinth rather than sitting on top of it */
-.rc-plinth { z-index: 3; }
-/* the trophies are stacked behind it and cross-fade, so the plinth never moves between awards */
+/* Each plate is a whole award: the trophy already standing in its plinth, so the plinth hides the
+   trophy's foot exactly as it does in the file. They cross-dissolve in place — the incoming plate
+   fades in over the outgoing one, which holds until it is covered, so the plinth, identical in every
+   plate, never dips in opacity mid-change and nothing shifts but the award itself. */
 .rc-trophy {
-  z-index: 2;
+  z-index: 1;
   opacity: 0;
-  transform: translateY(14px) scale(.97);
-  transition: opacity .55s ease, transform .7s cubic-bezier(.22,.61,.36,1);
-  will-change: opacity, transform;
+  transition: opacity .38s ease;
+  will-change: opacity;
 }
-.rc-trophy[data-on] { opacity: 1; transform: none; }
+.rc-trophy[data-prev] { opacity: 1; z-index: 2; transition: none; }
+.rc-trophy[data-on]   { opacity: 1; z-index: 3; }
 
 @media (max-width: 900px) {
   .rc { --rc-col: calc(100% - 2 * var(--page-pad)); }   /* stacked: the page's own column */
@@ -291,5 +291,4 @@
 
 @media (prefers-reduced-motion: reduce) {
   .rc-trophy, .rc-sub, .rc-item, .rc-badges img { transition-duration: .01ms; }
-  .rc-trophy[data-on] { transform: none; }
 }
