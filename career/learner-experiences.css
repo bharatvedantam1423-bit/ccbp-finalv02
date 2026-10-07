@@ -34,7 +34,7 @@
 .lx__stage {
   position: relative;
   margin-top: 64px;
-  height: 292px;                          /* desktop value, used until the script runs */
+  height: 455px;                          /* desktop value, used until the script runs */
   overflow: hidden;
   cursor: grab;
   touch-action: pan-y;
@@ -55,17 +55,25 @@
 .lx__stage::before { left: 0;  background: linear-gradient(90deg,  var(--lx-bg), transparent); }
 .lx__stage::after  { right: 0; background: linear-gradient(270deg, var(--lx-bg), transparent); }
 
-/* Cards */
-.lx-card {
+/* Items: the video card with the learner row under it. The script places each item and sizes the
+   card; --lx-k scales the row (1 on the centre card at the 1440 frame). */
+.lx-item {
   position: absolute;
   left: 0; top: 0;
-  width: 260px; height: 146px;
+  width: 508px;
+  will-change: transform;
+}
+
+/* Cards (Figma CCBP-v02 1177:3797) */
+.lx-card {
+  position: relative;
+  display: block;
+  width: 508px; height: 285px;
   margin: 0; padding: 0; border: 0;
   overflow: hidden;
-  border-radius: var(--lx-radius);
+  border-radius: var(--lx-r, var(--lx-radius));
   background: #eef2fb;
   cursor: inherit;
-  will-change: transform;
   transform: translateZ(0);
 }
 .lx-card:focus-visible { outline: 3px solid var(--lx-accent); outline-offset: 3px; }
@@ -108,6 +116,63 @@
 }
 .lx-card:hover .lx-card__play { transform: translate(-50%, -50%) scale(1.08); }
 .lx-card.is-playing img, .lx-card.is-playing .lx-card__play { display: none; }
+
+/* Learner row: photo, name, package, company (Figma 1177:3652) */
+.lx-info {
+  --k: var(--lx-k, 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12px * var(--k));
+  height: calc(56px * var(--k));
+  margin-top: calc(24px * var(--k));
+  font-family: var(--font, "InterVariable", "Inter", system-ui, sans-serif);
+  letter-spacing: normal;
+}
+.lx-info__who { display: flex; align-items: center; gap: calc(8px * var(--k)); min-width: 0; }
+.lx-info__avatar {
+  flex: none;
+  width: calc(56px * var(--k)); height: calc(56px * var(--k));
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fed7aa;
+}
+.lx-info__avatar img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.lx-info__text {
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+  gap: calc(11px * var(--k));
+  min-width: 0;
+}
+.lx-info__name {
+  max-width: 100%;
+  font-weight: 600;
+  font-size: calc(20px * var(--k)); line-height: calc(21px * var(--k));
+  color: #1a2330;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.lx-info__pill {
+  padding: calc(2px * var(--k)) calc(8px * var(--k));
+  border-radius: 100px;
+  background: #d9f8ea; color: #00693a;
+  font-weight: 500;
+  font-size: calc(12px * var(--k)); line-height: calc(20px * var(--k));
+  white-space: nowrap;
+}
+/* company: the logo where there is one, otherwise the name set as a wordmark (as the hiring-team cards do) */
+.lx-info__logo {
+  flex: none; display: block;
+  width: auto; height: calc(24px * var(--k)); max-width: calc(124px * var(--k));
+  object-fit: contain; object-position: right center;
+  pointer-events: none;
+}
+.lx-info__co {
+  flex: none;
+  font-weight: 700;
+  font-size: calc(18px * var(--k)); line-height: 1.1;
+  letter-spacing: -.01em;
+  color: #334155;
+  white-space: nowrap;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .lx-card__play { transition: none; }

@@ -1,5 +1,6 @@
 /* NxtWave Learner's Experiences: lens carousel with inline YouTube playback.
-   - Cards grow toward the centre (centre = 2x, neighbours about 72%), always 24px apart.
+   - Cards grow toward the centre (Figma CCBP-v02 1177:3797: centre 667.8px, resting 507.8px at the
+     1440 frame), always 32px apart. Under each video sits the learner row (photo, name, package, company).
    - Drag, horizontal swipe or trackpad, and arrow keys move it. Vertical wheel scrolls the page as normal.
    - Clicking the centre card plays its video inside the card. Clicking a side card glides it
      to the centre and plays it there. Moving away stops the video.
@@ -8,10 +9,15 @@
   'use strict';
 
   var CFG = {
-    itemWidth: 260,       // resting card width (px); centre card = itemWidth * activeScale
-    ratio: 9 / 16,        // YouTube thumbnails, never cropped
-    gap: 24,              // exact space between neighbouring cards
-    activeScale: 2,
+    itemWidth: 507.79,    // resting card width (px) at the 1440 frame; centre card = itemWidth * activeScale
+    frame: 1440,          // the design width: below it (down to tablets) the cards scale with the window
+    ratio: 292 / 520,     // video height : width, as in the file
+    gap: 32,              // exact space between neighbouring cards
+    activeScale: 667.81 / 507.79,
+    infoGap: 24,          // video → learner row
+    infoH: 56,            // learner row height (the photo)
+    infoSide: 0.947,      // the row on a resting card is drawn at 94.7% (it barely shrinks with the card)
+    infoMin: 0.72,        // smallest row scale, for tablets and phones
     scaleRadius: 500,     // px over which cards shrink back to resting size
     dragFriction: 1.2,
     ease: 0.08,           // per-frame easing at 60fps
@@ -22,31 +28,43 @@
 
   function init(section) {
     var stage = section.querySelector('.lx__stage');
-    var cards = Array.prototype.slice.call(stage.querySelectorAll('.lx-card'));
-    var N = cards.length;
+    var items = Array.prototype.slice.call(stage.querySelectorAll('.lx-item'));
+    var N = items.length;
     if (!N) return;
 
-    var els = cards.map(function (card) {
+    var els = items.map(function (item) {
+      var card = item.querySelector('.lx-card');
       if (!card.querySelector('.lx-card__play')) {
         var p = document.createElement('span');
         p.className = 'lx-card__play';
         p.setAttribute('aria-hidden', 'true');
         card.appendChild(p);
       }
-      return { card: card, id: card.getAttribute('data-yt'), w: 0, s: 1, x: 0 };
+      return { item: item, card: card, id: card.getAttribute('data-yt'), w: 0, s: 1, x: 0 };
     });
 
     /* ---------- sizing ---------- */
-    var W = 0, itemW = 0, itemH = 0, gap = CFG.gap, span = 1, g = 1;
+    var W = 0, itemW = 0, itemH = 0, gap = CFG.gap, span = 1, g = 1, kBase = 1, stageH = 0;
     var target = 0, pos = 0;
 
     function measure() {
       W = stage.clientWidth;
-      itemW = Math.min(CFG.itemWidth, (W - 32) / CFG.activeScale);   // centre card keeps a 16px gutter
+      var centre = CFG.itemWidth * CFG.activeScale;
+      if (W < CFG.frame) centre = W < 810 ? W : centre * W / CFG.frame;     // below the frame, keep its proportions
+      centre = Math.min(centre, W - 32);                                     // centre card keeps a 16px gutter
+      itemW = centre / CFG.activeScale;
       itemH = itemW * CFG.ratio;
       span = itemW + gap;
       g = Math.max(0.001, (CFG.scaleRadius * itemW / CFG.itemWidth) / span);
-      stage.style.height = (itemH * CFG.activeScale) + 'px';
+      kBase = Math.max(CFG.infoMin, Math.min(1, centre / (CFG.itemWidth * CFG.activeScale)));
+      stageH = itemH * CFG.activeScale + kBase * (CFG.infoGap + CFG.infoH);
+      stage.style.height = stageH + 'px';
+    }
+
+    // learner-row scale: full size on the centre card, a touch smaller on resting ones
+    function infoAt(s) {
+      var p = (s - 1) / (CFG.activeScale - 1);
+      return kBase * (CFG.infoSide + (1 - CFG.infoSide) * p);
     }
 
     function scaleAt(t) {
@@ -71,13 +89,18 @@
       for (j = k + 1; j < sorted.length; j++) sorted[j].x = sorted[j - 1].x + itemW * (sorted[j - 1].s + sorted[j].s) / 2 + gap;
       for (j = k - 1; j >= 0; j--) sorted[j].x = sorted[j + 1].x - itemW * (sorted[j + 1].s + sorted[j].s) / 2 - gap;
 
-      var stageH = itemH * CFG.activeScale, best = Infinity;
+      var best = Infinity;
       for (i = 0; i < N; i++) {
-        var el = els[i], cw = itemW * el.s, ch = itemH * el.s, st = el.card.style;
+        var el = els[i], cw = itemW * el.s, ch = itemH * el.s, k = infoAt(el.s);
+        var bh = ch + k * (CFG.infoGap + CFG.infoH), st = el.card.style, it = el.item.style;
         st.width = cw + 'px';
         st.height = ch + 'px';
-        st.transform = 'translate3d(' + (W / 2 + el.x - cw / 2) + 'px,' + ((stageH - ch) / 2) + 'px,0)';
-        st.setProperty('--lx-s', (36 * el.s) + 'px');
+        st.setProperty('--lx-s', (cw * 0.157) + 'px');          // play disc: 105px on the 667.8px card
+        st.setProperty('--lx-r', (cw * 0.04615) + 'px');        // corners: 30.8px on the 667.8px card
+        it.width = cw + 'px';
+        it.setProperty('--lx-k', k.toFixed(4));
+        // the whole block (video + learner row) is centred on the stage, as in the file
+        it.transform = 'translate3d(' + (W / 2 + el.x - cw / 2) + 'px,' + ((stageH - bh) / 2) + 'px,0)';
         // only cards near the screen are reachable by keyboard
         el.card.tabIndex = Math.abs(el.w) < 0.5 ? 0 : -1;
         if (Math.abs(el.w) < best) { best = Math.abs(el.w); nearest = i; }
@@ -154,9 +177,9 @@
 
     function onTap(e) {
       var hit = document.elementFromPoint(e.clientX, e.clientY);
-      hit = hit && hit.closest ? hit.closest('.lx-card') : null;
+      hit = hit && hit.closest ? hit.closest('.lx-item') : null;
       var i = -1;
-      for (var j = 0; j < N; j++) if (els[j].card === hit) i = j;
+      for (var j = 0; j < N; j++) if (els[j].item === hit) i = j;
       if (i < 0) return;
       if (i === nearest && Math.abs(els[i].w) < 0.5) { snap(); play(i); }
       else { target = Math.round((pos + els[i].w * span) / span) * span; pending = i; wake(); }   // glide, then play
