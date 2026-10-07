@@ -21,11 +21,14 @@ the programmes cards and the rest of the NxtWave homepage (from the CCBP-v02 bui
    so they read at different depths (`--nx/--ny/--rx/--ry`, eased in `programmes.js`).
 
    The file repeats the Academy copy on all three cards; each card keeps its own here.
-3. From the CCBP-v02 build, unchanged: **Recognised by** · **Awards & Recognitions** (scroll-scrubbed
-   film) · **National Level Recognition** · **3,000+ companies** logo ticker · **Taught by people who
+3. From the CCBP-v02 build: **Recognised by** · **Awards & Recognitions** (scroll-scrubbed
+   film) · **3,000+ companies** logo marquee · **Taught by people who
    have done the job** (pinned, scroll-scrubbed film) · **Career Transformations** · **Masterclasses** ·
    **Learner's Experiences** · **We train you for what companies hire for** · **Why Top Companies
    Prefer NxtWave Students** · **Investors** · **Recognized by Leading Media** · footer.
+   The logo marquee, Career Transformations and Learner's Experiences are supplied drop-in builds
+   (`career/hiring-companies.*`, `career/career-transformations.*`, `career/learner-experiences.*`);
+   their headings, sublines and spacing follow the page tokens through overrides in `index.html`.
 
 Also from v02: the **navbar** (fixed over the particle hero, fades out when the white sections
 start, as it did over the v02 hero), the **WhatsApp** button, and the **Design notes** switch
@@ -60,9 +63,9 @@ It also works unchanged on GitHub Pages or Netlify.
 
 - `index.html` — page, v02 section styles and scripts, and the particle engine
 - `programmes.css`, `programmes.js` — section 2 styles and card behaviour (all styles scoped to `.programmes`)
-- `career/` — styles and scripts for the lower sections (scoped to `.cs`, `.mc`, `.nr`, `.ft`)
-- `vendor/` — Lenis, GSAP + ScrollTrigger, Three.js r128 (particle hero) and r170 (National Recognition
-  backdrop), self-hosted fonts; nothing but Google Fonts loads from another site
+- `career/` — styles and scripts for the lower sections (scoped to `.cs`, `.mc`, `.ft`, and the supplied
+  sections to `.nw-hire`, `.ctw`, `.lx`)
+- `vendor/` — Lenis, GSAP + ScrollTrigger, Three.js r128 (particle hero), self-hosted fonts; nothing but Google Fonts loads from another site
 - `assets/` — section 2 images (see `assets/README.md`) and the v02 images, logos and films;
   `assets/logos-wall/` holds the white logo silhouettes the hero's screen-2 ticker runs
 - `vercel.json` — Vercel headers and URL settings
@@ -97,11 +100,13 @@ It also works unchanged on GitHub Pages or Netlify.
 Per-section position, crop focus, depth relief, brightness and sampling resolution live in the
 `SEC` array near the top of the particle script in `index.html`.
 
-Lower-section content: logo ticker `NAMES`, Career Transformations `PEOPLE` / `REVIEWS` (in
-`index.html`), hiring-team cards (`career/script.js`), masterclass mentors (`career/masterclass.js`),
+Lower-section content: logo marquee `ROWS` (`career/hiring-companies.js`, logos in
+`assets/hiring-companies/logos/`), Career Transformations `VIDEOS` / `QUOTES`
+(`career/career-transformations.js`, assets in `assets/career-transformations/`), Learner's Experiences
+cards (the `.lx-card` buttons in `index.html`, thumbnails in `assets/learner-experiences/`), hiring-team cards (`career/script.js`), masterclass mentors (`career/masterclass.js`),
 media and footer course tracks (`career/media-footer.js`).
 
 The "Explore programmes" button scrolls to the programmes section. The three "Explore Academy /
 Intensive / NIAT" buttons still link to `#` — point them at the real pages before launch.
-Also placeholder in the v02 sections: the Career Transformations names, photos, quotes and packages,
-and the nav's "Hire With Us", "About Us" and "Login" links (they do nothing yet).
+Also placeholder: the Career Transformations names, photos, quotes and packages (and its View All
+link, still `#`), and the nav's "Hire With Us", "About Us" and "Login" links (they do nothing yet).

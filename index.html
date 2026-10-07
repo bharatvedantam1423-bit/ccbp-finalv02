@@ -12,13 +12,14 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="vendor/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="vendor/fonts.css">
-<!-- lower sections (v02 build): styles scoped to .cs / .mc / .nr / .ft -->
+<!-- lower sections (v02 build): styles scoped to .cs / .mc / .ft; the supplied sections to .nw-hire / .ctw / .lx -->
 <link rel="stylesheet" href="career/style.css">
 <link rel="stylesheet" href="career/media-footer.css">
 <link rel="stylesheet" href="career/masterclass.css">
-<link rel="stylesheet" href="career/transformations.css">
 <link rel="stylesheet" href="career/awards.css">
-<link rel="stylesheet" href="career/national-recognition.css">
+<link rel="stylesheet" href="career/hiring-companies.css">
+<link rel="stylesheet" href="career/career-transformations.css">
+<link rel="stylesheet" href="career/learner-experiences.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap">
@@ -80,9 +81,8 @@ a{color:inherit;text-decoration:none}
    subheading style. Headings: Outfit 600 with the Figma gradient fill.
    Subheadings: Geist. The hero (.hx) is deliberately left out of this.
    ===================================================================== */
-.prog-title,.record-title,.mw-title,.companies-title,.inv-title,.mc .mc__title,
-.ctv-title,.cs .wl__title,.cs .ht__title,.cs .fm__title,.cs .cta__title,
-.nr-title{
+.prog-title,.record-title,.mw-title,.nw-hire__title,.inv-title,.mc .mc__title,
+.ctw-heading h2,.lx__title,.cs .wl__title,.cs .ht__title,.cs .fm__title,.cs .cta__title{
   font-family:var(--font-head);font-weight:600;
   line-height:.98;letter-spacing:-.01em;font-variation-settings:normal;
   background-image:var(--head-grad);
@@ -93,17 +93,16 @@ a{color:inherit;text-decoration:none}
 /* same fill, inverted for the headings that sit on dark panels */
 .cs .cta__title{background-image:var(--head-grad-dark)}
 
-.prog-sub,.mw-sub,.companies-sub,.inv-sub,.nr .nr-lede,
-.ctv-sub,.cs .wl__sub,.cs .ht__sub,.cs .cta__sub{
+.prog-sub,.mw-sub,.nw-hire__sub,.inv-sub,
+.ctw-heading-sub,.cs .wl__sub,.cs .ht__sub,.cs .cta__sub{
   font-family:var(--font-sub);font-weight:400;line-height:1.5;letter-spacing:normal;color:var(--sub-ink);
 }
 /* the sections below the awards share one heading size */
-.prog-title,.record-title,.mw-title,.ctv-title,
-.companies-title,.inv-title,.mc .mc__title,.cs .wl__title,.cs .ht__title,.cs .fm__title,
-.nr-title{font-size:var(--head-size);line-height:1.12}
+.prog-title,.record-title,.mw-title,.ctw-heading h2,.lx__title,
+.nw-hire__title,.inv-title,.mc .mc__title,.cs .wl__title,.cs .ht__title,.cs .fm__title{font-size:var(--head-size);line-height:1.12}
 /* ...and one subheading size */
-.prog-sub,.mw-sub,.companies-sub,.inv-sub,
-.ctv-sub,.cs .wl__sub,.cs .ht__sub,.cs .cta__sub{font-size:var(--sub-size)}
+.prog-sub,.mw-sub,.nw-hire__sub,.inv-sub,
+.ctw-heading-sub,.cs .wl__sub,.cs .ht__sub,.cs .cta__sub{font-size:var(--sub-size)}
 /* card-level heading/body inside a section follow the same two families */
 .cs .wl__h{font-family:var(--font-head);font-weight:600;letter-spacing:-.01em}
 .cs .wl__p{font-family:var(--font-sub);font-weight:400;letter-spacing:normal}
@@ -272,26 +271,6 @@ a{color:inherit;text-decoration:none}
 
 
 /* =====================================================================
-   S3b — 3,000+ COMPANIES (from the supplied build): five lines of logos
-   drifting in alternate directions, edges fading into the page
-   ===================================================================== */
-.companies{background:#fefffe;padding:var(--sec-y) clamp(16px,4vw,57px) clamp(24px,3vw,48px)}   /* mentors below brings its own top room */
-.companies-inner{max-width:1320px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:clamp(36px,3.7vw,53px)}
-.companies-head{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
-.companies-sub{margin:0}
-.ticker{width:100vw;margin-inline:calc(50% - 50vw);display:flex;flex-direction:column;gap:clamp(28px,3vw,44px);overflow:hidden;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);
-          mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%)}
-.ticker-row{display:flex;width:max-content;animation:tickL var(--tick-dur,60s) linear infinite}
-.ticker-row.to-right{animation-name:tickR}
-.ticker-set{display:flex;align-items:center;gap:clamp(48px,6vw,96px);padding-right:clamp(48px,6vw,96px);list-style:none;margin:0}
-.ticker-set li{flex:none;display:flex;align-items:center;height:clamp(20px,2.1vw,29px)}
-.ticker-set img{height:100%;width:auto;max-width:clamp(63px,7.2vw,105px);object-fit:contain;display:block}
-@keyframes tickL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes tickR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
-@media (prefers-reduced-motion:reduce){ .ticker-row{animation:none} }
-
-/* =====================================================================
    S7b — BACKED BY LEADING GLOBAL INVESTORS (from the supplied build)
    ===================================================================== */
 .cs .inv{background:#fff;padding:var(--sec-y) 24px 0;display:flex;flex-direction:column;align-items:center;gap:clamp(40px,5vw,72px)}
@@ -375,89 +354,6 @@ a{color:inherit;text-decoration:none}
      of the screen rather than the film dropping to the bottom with a gap above it */
   .mw-stage{justify-content:center}
   .mw-screen{flex:none;height:calc(100vw * 728 / 1262)}
-}
-
-/* =====================================================================
-   S6 — CAREER TRANSFORMATIONS
-   Two tickers side by side, no pinning and no scroll-scrub: a column of
-   learner portraits drifting up on the left, a wall of short written
-   reviews drifting on the right. Both loop by duplicating their content
-   and translating a whole copy's height, so the seam never shows.
-   Content lives in PEOPLE and REVIEWS in the script — edit those.
-   ===================================================================== */
-.ctv{position:relative;z-index:2;background:#fff;padding:var(--sec-y) 0;overflow:hidden}
-.ctv-inner{max-width:1440px;margin:0 auto;padding:0 var(--pad,clamp(20px,5.56vw,80px));
-  display:grid;grid-template-columns:minmax(0,clamp(300px,30vw,420px)) minmax(0,1fr);
-  gap:clamp(24px,3.4vw,56px);align-items:start}
-
-/* ---- left: portrait ticker. the photo is the card; the caption sits on it ---- */
-.ctv-people{position:relative;height:clamp(520px,74vh,760px);overflow:hidden;
-  -webkit-mask-image:linear-gradient(180deg,transparent,#000 9%,#000 91%,transparent);
-          mask-image:linear-gradient(180deg,transparent,#000 9%,#000 91%,transparent)}
-.ctv-people-track{display:flex;flex-direction:column;gap:16px;will-change:transform;
-  animation:ctvUp var(--ctv-dur,60s) linear infinite}
-.ctv-people:hover .ctv-people-track,.ctv-wall:hover .ctv-col{animation-play-state:paused}
-
-.ctv-shot{position:relative;flex:none;margin:0;border-radius:14px;overflow:hidden;
-  aspect-ratio:16/10;background:#e2e8f0;box-shadow:0 12px 28px -18px rgba(2,6,23,.45)}
-.ctv-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.ctv-shot figcaption{position:absolute;left:0;right:0;bottom:0;z-index:1;
-  display:flex;align-items:flex-end;justify-content:space-between;gap:10px;padding:14px;
-  color:#fff;font-family:var(--font-sub);
-  background:linear-gradient(180deg,transparent,rgba(2,6,23,.78))}
-.ctv-shot figcaption span{min-width:0;font-size:13px;line-height:1.35}
-.ctv-shot figcaption b{display:block;font-size:15px;font-weight:600}
-.ctv-pkg{flex:none;align-self:center;background:#188300;color:#fff;border-radius:999px;
-  padding:4px 10px;font-size:12px;font-weight:700;line-height:1}
-
-/* ---- right: heading, then the wall of written reviews ---- */
-.ctv-head{max-width:640px}
-.ctv-title{margin:0;font-size:var(--head-size);line-height:1.12}
-.ctv-btn{display:inline-block;margin-top:20px;padding:12px 26px;border-radius:10px;
-  background:var(--brand,#2563eb);color:#fff;text-decoration:none;
-  font-family:var(--font-sub);font-size:15px;font-weight:600;
-  transition:background .2s,transform .2s}
-.ctv-btn:hover{background:#1d4ed8;transform:translateY(-1px)}
-
-.ctv-wall{position:relative;margin-top:clamp(24px,3vw,40px);
-  height:clamp(460px,62vh,640px);overflow:hidden;
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;
-  -webkit-mask-image:linear-gradient(180deg,transparent,#000 10%,#000 88%,transparent);
-          mask-image:linear-gradient(180deg,transparent,#000 10%,#000 88%,transparent)}
-.ctv-col{display:flex;flex-direction:column;gap:16px;will-change:transform;
-  animation:ctvUp var(--ctv-dur,60s) linear infinite}
-.ctv-col--down{animation-name:ctvDown}
-
-.ctv-note{flex:none;background:#f8fafc;border:1px solid #eef2f7;border-radius:12px;padding:16px}
-.ctv-note-by{display:flex;align-items:center;gap:10px}
-.ctv-note-by > div{min-width:0;flex:1 1 auto}
-.ctv-ctc{flex:none;align-self:center;background:#e8f5e9;color:#166534;border-radius:999px;
-  padding:4px 9px;font-family:var(--font-sub);font-size:12px;font-weight:700;line-height:1}
-.ctv-note-by img{width:32px;height:32px;border-radius:50%;object-fit:cover;flex:none;background:#e2e8f0}
-.ctv-note-by b{display:block;font-family:var(--font-sub);font-size:13px;font-weight:600;color:#0f172a;line-height:1.3}
-.ctv-note-by span{display:block;font-family:var(--font-sub);font-size:12px;color:#64748b;line-height:1.3}
-.ctv-note p{margin:10px 0 0;font-family:var(--font-sub);font-size:13px;line-height:1.55;color:#334155}
-
-@keyframes ctvUp  {from{transform:translate3d(0,0,0)}      to{transform:translate3d(0,calc(-50% - 8px),0)}}
-@keyframes ctvDown{from{transform:translate3d(0,calc(-50% - 8px),0)} to{transform:translate3d(0,0,0)}}
-
-@media (max-width:1024px){
-  .ctv-inner{grid-template-columns:minmax(0,1fr);gap:32px}
-  .ctv-people{height:auto}
-  .ctv-people-track{flex-direction:row;animation-name:ctvLeft}
-  .ctv-people{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
-              mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-  .ctv-shot{width:min(74vw,320px)}
-  @keyframes ctvLeft{from{transform:translate3d(0,0,0)} to{transform:translate3d(calc(-50% - 8px),0,0)}}
-  .ctv-wall{grid-template-columns:repeat(2,minmax(0,1fr));height:clamp(420px,56vh,560px)}
-}
-@media (max-width:640px){
-  .ctv-wall{grid-template-columns:minmax(0,1fr);height:440px}
-}
-@media (prefers-reduced-motion:reduce){
-  .ctv-people-track,.ctv-col{animation:none}
-  .ctv-people,.ctv-wall{height:auto;overflow:visible;-webkit-mask-image:none;mask-image:none}
-  .ctv-wall{grid-auto-rows:min-content}
 }
 
 /* everything from Masterclasses down is opaque and layered above, so nothing
@@ -553,20 +449,29 @@ a{color:inherit;text-decoration:none}
 .aw-inner{max-width:var(--page-max)}
 .aw-wall{width:min(100%,var(--page-max))}
 .aw-cards{width:100%}   /* the photo cards span the column, edge to edge with the panel above */
-/* National Level Recognition: a tinted band, padded top and bottom */
-.nr{padding-block:var(--sec-y)}
-.nr .nr-wrap{width:calc(100% - 2 * var(--page-pad));max-width:var(--page-max)}
-/* 3,000+ companies */
-.companies{padding:var(--sec-y) var(--page-pad) clamp(24px,3vw,48px)}
-.companies-inner{max-width:var(--page-max)}
-/* Career Transformations */
-.ctv{padding:var(--sec-y) 0 0}
-.ctv-inner{max-width:calc(var(--page-max) + 2 * var(--page-pad));padding-inline:var(--page-pad)}
+/* 3,000+ companies (supplied build, career/hiring-companies.css): the page's room above the heading and
+   heading → subline → logos gaps; the small bottom pad stays, as the mentors section brings its own top room */
+.nw-hire{padding:var(--sec-y) 0 clamp(24px,3vw,48px)}
+.nw-hire__head{gap:16px;align-items:center;padding-inline:var(--page-pad)}
+.nw-hire__rows{margin-top:clamp(32px,4vw,56px)}
+/* Career Transformations (supplied build, career/career-transformations.css): same room above the heading
+   and the page's side margin. The 130px → 80px heading-to-wall close is the build's own scroll motion. */
+.ctw{font-family:var(--font)}
+.ctw-heading{padding-top:var(--sec-y);padding-inline:var(--page-pad)}
+.ctw-heading-text{gap:16px}
+/* the wall's last 62px are solid white (the bottom fade is opaque from 72% of its 220px) and the gap close
+   lifts the wall 50px (24px on phones) without giving the space back. Tuck all but 12px of that under the
+   masterclasses section (opaque, layered above), so the gap to the next heading is about the page's --sec-y
+   and the fade is never clipped */
+.ctw{margin-bottom:-100px}
+@media (max-width:809px){ .ctw{margin-bottom:-74px} }
 /* Masterclasses */
 .mc .mc__head{width:calc(100% - 2 * var(--m));max-width:var(--page-max);margin-inline:auto}
 .mc .mc__body{max-width:calc(var(--page-max) + 2 * var(--m))}
-/* Learner's Experiences */
-.cs .ctf{padding-bottom:0}
+/* Learner's Experiences (supplied build, career/learner-experiences.css): room above the heading, none below */
+.lx{padding:var(--sec-y) 0 0}
+.lx__title{margin-inline:auto;padding-inline:0;max-width:calc(100% - 2 * var(--page-pad))}
+.lx__stage{margin-top:clamp(32px,4vw,56px)}
 /* We train you for what companies hire for */
 .cs .wl{padding-inline:var(--page-edge)}
 /* Why Top Companies Prefer NxtWave Students: the rail starts on the content line and runs off the right */
@@ -583,7 +488,7 @@ a{color:inherit;text-decoration:none}
 .cs .ft__inner{padding-inline:max(24px,calc(var(--page-pad) - 20px))}
 .cs .ft__rights{margin-inline:auto}
 /* heading sweep on every section title: the split words stay inline so the gradient clip covers them */
-:is(.programmes__title,.record-title,.nr-title,.companies-title,.mw-title,.ctv-title,.mc__title,.inv-title) .sw-w{display:inline}
+:is(.programmes__title,.record-title,.nw-hire__title,.mw-title,.ctw-heading h2,.lx__title,.mc__title,.inv-title) .sw-w{display:inline}
 
 @media (prefers-reduced-motion:reduce){ .dn-track,.dn-thumb{transition-duration:.01s} }
 </style>
@@ -1019,59 +924,16 @@ html.lenis,html.lenis body{height:auto}
 </section>
 
 <!-- ===================================================================
-     S3c — NATIONAL LEVEL RECOGNITION (supplied build): the awards above are the
-     company's; this is the learners'. Three.js light-ribbon backdrop behind a skewed
-     photo pair, with the honour named on a card that overlaps them.
+     S3b — 3,000+ COMPANIES HIRE NXTWAVE LEARNERS (supplied build, Figma CCBP-v02 1163:2689): four rows
+     of logo cards drifting in alternate directions. Styles career/hiring-companies.css (scoped to
+     .nw-hire), rows built by career/hiring-companies.js from its ROWS list.
      =================================================================== -->
-<section class="nr" id="national-recognition" aria-labelledby="nr-title">
-  <canvas class="nr-bg" aria-hidden="true"></canvas>
-
-  <div class="nr-wrap">
-    <div class="nr-copy">
-      <h2 class="nr-title" id="nr-title">
-        <span class="ln"><span>National Level</span></span>
-        <span class="ln"><span>Recognition for</span></span>
-        <span class="ln"><span>NxtWave Students</span></span>
-      </h2>
-      <p class="nr-lede">Our learners continue to make us proud, receiving recognition at the national level for their talent and contribution.</p>
-      <a class="nr-btn" href="#programmes">
-        <svg class="nr-btn-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
-        <span>Request a Callback</span>
-        <svg class="nr-btn-ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
-    </div>
-
-    <figure class="nr-media">
-      <div class="nr-photos">
-        <div class="nr-ph" data-depth="1"><img src="assets/national-recognition/photo-1.jpg" width="446" height="426" alt="Shri Dharmendra Pradhan presenting a certificate to a NxtWave learner" loading="lazy"></div>
-        <div class="nr-ph" data-depth="2"><img src="assets/national-recognition/photo-2.jpg" width="446" height="392" alt="Shri Dharmendra Pradhan presenting a certificate to a NxtWave learner" loading="lazy"></div>
-      </div>
-
-      <figcaption class="nr-card">
-        <img class="nr-emblem" src="assets/national-recognition/emblem.png" width="104" height="166" alt="National Emblem of India" loading="lazy">
-        <i class="nr-div" aria-hidden="true"></i>
-        <div class="nr-card-t">
-          <span class="nr-k">Honored by</span>
-          <strong class="nr-name">Shri Dharmendra Pradhan ji</strong>
-          <span class="nr-role">Union Minister for Education | Skill Development | Entrepreneurship</span>
-          <span class="nr-role">Govt. of India - 2023</span>
-        </div>
-      </figcaption>
-    </figure>
+<section class="nw-hire" id="hiring-network" aria-labelledby="nw-hire-title" data-logo-path="assets/hiring-companies/logos/">
+  <div class="nw-hire__head">
+    <h2 class="nw-hire__title" id="nw-hire-title">3,000+ companies hire NxtWave learners</h2>
+    <p class="nw-hire__sub">Across product companies, startups, and global services firms.</p>
   </div>
-</section>
-
-<!-- ===================================================================
-     S3b — 3,000+ COMPANIES HIRE NXTWAVE LEARNERS (from the supplied build): five lines of logos
-     =================================================================== -->
-<section class="companies" id="hiring-network" aria-labelledby="companies-title">
-  <div class="companies-inner">
-    <header class="companies-head reveal-up">
-      <h2 class="companies-title" id="companies-title">3,000+ companies hire NxtWave learners</h2>
-      <p class="companies-sub">Across product companies, startups, and global services firms.</p>
-    </header>
-    <div class="ticker reveal-up" id="logo-ticker" role="region" aria-label="Companies that hire NxtWave learners"></div>
-  </div>
+  <div class="nw-hire__rows"></div>
 </section>
 
 <!-- ===================================================================
@@ -1105,29 +967,24 @@ html.lenis,html.lenis body{height:auto}
 </section>
 
 <!-- ===================================================================
-     S6–S9 — CAREER TRANSFORMATIONS · WHAT COMPANIES LOOK FOR · HIRING TEAMS · MEDIA
-     (merged from career-site; styles scoped to .cs)
+     S6 — CAREER TRANSFORMATIONS (supplied build): heading, subline and View All above a staggered
+     wall of text and video testimonials; the side columns rise into an arch as the section scrolls in.
+     Styles career/career-transformations.css (scoped to .ctw), wall built by
+     career/career-transformations.js (VIDEOS, QUOTES) from assets/career-transformations/.
      =================================================================== -->
-<div class="cs">
-<!-- Career Transformations (Figma CCBP-v02 794:4806): one pinned screen that turns from light to dark.
-     White: the heading with six learner portraits around it. Scrolling: the backdrop darkens, the
-     portraits drift off, the heading rises and turns light, and columns of testimonials rise in.
-     The next section then slides up over the finished dark screen. -->
-<section class="ctv" id="career-transformations" aria-labelledby="ct-title">
-  <div class="ctv-inner">
-    <div class="ctv-people"><div class="ctv-people-track"><!-- learner portraits, rendered from PEOPLE --></div></div>
-    <div class="ctv-main">
-      <header class="ctv-head">
-        <h2 class="ctv-title" id="ct-title">Career Transformations</h2>
-        <p class="ctv-sub">Real people. Named companies. Their own words.</p>
-        <a class="ctv-btn" href="#" data-blank>View All</a>
-      </header>
-      <div class="ctv-wall"><!-- written reviews, rendered from REVIEWS --></div>
+<section class="ctw" id="career-transformations" data-career-transformations data-assets="assets/career-transformations/" aria-labelledby="ct-title">
+  <div class="ctw-heading">
+    <div class="ctw-heading-text">
+      <h2 id="ct-title">Career Transformations</h2>
+      <p class="ctw-heading-sub">Real people. Named companies. Their own words.</p>
     </div>
+    <a class="ctw-cta" href="#" data-blank>View All</a>
+  </div>
+  <div class="ctw-mask">
+    <div class="ctw-images"></div>
+    <div class="ctw-fade-bottom"></div>
   </div>
 </section>
-
-</div>
 
 <!-- ===================================================================
      S6b — MASTERCLASSES FROM MENTORS IN THE COMMUNITY (from the supplied build;
@@ -1156,17 +1013,66 @@ html.lenis,html.lenis body{height:auto}
 </section>
 
 <div class="cs cs--after">
-<!-- NxtWave Learner's Experiences (Figma CCBP-v02 828:149): one large player, five-up
-     thumbnail strip. Sits first in .cs--after, so it follows the masterclasses section. -->
-<section class="ctf" id="learner-experiences" aria-labelledby="ctf-title">
-  <h2 class="fm__title ctf__title" id="ctf-title">NxtWave Learner's Experiences</h2>
-  <div class="ctf__stage">
-    <div class="ctf__player" id="ctf-player"></div>
-    <div class="ctf__carousel">
-      <ul class="ctf__rail" id="ctf-rail" aria-label="Learner stories"></ul>
-    </div>
-    <a class="ctf__more" href="https://www.youtube.com/@NxtWaveTech/videos" target="_blank" rel="noopener">
-      View More<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+<!-- NxtWave Learner's Experiences (supplied build): a lens carousel of 18 learner videos, the centre card
+     at twice the size; videos play inside the card. Styles career/learner-experiences.css (scoped to .lx),
+     behaviour career/learner-experiences.js. Sits first in .cs--after, so it follows the masterclasses section. -->
+<section class="lx" id="learner-experiences" aria-labelledby="lx-title">
+  <h2 class="lx__title" id="lx-title">NxtWave Learner's Experiences</h2>
+  <div class="lx__stage" role="region" aria-label="Learner testimonial videos">
+    <button class="lx-card" type="button" data-yt="aawbdgBRomo" aria-label="Play video: Soumith · NxtWave to Amazon">
+      <img src="assets/learner-experiences/aawbdgBRomo.jpg" alt="Soumith · NxtWave to Amazon" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="464AuFzgWvs" aria-label="Play video: Hemanth Kumar · Placed at Revature">
+      <img src="assets/learner-experiences/464AuFzgWvs.jpg" alt="Hemanth Kumar · Placed at Revature" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="n3wgX8TEKL4" aria-label="Play video: Taking a step into the tech world">
+      <img src="assets/learner-experiences/n3wgX8TEKL4.jpg" alt="Taking a step into the tech world" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="Od_Ow7fI88k" aria-label="Play video: Shaik Shavali · Self-doubt to success">
+      <img src="assets/learner-experiences/Od_Ow7fI88k.jpg" alt="Shaik Shavali · Self-doubt to success" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="Hcew9Njyp4I" aria-label="Play video: Dhamodhar · With NxtWave, I did it">
+      <img src="assets/learner-experiences/Hcew9Njyp4I.jpg" alt="Dhamodhar · With NxtWave, I did it" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="Zu0RhWE1Ddg" aria-label="Play video: Ajay Kumar · NxtWave led me to HTC">
+      <img src="assets/learner-experiences/Zu0RhWE1Ddg.jpg" alt="Ajay Kumar · NxtWave led me to HTC" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="l9VtprKd2es" aria-label="Play video: First attempt. First job.">
+      <img src="assets/learner-experiences/l9VtprKd2es.jpg" alt="First attempt. First job." width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="D9xv1HMStBI" aria-label="Play video: Anil Goguri · A dream achieved">
+      <img src="assets/learner-experiences/D9xv1HMStBI.jpg" alt="Anil Goguri · A dream achieved" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="H29pCmIeW2E" aria-label="Play video: Pranay · Switched to an SDE-1 role">
+      <img src="assets/learner-experiences/H29pCmIeW2E.jpg" alt="Pranay · Switched to an SDE-1 role" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="nDFKP8kNIAc" aria-label="Play video: Learning in her mother tongue, got placed">
+      <img src="assets/learner-experiences/nDFKP8kNIAc.jpg" alt="Learning in her mother tongue, got placed" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="r5bE7xIUUz0" aria-label="Play video: ₹12 LPA · The turning point">
+      <img src="assets/learner-experiences/r5bE7xIUUz0.jpg" alt="₹12 LPA · The turning point" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="m_LshX1kT_s" aria-label="Play video: Leela Prasanthi · I still made it">
+      <img src="assets/learner-experiences/m_LshX1kT_s.jpg" alt="Leela Prasanthi · I still made it" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="pJ4KzzgQQYk" aria-label="Play video: Anjaiah · I proved the rumours wrong">
+      <img src="assets/learner-experiences/pJ4KzzgQQYk.jpg" alt="Anjaiah · I proved the rumours wrong" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="M1Souvob8Bw" aria-label="Play video: Bharath · Salesman to software engineer">
+      <img src="assets/learner-experiences/M1Souvob8Bw.jpg" alt="Bharath · Salesman to software engineer" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="HKb4URF4oFY" aria-label="Play video: Kavya Prathipati · My biggest achievement">
+      <img src="assets/learner-experiences/HKb4URF4oFY.jpg" alt="Kavya Prathipati · My biggest achievement" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="g9F4Uxy4Ioc" aria-label="Play video: Harshavardhan · Twice my expected salary">
+      <img src="assets/learner-experiences/g9F4Uxy4Ioc.jpg" alt="Harshavardhan · Twice my expected salary" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="1VDRiu6Ng_M" aria-label="Play video: Usha Sree · 15 LPA tech job">
+      <img src="assets/learner-experiences/1VDRiu6Ng_M.jpg" alt="Usha Sree · 15 LPA tech job" width="1280" height="720" decoding="async">
+    </button>
+    <button class="lx-card" type="button" data-yt="NlkL72bqsug" aria-label="Play video: Srinivasulu · B.Com to IT">
+      <img src="assets/learner-experiences/NlkL72bqsug.jpg" alt="Srinivasulu · B.Com to IT" width="1280" height="720" decoding="async">
+    </button>
   </div>
 </section>
 
@@ -1620,101 +1526,6 @@ html.lenis,html.lenis body{height:auto}
   })();
 
   /* =================================================================
-     S6 — CAREER TRANSFORMATIONS
-     Two looping tickers. Each track holds its content twice and the CSS
-     animation translates exactly one copy, so it repeats seamlessly.
-
-     ---- EDIT THE CONTENT HERE ----
-     PEOPLE  : the portrait cards on the left.
-     REVIEWS : the short written reviews on the right.
-     Both are plain arrays; add or remove entries and the section adapts.
-     The portraits are PLACEHOLDER learners -- swap in real names, roles
-     and packages before this goes live.
-     ================================================================= */
-  (() => {
-    const sec = document.getElementById('career-transformations');
-    if (!sec) return;
-
-    const PEOPLE = [
-      { img: 'assets/people/ct-p1.jpg', name: 'Rohan Das',    role: 'SDE II, Razorpay',           pkg: '16LPA' },
-      { img: 'assets/people/ct-p2.jpg', name: 'Aditya Rao',   role: 'SDE I, Amazon',              pkg: '24LPA' },
-      { img: 'assets/people/ct-p3.jpg', name: 'Nikhil Rao',   role: 'Cloud Engineer, Accenture',  pkg: '12LPA' },
-      { img: 'assets/people/ct-p4.jpg', name: 'Meera Pillai', role: 'ML Engineer, Fractal',       pkg: '14LPA' },
-      { img: 'assets/people/ct-p5.jpg', name: 'Karthik S',    role: 'ML Scientist, GoKwik',       pkg: '22LPA' },
-      { img: 'assets/people/ct-p6.jpg', name: 'Vivek Menon',  role: 'Data Engineer, PhonePe',     pkg: '18LPA' },
-    ];
-
-    const REVIEWS = [
-      { av: 'assets/people/p01.jpg', name: 'Sebastian Speier', at: 'Shop',        ctc: '19LPA',
-        text: 'The projects are the part that stuck. I walked into interviews with something I had actually built and could talk about line by line.' },
-      { av: 'assets/people/p02.jpg', name: 'Meng To',          at: 'DesignCode',  ctc: '15LPA',
-        text: 'Coming from a non-tech degree I expected to be lost. The fundamentals track meant I never had to fake understanding something.' },
-      { av: 'assets/people/p03.jpg', name: 'Marco Cornacchia', at: 'Figma',       ctc: '26LPA',
-        text: 'My mentor reviewed every submission properly. Not a rubber stamp -- actual comments on why a decision was wrong.' },
-      { av: 'assets/people/p04.jpg', name: 'Taha Hossain',     at: 'Daybreak',    ctc: '13LPA',
-        text: 'I was working full time. Sessions were recorded and the doubt support was quick enough that I never fell a week behind.' },
-      { av: 'assets/people/p05.jpg', name: 'Haerin Song',      at: 'Visa',        ctc: '21LPA',
-        text: 'The interview prep was the difference. Mock rounds with people who actually hire, and blunt feedback afterwards.' },
-      { av: 'assets/people/p06.jpg', name: 'John Bai',         at: 'Plaid',       ctc: '24LPA',
-        text: 'Six months in I had a portfolio that looked like a junior engineer’s, not a student’s. That is what got the first callback.' },
-      { av: 'assets/people/p07.jpg', name: 'Josiah Gulden',    at: 'Compound Labs', ctc: '17LPA',
-        text: 'What I did not expect was the peer group. Being around people grinding the same problems kept me honest on the slow weeks.' },
-      { av: 'assets/people/p08.jpg', name: 'Rachel How',       at: 'Stripe',      ctc: '28LPA',
-        text: 'The curriculum tracked what companies were actually asking. Nothing felt like filler by the time I reached the interviews.' },
-      { av: 'assets/people/p09.jpg', name: 'Oykun Yilmaz',     at: 'Jotform',     ctc: '14LPA',
-        text: 'I switched from support to engineering at 27. It took longer than the brochure says, but the path was never unclear.' },
-    ];
-
-    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-
-    const shot = p =>
-      `<figure class="ctv-shot"><img src="${p.img}" alt="" loading="lazy">` +
-      `<figcaption><span><b>${esc(p.name)}</b>${esc(p.role)}</span>` +
-      `<b class="ctv-pkg">${esc(p.pkg)}</b></figcaption></figure>`;
-
-    const note = r =>
-      `<article class="ctv-note"><div class="ctv-note-by">` +
-      `<img src="${r.av}" alt="" loading="lazy">` +
-      `<div><b>${esc(r.name)}</b><span>${esc(r.at)}</span></div>` +
-      (r.ctc ? `<b class="ctv-ctc">${esc(r.ctc)}</b>` : '') + `</div>` +
-      `<p>${esc(r.text)}</p></article>`;
-
-    /* the portrait column: the list twice over, so translating one copy loops */
-    const track = sec.querySelector('.ctv-people-track');
-    track.innerHTML = PEOPLE.map(shot).join('') + PEOPLE.map(shot).join('');
-
-    /* the review wall: deal the reviews into columns, alternate direction and
-       vary the speed so the columns never line up into a visible block */
-    const wall = sec.querySelector('.ctv-wall');
-    const COLS = 3;
-    wall.innerHTML = Array.from({ length: COLS }, (_, c) => {
-      const mine = REVIEWS.filter((_, i) => i % COLS === c);
-      const html = mine.map(note).join('');
-      return `<div class="ctv-col${c % 2 ? ' ctv-col--down' : ''}">${html}${html}</div>`;
-    }).join('');
-
-    /* Speed is set here, not in the CSS, so it stays the same no matter how many
-       entries PEOPLE and REVIEWS hold: each track's duration is one copy's length
-       divided by a target px/second. (The CSS can't do this -- and note --dur is
-       already taken by the global transition token, hence --ctv-dur.) */
-    const PX_PER_S = { people: 22, wall: 9 };
-    const COL_RATE = [1, .78, 1.16];          /* columns drift at slightly different rates */
-    const cols = [...wall.children];
-
-    const tune = () => {
-      const sideways = matchMedia('(max-width:1024px)').matches;
-      const span = sideways ? track.scrollWidth : track.scrollHeight;
-      track.style.setProperty('--ctv-dur', (span / 2 / PX_PER_S.people).toFixed(1) + 's');
-      cols.forEach((c, i) => {
-        c.style.setProperty('--ctv-dur',
-          (c.scrollHeight / 2 / (PX_PER_S.wall * COL_RATE[i % COL_RATE.length])).toFixed(1) + 's');
-      });
-    };
-    requestAnimationFrame(tune);
-    addEventListener('resize', () => { clearTimeout(tune.t); tune.t = setTimeout(tune, 200); });
-  })();
-
-  /* =================================================================
      S3 — AWARDS: the wall film plays with the scroll, forward as the panel rises up the
      screen and back as it goes down. Like the other scrubbed films, every frame is captured once so any frame can be
      drawn instantly; until then the video element is seeked directly.
@@ -1878,25 +1689,6 @@ html.lenis,html.lenis body{height:auto}
       else if (vid.readyState >= 2) seek((Math.round(pos) + .5) / FPS);
     };
     requestAnimationFrame(tick);
-  })();
-
-  /* S3b: 3,000+ companies logo ticker (from the supplied build) — five lines drifting in
-     alternate directions; each set is doubled so translate −50% loops seamlessly */
-  (() => {
-    const box = document.getElementById('logo-ticker');
-    if (!box) return;
-    const NAMES = ['Google','Amazon','NVIDIA','Accenture','Deloitte','Bank of America','Bosch',
-      'Jio','TCS','Tech Mahindra','Goldman Sachs','Oracle','Samsung','Infosys',
-      'Wipro','Apollo Hospitals','SAP','Capgemini','Cyient','HCL','Tata Elxsi',
-      'Cognizant','CGI','Merkle Sokrati','Mindtree','Delhivery','needl.ai','Fareportal',
-      'Prodapt','Tanla','GlobalLogic','NTT Data','Fractal','Napier Healthcare','GEP'];
-    const logos = NAMES.map((name, i) => ({ name, src: `assets/logos/logo-${String(i).padStart(2, '0')}.png` }));
-    const ROWS = 5, per = Math.ceil(logos.length / ROWS);
-    const set = (list, hidden) => `<ul class="ticker-set"${hidden ? ' aria-hidden="true"' : ''}>` +
-      list.map(l => `<li><img src="${l.src}" alt="${hidden ? '' : l.name}" decoding="async" loading="lazy"></li>`).join('') + '</ul>';
-    const row = (list, dir, dur) => `<div class="ticker-row ${dir}" style="--tick-dur:${dur}s">${set(list)}${set(list, true)}</div>`;
-    const DUR = [70, 64, 76, 60, 68];
-    box.innerHTML = DUR.map((d, r) => { const l = logos.slice(r * per, r * per + per); return row(l.concat(l), r % 2 ? 'to-left' : 'to-right', d); }).join('');
   })();
 
   /* S3: elements rise in as they enter the viewport */
@@ -2535,8 +2327,9 @@ requestAnimationFrame(frame);
 <script src="career/media-footer.js"></script>
 <script src="career/awards.js"></script>
 <script src="career/masterclass.js"></script>
-<script src="career/transformations.js"></script>
-<script type="module" src="career/national-recognition.js"></script>
+<script src="career/hiring-companies.js"></script>
+<script src="career/career-transformations.js"></script>
+<script src="career/learner-experiences.js"></script>
 <script>
   /* ---- design notes ----------------------------------------------------------------
      One card, pinned bottom-right, showing why the section you are looking at is there.
@@ -2588,12 +2381,6 @@ Parallax adds depth and responsiveness. The reveal helps visitors understand eac
         principles: [
           ['Von Restorff Effect', `The section that looks different is the one people remember.`],
           ['Concreteness Effect', `Real photos are believed faster than claims.`] ] },
-
-      { id: 'national-recognition', name: 'National Level Recognition',
-        desc: `The same credibility, now seen from the learner’s side: the Union Education Minister honouring NxtWave students. It moves recognition from the company to the students, so a visitor sees people like themselves being honoured. The national emblem and a named minister make the moment instantly readable.`,
-        principles: [
-          ['Halo Effect', `A respected figure’s approval extends to everything connected to it.`],
-          ['Similarity Bias', `Outcomes land harder when they happen to people like you.`] ] },
 
       { id: 'hiring-network', name: '3,000+ Companies Hiring',
         desc: `The headline makes the claim, the moving logo strip shows it — proof and statement arriving together. Motion communicates scale without asking anyone to read a list, and keeps the eye engaged through a section that is usually static.`,

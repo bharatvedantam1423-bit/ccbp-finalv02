@@ -1,0 +1,114 @@
+/* NxtWave Learner's Experiences section.
+   Everything is scoped under .lx, so it is safe to drop into an existing page.
+   Needs Outfit 600 (see README) for the heading. */
+
+.lx {
+  --lx-bg: #fff;                          /* set to the section's background so the edge fades blend */
+  --lx-fade: clamp(48px, 15vw, 220px);
+  --lx-radius: 24px;
+  --lx-accent: #2563EB;
+  position: relative;
+  padding: clamp(48px, 6vw, 96px) 0;
+  background: var(--lx-bg);
+  overflow: hidden;
+}
+.lx *, .lx *::before, .lx *::after { box-sizing: border-box; }
+
+/* Heading: Figma CCBP-v02, node 1171:3609 */
+.lx__title {
+  margin: 0;
+  padding: 0 16px;
+  text-align: center;
+  font-family: Outfit, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: clamp(32px, 3.9vw, 56px);
+  line-height: 1.125;
+  word-break: break-word;
+  background: linear-gradient(92.34deg, #4278E6 18.04%, #3B8AFD 83.28%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Stage: its height is set by the script to the centre card's height */
+.lx__stage {
+  position: relative;
+  margin-top: 64px;
+  height: 292px;                          /* desktop value, used until the script runs */
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.lx__stage.is-dragging { cursor: grabbing; }
+
+/* White fades at both edges */
+.lx__stage::before, .lx__stage::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: var(--lx-fade);
+  z-index: 2;
+  pointer-events: none;
+}
+.lx__stage::before { left: 0;  background: linear-gradient(90deg,  var(--lx-bg), transparent); }
+.lx__stage::after  { right: 0; background: linear-gradient(270deg, var(--lx-bg), transparent); }
+
+/* Cards */
+.lx-card {
+  position: absolute;
+  left: 0; top: 0;
+  width: 260px; height: 146px;
+  margin: 0; padding: 0; border: 0;
+  overflow: hidden;
+  border-radius: var(--lx-radius);
+  background: #eef2fb;
+  cursor: inherit;
+  will-change: transform;
+  transform: translateZ(0);
+}
+.lx-card:focus-visible { outline: 3px solid var(--lx-accent); outline-offset: 3px; }
+.lx-card img {
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.lx-card iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  border: 0;
+  background: #000;
+}
+
+/* Play button: white disc with a blue triangle. The script sets --lx-s to the card's scale. */
+.lx-card__play {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: var(--lx-s, 52px); height: var(--lx-s, 52px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(10, 15, 31, .28);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transition: transform .2s ease;
+}
+.lx-card__play::before {
+  content: "";
+  width: 0; height: 0;
+  margin-left: 12%;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--lx-accent);
+  border-width: calc(var(--lx-s, 52px) * .2) 0 calc(var(--lx-s, 52px) * .2) calc(var(--lx-s, 52px) * .32);
+}
+.lx-card:hover .lx-card__play { transform: translate(-50%, -50%) scale(1.08); }
+.lx-card.is-playing img, .lx-card.is-playing .lx-card__play { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-card__play { transition: none; }
+}

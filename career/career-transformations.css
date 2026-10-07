@@ -1,0 +1,133 @@
+/* Learner experiences — staggered testimonial wall. Everything is scoped under .ctw */
+.ctw {
+  --bg: #ffffff;
+  --ink: #1a2330;
+  --border: #e2e8f0;
+  --avatar-bg: #fed7aa;
+  --pill-bg: #d9f8ea;
+  --pill-ink: #00693a;
+  --card-w: 245px;
+  --gap: 16px;
+  --grid-scale: 1;
+}
+.ctw, .ctw * { box-sizing: border-box; margin: 0; padding: 0; }
+.ctw {
+  position: relative;
+  background: var(--bg); color: var(--ink);
+  font-family: "Inter", system-ui, sans-serif; font-weight: 500;
+  overflow-x: clip;   /* the 8-column grid is wider than the viewport */
+}
+.ctw img, .ctw video { max-width: none; }
+
+/* Section heading: static (Figma 1161:2184) */
+/* Section heading block: title, subline, CTA (Figma 1171:3608) */
+.ctw-heading {
+  padding: 80px 24px 130px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 32px;
+}
+.ctw-heading-text { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.ctw-heading h2 {
+  font-family: "Outfit", sans-serif; font-weight: 600;
+  font-size: 56px; line-height: 63px;
+  background: linear-gradient(92.34deg, #4278e6 18.04%, #3b8afd 83.28%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.ctw-heading-sub { font-size: 17px; line-height: 26px; color: #3b4a63; }
+.ctw-cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 188px; height: 54px; padding: 12px 32px; border-radius: 12px;
+  background: #2563eb; color: #fff; text-decoration: none;
+  font-size: 14px; line-height: 20px; font-weight: 400;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.08)) drop-shadow(0 -1px 0 rgba(0,0,0,.2));
+  transition: background-color .2s ease;
+}
+.ctw-cta:hover { background: #1d4ed8; }
+.ctw-cta:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+
+/* Grid */
+.ctw-mask {
+  position: relative;
+  display: flex; justify-content: center; align-items: center;
+  padding-bottom: 160px;
+  overflow: hidden;
+}
+/* Soft white edges (Figma 1161:2565 / 2566) + bottom fade so rising columns never cut hard */
+.ctw-mask::before, .ctw-mask::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 144px; z-index: 2; pointer-events: none;
+}
+.ctw-mask::before { left: 0;  background: linear-gradient(to right, #fff, rgba(255,255,255,0)); }
+.ctw-mask::after  { right: 0; background: linear-gradient(to left,  #fff, rgba(255,255,255,0)); }
+.ctw-fade-bottom {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 220px; z-index: 2; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), #fff 72%);
+}
+.ctw-images {
+  display: flex; align-items: flex-start; gap: var(--gap);
+  flex-shrink: 0;
+  transform: scale(var(--grid-scale));
+  transform-origin: top center;
+}
+.ctw-col {
+  width: var(--card-w);
+  display: flex; flex-direction: column; gap: var(--gap);
+  will-change: transform;
+}
+.ctw-col > * { flex-shrink: 0; }  /* extras overflow the locked column height instead of squeezing cards */
+
+/* Text testimonial card (Figma 1161:2170) */
+.ctw-card-text {
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; display: flex; flex-direction: column; gap: 16px;
+}
+.ctw-card-text .ctw-top { display: flex; align-items: center; justify-content: space-between; }
+.ctw-avatar { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: var(--avatar-bg); }
+.ctw-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ctw-pill {
+  background: var(--pill-bg); color: var(--pill-ink);
+  font-size: 12px; line-height: 20px; padding: 2px 8px; border-radius: 100px; white-space: nowrap;
+}
+.ctw-who { display: flex; flex-direction: column; gap: 4px; margin-top: -4px; }
+.ctw-name { font-size: 15px; line-height: 21px; }
+.ctw-logo { height: 18px; width: auto; max-width: 110px; object-fit: contain; object-position: left center; display: block; }
+.ctw-quote { font-size: 12px; line-height: 20px; }
+
+/* Video testimonial card (Figma 1161:2158) */
+.ctw-card-video {
+  position: relative; height: 317px; border-radius: 8px; overflow: hidden;
+  background: #0f172a; color: #fff; cursor: pointer;
+}
+.ctw-card-video img.ctw-still, .ctw-card-video video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.ctw-card-video video { opacity: 0; transition: opacity .3s ease; }
+.ctw-card-video.ctw-playing video { opacity: 1; }
+.ctw-card-video .ctw-shade {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.1) 37%, rgba(0,0,0,.92) 100%);
+}
+.ctw-play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(255,255,255,.85); backdrop-filter: blur(3.5px); -webkit-backdrop-filter: blur(3.5px);
+  display: grid; place-items: center;
+  transition: opacity .3s ease, transform .3s ease;
+}
+.ctw-card-video.ctw-playing .ctw-play { opacity: 0; transform: translate(-50%, -50%) scale(.85); }
+.ctw-card-video .ctw-overlay {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+
+@media (max-width: 809px) {
+  .ctw { --grid-scale: 0.6; }
+  .ctw-heading { padding: 56px 16px 56px; }
+  .ctw-heading h2 { font-size: 32px; line-height: 38px; }
+  .ctw-heading-sub { font-size: 15px; line-height: 22px; }
+  .ctw-heading { gap: 24px; } .ctw-heading-text { gap: 12px; }
+  .ctw-mask::before, .ctw-mask::after { width: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctw-col { transform: none !important; }
+}

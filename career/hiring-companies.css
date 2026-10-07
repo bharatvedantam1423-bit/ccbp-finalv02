@@ -1,0 +1,126 @@
+/* NxtWave · Hiring companies marquee
+   Figma: CCBP-v02 › Section 4 (node 1163:2689)
+   Everything is scoped under .nw-hire so it cannot clash with the host site. */
+
+.nw-hire {
+  --nw-hire-bg: #ffffff;
+  --nw-hire-sub: #3b4a63;
+  --nw-hire-card-bg: #ffffff;
+  --nw-hire-card-border: #e9e9e9;
+  --nw-hire-card-w: 151.5px;
+  --nw-hire-card-h: 90.9px;
+  --nw-hire-gap: 16px;
+  --nw-hire-fade: 144px;
+
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 80px 0 81px;
+  overflow: hidden;
+  background: var(--nw-hire-bg);
+  -webkit-font-smoothing: antialiased;
+}
+.nw-hire *, .nw-hire *::before, .nw-hire *::after { box-sizing: border-box; }
+
+.nw-hire__head {
+  max-width: 1202px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+.nw-hire__title {
+  margin: 0;
+  font: 600 56px/63px 'Outfit', sans-serif;
+  letter-spacing: normal;
+  background: linear-gradient(92.34deg, #4278e6 18.04%, #3b8afd 83.28%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.nw-hire__sub {
+  margin: 0;
+  font: 500 17px/26px 'Inter', sans-serif;
+  color: var(--nw-hire-sub);
+}
+
+.nw-hire__rows {
+  position: relative;
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--nw-hire-gap);
+}
+/* soft white edge fades */
+.nw-hire__rows::before,
+.nw-hire__rows::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--nw-hire-fade);
+  z-index: 2;
+  pointer-events: none;
+}
+.nw-hire__rows::before { left: 0;  background: linear-gradient(90deg,  var(--nw-hire-bg) 0%, rgba(255,255,255,0) 100%); }
+.nw-hire__rows::after  { right: 0; background: linear-gradient(270deg, var(--nw-hire-bg) 0%, rgba(255,255,255,0) 100%); }
+
+.nw-hire__row { overflow: hidden; }
+.nw-hire__track {
+  display: flex;
+  gap: var(--nw-hire-gap);
+  width: max-content;
+  animation: nw-hire-left var(--nw-hire-speed, 60s) linear infinite;
+  will-change: transform;
+}
+.nw-hire__row--right .nw-hire__track { animation-name: nw-hire-right; }
+
+/* track holds two identical halves; shift by one half (+ half a gap) for a seamless loop */
+@keyframes nw-hire-left  { from { transform: translateX(0); } to { transform: translateX(calc(-50% - var(--nw-hire-gap) / 2)); } }
+@keyframes nw-hire-right { from { transform: translateX(calc(-50% - var(--nw-hire-gap) / 2)); } to { transform: translateX(0); } }
+
+.nw-hire__card {
+  flex: none;
+  width: var(--nw-hire-card-w);
+  height: var(--nw-hire-card-h);
+  padding: 12px;
+  background: var(--nw-hire-card-bg);
+  border: 0.95px solid var(--nw-hire-card-border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nw-hire__card img {
+  display: block;
+  width: calc(var(--w) * 1px);
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 1024px) {
+  .nw-hire { --nw-hire-fade: 96px; }
+  .nw-hire__title { font-size: 44px; line-height: 52px; }
+}
+@media (max-width: 640px) {
+  .nw-hire {
+    --nw-hire-card-w: 120px;
+    --nw-hire-card-h: 72px;
+    --nw-hire-gap: 12px;
+    --nw-hire-fade: 40px;
+    padding: 56px 0;
+  }
+  .nw-hire__head { gap: 12px; }
+  .nw-hire__title { font-size: 30px; line-height: 38px; }
+  .nw-hire__sub { font-size: 15px; line-height: 22px; }
+  .nw-hire__rows { margin-top: 36px; }
+  .nw-hire__card { padding: 10px; }
+  .nw-hire__card img { width: calc(var(--w) * 0.78px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nw-hire__track { animation: none; }
+}
