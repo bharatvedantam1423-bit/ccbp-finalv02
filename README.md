@@ -104,9 +104,10 @@ Lower-section content: logo marquee `ROWS` (`career/hiring-companies.js`, logos 
 `assets/hiring-companies/logos/`), Career Transformations `VIDEOS` / `QUOTES`
 (`career/career-transformations.js`, assets in `assets/career-transformations/`), Learner's Experiences
 cards (the `.lx-item` blocks in `index.html`: the video button plus its learner row of photo, name,
-package and company; thumbnails in `assets/learner-experiences/`, photos in its `avatars/`). Names and
-companies printed on a thumbnail are real; three names, every package and the other companies are
-PLACEHOLDER data to replace before launch (companies without a logo in the repo are set as a wordmark), hiring-team cards (`career/script.js`), masterclass mentors (`career/masterclass.js`),
+package and company; thumbnails in `assets/learner-experiences/`, photos in its `avatars/`). Names
+printed on a thumbnail are real (and Soumith's Amazon); three names, every package and every other
+company are PLACEHOLDER data to replace before launch (logos from `assets/hiring-companies/logos/`;
+a company without a logo can be set as a `.lx-info__co` wordmark), hiring-team cards (`career/script.js`), masterclass mentors (`career/masterclass.js`),
 media and footer course tracks (`career/media-footer.js`).
 
 The "Explore programmes" button scrolls to the programmes section. The three "Explore Academy /
