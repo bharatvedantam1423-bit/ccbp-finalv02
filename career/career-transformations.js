@@ -150,18 +150,20 @@
     const section = root;
     const clamp01 = v => Math.min(1, Math.max(0, v));
     // Section-top position relative to viewport height.
-    const COLS_FROM = 0.85, COLS_TO = 0.0;  // fully settled into the arch once the title reaches the viewport top
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let cur = 0;
 
+    // the heading is a full pinned screen, so the rise follows the wall itself: it starts as the wall's
+    // top enters at the foot of the screen and settles into the arch by the time it is a quarter down
+    const WALL_FROM = 1.0, WALL_TO = 0.25;
     const target = () => {
-      const top = section.getBoundingClientRect().top / innerHeight;
-      return clamp01((COLS_FROM - top) / (COLS_FROM - COLS_TO));
+      const top = mask.getBoundingClientRect().top / innerHeight;
+      return clamp01((WALL_FROM - top) / (WALL_FROM - WALL_TO));
     };
     // Heading → card-section gap: 130px at rest (56px on mobile), closes to 80px (32px on mobile), then stays locked.
     // Gap closes while the section top moves from 60% (rest position) to 30% of the viewport.
     const GAP_FROM = 0.6, GAP_TO = 0.3;
-    const gapClose = () => parseFloat(getComputedStyle(root.querySelector('.ctw-heading')).paddingBottom) - (innerWidth < 810 ? 32 : 80);
+    const gapClose = () => Math.max(0, parseFloat(getComputedStyle(root.querySelector('.ctw-heading')).paddingBottom) - (innerWidth < 810 ? 32 : 80));
     const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     const render = p => {
       const g = clamp01((GAP_FROM - section.getBoundingClientRect().top / innerHeight) / (GAP_FROM - GAP_TO));
