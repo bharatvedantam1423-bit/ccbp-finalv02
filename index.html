@@ -43,7 +43,8 @@
               linear-gradient(100deg,#1d4ed8 0%,#2a6af0 60%,#3b8cff 100%);
   --head-grad-dark:linear-gradient(193deg,#b9c3d6 12%,#ffffff 52%,#aeb9cd 115%);
   --title-grad:var(--head-grad);                   /* the supplied build's name for the same fill */
-  --sec-y:clamp(56px,6.5vw,96px);                  /* vertical breathing room above/below a section */
+  --sec-y:clamp(80px,9vw,136px);                   /* vertical breathing room above/below a section */
+  --head-gap:clamp(44px,5vw,72px);                 /* a section's heading block → its content, every section */
   --head-size:clamp(32px,3.9vw,56px);              /* section headings below the fold */
   --sub-size:clamp(15px,1.2vw,18px);               /* the subhead under a section heading */
   --sub-ink:#3b4a63;                               /* every subheading, one slate */
@@ -430,7 +431,7 @@ a{color:inherit;text-decoration:none}
 /* S2 programmes */
 .programmes{padding:var(--sec-y) var(--page-pad) 0}
 .programmes__inner,.programmes__row{max-width:var(--page-max)}
-.programmes .programmes__header{margin-bottom:clamp(40px,4.5vw,64px)}   /* heading → content, as in the other sections */
+.programmes .programmes__header{margin-bottom:var(--head-gap)}   /* heading → content, as in the other sections */
 /* Awards & Recognitions */
 .record{padding:var(--sec-y) var(--page-pad) 0}
 .aw-inner{max-width:var(--page-max)}
@@ -438,9 +439,9 @@ a{color:inherit;text-decoration:none}
 .aw-cards{width:100%}   /* the photo cards span the column, edge to edge with the panel above */
 /* 3,000+ companies (supplied build, career/hiring-companies.css): the page's room above the heading and
    heading → subline → logos gaps; the small bottom pad stays, as the mentors section brings its own top room */
-.nw-hire{padding:var(--sec-y) 0 clamp(24px,3vw,48px)}
+.nw-hire{padding:var(--sec-y) 0 clamp(40px,4vw,64px)}
 .nw-hire__head{gap:16px;align-items:center;padding-inline:var(--page-pad)}
-.nw-hire__rows{margin-top:clamp(32px,4vw,56px)}
+.nw-hire__rows{margin-top:var(--head-gap)}
 /* Career Transformations (supplied build, career/career-transformations.css): same room above the heading
    and the page's side margin. The 130px → 80px heading-to-wall close is the build's own scroll motion. */
 .ctw{font-family:var(--font)}
@@ -468,7 +469,7 @@ a{color:inherit;text-decoration:none}
 /* Learner's Experiences (supplied build, career/learner-experiences.css): room above the heading, none below */
 .lx{padding:var(--sec-y) 0 0}
 .lx__title{margin-inline:auto;padding-inline:0;max-width:calc(100% - 2 * var(--page-pad))}
-.lx__stage{margin-top:clamp(32px,4vw,56px)}
+.lx__stage{margin-top:var(--head-gap)}
 /* We train you for what companies hire for */
 .cs .wl{padding-inline:var(--page-edge)}
 /* Why Top Companies Prefer NxtWave Students: the rail starts on the content line and runs off the right */
@@ -476,7 +477,15 @@ a{color:inherit;text-decoration:none}
 .cs .ht__track,.cs .ht__nav{padding-inline:var(--page-edge)}
 .cs .ht__track{scroll-padding-inline:var(--page-edge)}   /* snapping lands the first card on the line too */
 /* Investors */
-.cs .inv{padding-inline:var(--page-pad)}
+.cs .inv{padding-inline:var(--page-pad);gap:var(--head-gap)}
+/* Awards: heading → the recognising bodies. The panel (and its notch) hangs off the block below,
+   so it moves down with the strip and the strip stays held in the notch */
+.rc-recog{margin-top:var(--head-gap)}
+/* the sections built from the supplied pages: heading → content on the same gap */
+.cs .wl__head,.cs .ht__head{margin-bottom:var(--head-gap)}
+.mc .mc__body{padding-top:var(--head-gap)}
+.cs .fm__title{margin-bottom:clamp(24px,2.6vw,40px)}
+.cs .fm__press{margin-bottom:var(--head-gap)}
 /* Recognized by Leading Media */
 @media (min-width:1181px){   /* both are content-box: the cap is the content width itself */
   .cs .fm__press,.cs .fm__grid{max-width:var(--page-max)}
