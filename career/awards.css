@@ -66,15 +66,16 @@
   min-height: calc(689.7 * var(--u));        /* down to the press photos */
 }
 /* 2102.62 x 881.11 in the file, centred 16.59 left of the frame's centre; its top runs up behind the
-   heading, so the white notch in its top edge holds the recognising marks. The shape is both the
+   heading, so the white notch in its top edge holds the recognising marks. Its sides carry straight on
+   past the screen's edges at any width, so a wide screen never shows the panel's ends. The shape is both the
    panel's paint and its mask, and the panel stretches with the roll should the roll need more room. */
 .rc-panel {
   position: absolute;
   z-index: 0;
   top: calc(-189.11 * var(--u));
   bottom: calc(-2.3 * var(--u));
-  left: calc(50% - 1067.9 * var(--u));
-  width: calc(2102.62 * var(--u));
+  left: calc(50% - 2567.9 * var(--u));      /* the file's shape, its sides run on 1500 past each end */
+  width: calc(5102.62 * var(--u));
   background: url("../assets/awards/panel.svg") 0 0 / 100% 100% no-repeat;
   -webkit-mask: url("../assets/awards/panel.svg") 0 0 / 100% 100% no-repeat;
           mask: url("../assets/awards/panel.svg") 0 0 / 100% 100% no-repeat;
@@ -187,7 +188,7 @@
 .rc-stage {
   position: absolute;
   top: calc(-116.69 * var(--u));
-  left: calc(1022.54 * var(--u));
+  left: calc(2522.54 * var(--u));
   width: calc(915.58 * var(--u));
   aspect-ratio: 1400 / 1739;
 }
@@ -238,14 +239,13 @@
 .rc-cards figure {
   position: relative;
   margin: 0;
-  aspect-ratio: 323.5 / 285;
+  height: calc(285.5 * var(--u));           /* the three photos share one height, as in the file */
   border-radius: var(--r-md);
   overflow: hidden;
   background: #eef2f9;
   -webkit-mask-image: linear-gradient(45deg, #0000 calc(45.25 * var(--u)), #000 0);
           mask-image: linear-gradient(45deg, #0000 calc(45.25 * var(--u)), #000 0);
 }
-.rc-cards li:first-child figure { aspect-ratio: 473 / 286; }
 .rc-cards img { width: 100%; height: 100%; object-fit: cover; display: block; }
 /* the file's crops: the supplied photos carry a gold frame at their edges, which these take off */
 .rc-cards li:nth-child(1) img { position: absolute; left: -3.5%; top: -5.43%; width: 107%; height: 118.56%; max-width: none; }
@@ -292,7 +292,7 @@
     margin: clamp(-150px, -28vw, -40px) auto clamp(-90px, -16vw, -30px);
   }
   .rc-cards { grid-template-columns: 1fr; max-width: 420px; margin-top: 40px; }
-  .rc-cards figure, .rc-cards li:first-child figure { aspect-ratio: 3 / 2; }
+  .rc-cards figure { height: auto; aspect-ratio: 3 / 2; }
   .rc-cards figure {
     -webkit-mask-image: linear-gradient(45deg, #0000 32px, #000 0);
             mask-image: linear-gradient(45deg, #0000 32px, #000 0);
