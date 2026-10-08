@@ -107,7 +107,7 @@
 .mc-ticker-set img{height:100%;width:auto;max-width:clamp(52px,5.9vw,86px);object-fit:contain;display:block}
 @keyframes mcTickL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes mcTickR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
-.mc > .mc-ticker{margin-top:var(--sec)}
+.mc > .mc-ticker{margin-top:clamp(40px,4.4vw,64px)}   /* close under the rail, so the strip reads as the mentors' companies, not a section of its own */
 
 /* Logo rows fade up once they come into view (set by masterclass.js, one-way) */
 .mc > .mc-ticker .mc-ticker-row{opacity:0;translate:0 14px;transition:opacity .7s var(--ease),translate .8s var(--ease)}

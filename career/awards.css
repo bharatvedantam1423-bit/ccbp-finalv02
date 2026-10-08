@@ -20,7 +20,7 @@
   z-index: 3;
   background: #fff;
   overflow-x: clip;                           /* the panel is wider than the screen, as in the file */
-  padding: var(--sec-y) 0 clamp(48px, calc(85 * var(--u)), 96px);
+  padding: var(--sec-y) 0 0;                  /* the navy panel ends the section; the next heading brings its own --sec-y */
 }
 
 /* ---- on white: the heading and the recognising bodies --------------- */

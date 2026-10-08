@@ -462,7 +462,7 @@ a{color:inherit;text-decoration:none}
 .ctw-heading-text{will-change:opacity}
 .ctw-mask{z-index:1}
 .ctw-end{position:relative;z-index:3;display:flex;justify-content:center;background:#fff;
-  margin-top:-48px;padding:16px 0 var(--sec-y)}
+  margin-top:-48px;padding:16px 0 0}   /* the masterclasses section brings the --sec-y above its heading */
 /* Masterclasses */
 .mc .mc__head{width:calc(100% - 2 * var(--m));max-width:var(--page-max);margin-inline:auto}
 /* Learner's Experiences (supplied build, career/learner-experiences.css): room above the heading, none below */
@@ -482,7 +482,7 @@ a{color:inherit;text-decoration:none}
 .rc-recog{margin-top:var(--head-gap)}
 /* the sections built from the supplied pages: heading → content on the same gap */
 .cs .wl__head,.cs .ht__head{margin-bottom:var(--head-gap)}
-.cs .fm__title{margin-bottom:clamp(24px,2.6vw,40px)}
+.cs .fm__title{margin-bottom:clamp(28px,3.4vw,48px)}   /* the bordered logo board needs a little more air than a bare strip */
 .cs .fm__press{margin-bottom:var(--head-gap)}
 /* Recognized by Leading Media */
 @media (min-width:1181px){   /* both are content-box: the cap is the content width itself */
