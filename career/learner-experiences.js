@@ -96,7 +96,6 @@
         st.width = cw + 'px';
         st.height = ch + 'px';
         st.setProperty('--lx-s', (cw * 0.157) + 'px');          // play disc: 105px on the 667.8px card
-        st.setProperty('--lx-r', (cw * 0.04615) + 'px');        // corners: 30.8px on the 667.8px card
         it.width = cw + 'px';
         it.setProperty('--lx-k', k.toFixed(4));
         // the whole block (video + learner row) is centred on the stage, as in the file

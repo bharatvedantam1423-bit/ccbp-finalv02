@@ -13,7 +13,7 @@
   --m:120px;           /* side margin (build: 120 / 48 / 20) */
   --sec:80px;          /* section rhythm (build --sec) */
   --gap:16px;
-  --r:16px;
+  --r:var(--r-md);
   --ease:cubic-bezier(.22,1,.36,1);
 }
 :where(.mc) ul{list-style:none;margin:0;padding:0}

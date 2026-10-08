@@ -71,7 +71,7 @@
   width: 508px; height: 285px;
   margin: 0; padding: 0; border: 0;
   overflow: hidden;
-  border-radius: var(--lx-r, var(--lx-radius));
+  border-radius: var(--r-lg);
   background: #eef2fb;
   cursor: inherit;
   transform: translateZ(0);
