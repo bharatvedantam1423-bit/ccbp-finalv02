@@ -481,7 +481,7 @@ a{color:inherit;text-decoration:none}
 .cs .fm__press{margin-bottom:var(--head-gap)}
 /* Recognized by Leading Media */
 @media (min-width:1181px){   /* both are content-box: the cap is the content width itself */
-  .cs .fm__head,.cs .fm__press,.cs .fm__grid,.cs .fm--all .fm__ticker{max-width:var(--page-max)}
+  .cs .fm__head,.cs .fm__press,.cs .fm__grid,.cs .fm__ticker{max-width:var(--page-max)}
 }
 /* footer: the dark card sits 20px in from the window, so its inside padding makes up the rest of the margin */
 .cs .ft__inner{padding-inline:max(24px,calc(var(--page-pad) - 20px))}
@@ -1463,7 +1463,7 @@ html.lenis,html.lenis body{height:auto}
     <ul class="fm__press-grid" id="fm-press" aria-label="Publications that have featured NxtWave"></ul>
   </div>
   <ul class="fm__grid" id="fm-grid"></ul>
-  <div class="fm__ticker" id="fm-ticker" aria-label="More stories about NxtWave"><ul class="fm__ticker-row" id="fm-ticker-row"></ul></div>
+  <div class="fm__ticker" id="fm-ticker" role="region" aria-label="More stories about NxtWave"><div class="fm__ticker-clip"><ul class="fm__ticker-row" id="fm-ticker-row"></ul></div></div>
   <button class="fm__more" type="button" id="fm-more" aria-controls="fm-ticker" aria-expanded="false">View More</button>
 </section>
 </div>

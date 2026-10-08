@@ -49,20 +49,25 @@
   .fm__link:hover .fm__cta,.fm__link:focus-visible .fm__cta{height:20px;margin-top:12px;opacity:1;transform:none}
 }
 
-/* the rest of the coverage runs past as a ticker under the bento; View More opens it out as a grid */
-.fm__ticker{margin-top:16px;overflow:hidden;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.fm__ticker-row{list-style:none;display:flex;width:max-content;margin:0;padding:0;animation:fm-tick var(--dur,200s) linear infinite}
-.fm__ticker:hover .fm__ticker-row,.fm__ticker:focus-within .fm__ticker-row{animation-play-state:paused}
-.fm__ticker .fm__card{flex:0 0 auto;width:340px;height:280px;margin-right:16px;opacity:1;transform:none}   /* margin, not gap: two copies = exactly half */
+/* the rest of the coverage: a row of four smaller cards on the content line that steps along one card at a
+   time and pauses (media-footer.js); View More opens it out as a grid */
+.fm__ticker{--fm-gap:16px;--fm-per:4;max-width:1200px;margin:16px auto 0;padding:0 var(--m);box-sizing:content-box}
+.fm__ticker-clip{overflow:hidden;border-radius:var(--r-md)}
+.fm__ticker-row{list-style:none;display:flex;gap:var(--fm-gap);margin:0;padding:0;will-change:transform}
+.fm__ticker-row.is-moving{transition:transform .8s cubic-bezier(.65,0,.35,1)}
+.fm__ticker .fm__card{flex:0 0 calc((100% - (var(--fm-per) - 1) * var(--fm-gap)) / var(--fm-per));height:220px;opacity:1;transform:none}
 .fm__ticker .fm__link{height:100%;aspect-ratio:auto}
 .fm__ticker .fm__img img{transform:none}
 .fm__ticker .fm__link:hover .fm__img img{transform:scale(1.07);transition-duration:.9s}
-@keyframes fm-tick{to{transform:translateX(-50%)}}
-/* opened out: the ticker stops and settles into rows of three on the content line */
-.fm--all .fm__ticker{max-width:1200px;margin:16px auto 0;padding:0 var(--m);box-sizing:content-box;-webkit-mask-image:none;mask-image:none}
-.fm--all .fm__ticker-row{animation:none;width:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.fm--all .fm__ticker .fm__card{grid-column:auto;width:auto;height:300px;margin:0;animation:fm-in .7s cubic-bezier(.2,.7,.1,1) both;animation-delay:calc(var(--d,0) * 60ms)}
+.fm__ticker .fm__top{top:12px;left:12px;right:12px}
+.fm__ticker .fm__pub{padding:5px 8px}
+.fm__ticker .fm__date{padding:3px 8px;font-size:11px}
+.fm__ticker .fm__body{padding:14px 16px 16px}
+.fm__ticker .fm__h{font-size:14px;line-height:1.35;-webkit-line-clamp:2}   /* two lines and "…"; the full title is in the link label */
+.fm__ticker .fm__cta{display:none}
+/* opened out: the stepping stops and every story settles into rows of four */
+.fm--all .fm__ticker-row{transform:none!important;display:grid;grid-template-columns:repeat(var(--fm-per),minmax(0,1fr))}
+.fm--all .fm__ticker .fm__card{animation:fm-in .7s cubic-bezier(.2,.7,.1,1) both;animation-delay:calc(var(--d,0) * 60ms)}
 .fm--all .fm__ticker .fm__card[aria-hidden]{display:none}
 @keyframes fm-in{from{opacity:0;transform:translateY(24px)}}
 
@@ -71,8 +76,7 @@
 .fm__more:focus-visible{outline:2px solid #1d4ed8;outline-offset:3px}
 .fm__more[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){
-  .fm__ticker{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
-  .fm__ticker-row{animation:none}
+  .fm__ticker-clip{overflow-x:auto}
   .fm__ticker .fm__card[aria-hidden]{display:none}
   .fm--all .fm__ticker .fm__card{animation:none}
   .fm__card,.fm__img img{transition:none;transform:none;opacity:1}
@@ -89,8 +93,7 @@
   .fm__press-item,.fm__press-item:nth-child(n+8){grid-column:span 1;border-right:1px solid #e6e9ef;border-bottom:1px solid #e6e9ef}
   .fm__press-item:nth-child(4n){border-right:0}
   .fm__press-item:nth-child(n+9){border-bottom:0}
-  .fm--all .fm__ticker-row{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .fm__ticker .fm__card{width:300px;height:250px}
+  .fm__ticker{--fm-per:2}
 }
 @media (max-width:640px){
   .fm__title{font-size:30px;margin-bottom:24px}
@@ -106,9 +109,8 @@
   .fm__press-item:nth-child(3n){border-right:0}
   .fm__press-item:nth-child(n+10){border-bottom:0}
   .fm__press-item img{max-width:100%;max-height:16px;height:auto!important}
-  .fm--all .fm__ticker-row{grid-template-columns:1fr}
-  .fm__ticker .fm__card{width:78vw;height:auto;aspect-ratio:4/3}
-  .fm--all .fm__ticker .fm__card{width:auto}
+  .fm__ticker{--fm-per:1}
+  .fm__ticker .fm__card{height:200px}
   .fm__more{margin-top:32px}
 }
 

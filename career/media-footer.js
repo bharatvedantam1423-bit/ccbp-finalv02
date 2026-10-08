@@ -72,23 +72,47 @@
   const seen = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('is-in'); seen.unobserve(e.target); }
   }), { rootMargin: '0px 0px -8% 0px' }) : null;
-  /* the top three sit in the bento grid; the rest of the coverage runs below them as a ticker */
+  /* the top three sit in the bento grid; the rest of the coverage steps along in a row of four below them */
   grid.innerHTML = A.slice(0, 3).map(card).join('');
   [...grid.children].forEach((li, k) => { li.style.setProperty('--d', k); seen ? seen.observe(li) : li.classList.add('is-in'); });
   const sec = document.getElementById('featured-in-media'), tick = document.getElementById('fm-ticker'), row = document.getElementById('fm-ticker-row');
   const rest = A.slice(3).map((a, k) => card(a, k + 3));
-  /* two copies so the loop is seamless; the copy is skipped by keyboard and screen readers */
+  /* two copies so the stepping loops without a jump back; the copy is skipped by keyboard and screen readers */
   row.innerHTML = rest.join('') + rest.map(h => h.replace('<li class="fm__card"', '<li class="fm__card" aria-hidden="true"').replace('<a class="fm__link"', '<a class="fm__link" tabindex="-1"')).join('');
-  [...row.children].forEach((li, k) => li.style.setProperty('--d', k % 3));
-  row.style.setProperty('--dur', rest.length * 7 + 's');   // ~50px a second, whatever the number of stories
+  [...row.children].forEach((li, k) => li.style.setProperty('--d', k % 4));
   grid.querySelectorAll('.fm__logo').forEach(im => im.complete ? fit(im) : im.addEventListener('load', () => fit(im), { once: true }));
   row.querySelectorAll('.fm__logo').forEach(im => im.complete ? fit(im) : im.addEventListener('load', () => fit(im), { once: true }));
-  /* View More: the ticker stops and opens out into rows of three */
+  /* step one card along, hold, step again; after the last story it slips back to the first unseen (the
+     copy lines up with the originals). Holds on hover or focus, off screen, and while opened out. */
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let at = 0, timer = 0, held = false, onScreen = false;
+  const stepW = () => { const c = row.children; return c.length > 1 ? c[1].offsetLeft - c[0].offsetLeft : 0; };
+  const place = anim => { row.classList.toggle('is-moving', anim); row.style.transform = `translateX(${-at * stepW()}px)`; };
+  row.addEventListener('transitionend', e => {
+    if (e.target !== row || at < rest.length) return;
+    at -= rest.length; place(false);        // same picture, no movement
+  });
+  const step = () => {
+    if (held || !onScreen || sec.classList.contains('fm--all') || document.hidden) return;
+    if (at >= rest.length) { at -= rest.length; place(false); void row.offsetWidth; }   // in case a transitionend was missed
+    at++; place(true);
+  };
+  const run = () => { clearInterval(timer); if (!RM) timer = setInterval(step, 3000); };
+  tick.addEventListener('pointerenter', () => { held = true; });
+  tick.addEventListener('pointerleave', () => { held = false; });
+  tick.addEventListener('focusin', () => { held = true; });
+  tick.addEventListener('focusout', () => { held = false; });
+  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }).observe(tick);
+  else onScreen = true;
+  addEventListener('resize', () => place(false));
+  run();
+
+  /* View More: the stepping stops and every story opens out into rows of four */
   more.addEventListener('click', () => {
     const open = sec.classList.toggle('fm--all');
     more.textContent = open ? 'View Less' : 'View More';
     more.setAttribute('aria-expanded', open);
-    if (!open) tick.scrollIntoView({ block: 'nearest' });
+    if (!open) { place(false); tick.scrollIntoView({ block: 'nearest' }); run(); }
   });
 
   /* "Featured in" — publication marks under the section title (ccbp.in press strip) */
