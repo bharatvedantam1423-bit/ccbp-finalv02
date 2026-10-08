@@ -969,7 +969,7 @@ html.lenis,html.lenis body{height:auto}
         </div>
       </header>
       <div class="mw-screen">
-        <video id="mw-vid" data-src="assets/mentors-v2.mp4" muted playsinline preload="auto"
+        <video id="mw-vid" data-src="assets/mentors-v3.mp4" muted playsinline preload="auto"
           aria-label="A learner at his laptop as his mentors gather round: trainers Rahul and Shashank, product developers Pavan and Revanth, career coaches Trivikram and Sriram Teja, and masterclass speakers Rakesh Misra and Pranavi"></video>
         <canvas aria-hidden="true"></canvas>
       </div>
@@ -1608,8 +1608,8 @@ html.lenis,html.lenis body{height:auto}
     const track = sec.querySelector('.mw-track');
     const PLAY_END = 0.86;          /* last 14% of the pin holds the final frame */
     const FPS = 30;
-    const LAST_FRAME = 140;         /* scene ends here (≈4.67s): all four mentor groups in, glow full, learner settled at the laptop.
-                                       the clip runs to 149, but the glow drops away and the scene reads as 'finished' — so we stop short */
+    const LAST_FRAME = 111;         /* scene ends here (≈3.7s), the moment the last card (Rakesh Misra · Pranavi) lands.
+                                       the file is trimmed to this frame, so nothing plays on after it */
 
     /* heading reveal */
     new IntersectionObserver(([e]) => { if (e.isIntersecting) sec.classList.add('is-in'); }, { threshold: .15 })
