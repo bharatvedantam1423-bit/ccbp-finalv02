@@ -465,11 +465,15 @@ a{color:inherit;text-decoration:none}
    and the fade is never clipped */
 .ctw{margin-bottom:-100px}
 @media (max-width:809px){ .ctw{margin-bottom:-74px} }
-/* The heading fills the screen and stays pinned while the wall of cards scrolls up over it. The cards
-   are the near layer; the wall itself is clear, so the heading reads between them as they pass. */
-.ctw-heading{position:sticky;top:0;z-index:0;min-height:100vh;min-height:100svh;box-sizing:border-box;
-  justify-content:center;padding-block:0}
-.ctw-mask{z-index:1}
+/* A pinned screen: the heading sits a little above the middle with more room above it than below, and
+   the arch of cards peeks in along the foot. As the cards scroll up over it the heading fades out
+   (career-transformations.js), and View All waits after the wall. */
+.ctw{margin-bottom:0}
+.ctw-heading{position:sticky;top:0;z-index:0;height:100vh;height:100svh;box-sizing:border-box;
+  justify-content:flex-start;padding-block:28vh 0;padding-block:28svh 0}
+.ctw-heading-text{will-change:opacity}
+.ctw-mask{z-index:1;margin-top:-34vh;margin-top:-34svh}
+.ctw-end{position:relative;z-index:3;display:flex;justify-content:center;margin-top:-150px;padding-bottom:var(--sec-y)}
 /* Masterclasses */
 .mc .mc__head{width:calc(100% - 2 * var(--m));max-width:var(--page-max);margin-inline:auto}
 .mc .mc__body{max-width:calc(var(--page-max) + 2 * var(--m))}
@@ -984,12 +988,12 @@ html.lenis,html.lenis body{height:auto}
       <h2 id="ct-title">Career Transformations</h2>
       <p class="ctw-heading-sub">Real people. Named companies. Their own words.</p>
     </div>
-    <a class="ctw-cta" href="#" data-blank>View All</a>
   </div>
   <div class="ctw-mask">
     <div class="ctw-images"></div>
     <div class="ctw-fade-bottom"></div>
   </div>
+  <div class="ctw-end"><a class="ctw-cta" href="#" data-blank>View All</a></div>
 </section>
 
 <!-- ===================================================================

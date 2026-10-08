@@ -153,9 +153,9 @@
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let cur = 0;
 
-    // the heading is a full pinned screen, so the rise follows the wall itself: it starts as the wall's
-    // top enters at the foot of the screen and settles into the arch by the time it is a quarter down
-    const WALL_FROM = 1.0, WALL_TO = 0.25;
+    // the rise follows the wall: it starts as the section comes up from below and has settled into the
+    // arch by the time the pinned heading screen arrives, with the arch peeking in along its foot
+    const WALL_FROM = 1.66, WALL_TO = 0.7;
     const target = () => {
       const top = mask.getBoundingClientRect().top / innerHeight;
       return clamp01((WALL_FROM - top) / (WALL_FROM - WALL_TO));
@@ -165,7 +165,19 @@
     const GAP_FROM = 0.6, GAP_TO = 0.3;
     const gapClose = () => Math.max(0, parseFloat(getComputedStyle(root.querySelector('.ctw-heading')).paddingBottom) - (innerWidth < 810 ? 32 : 80));
     const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    // the heading fades as the cards reach it: it starts going a little before the highest card meets
+    // its foot and is gone by the time that card reaches its top, and comes back on the way up
+    const text = root.querySelector('.ctw-heading-text');
+    const fadeText = () => {
+      if (!text) return;
+      const t = text.getBoundingClientRect();
+      let wall = Infinity;
+      for (const { el } of cols) { const c = el.firstElementChild; if (c) wall = Math.min(wall, c.getBoundingClientRect().top); }
+      const LEAD = 40;
+      text.style.opacity = (1 - clamp01((t.bottom + LEAD - wall) / (t.height + LEAD))).toFixed(3);
+    };
     const render = p => {
+      fadeText();
       const g = clamp01((GAP_FROM - section.getBoundingClientRect().top / innerHeight) / (GAP_FROM - GAP_TO));
       mask.style.transform = `translate3d(0, ${(-gapClose() * g).toFixed(2)}px, 0)`;
       const e = easeInOut(p);
