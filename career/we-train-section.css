@@ -42,7 +42,7 @@
 .ctg__sub{font-size:17px;line-height:26px;font-weight:500;color:var(--ctg-sub)}
 
 /* ---------- section 2: the row the cards settle into ---------- */
-.ctg__row{display:flex;align-items:center;justify-content:center;gap:var(--ctg-gap);padding:64px var(--ctg-row-edge) 0}   /* no screen-tall box: the next section's --sec-y is the only room under the cards */
+.ctg__row{min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;gap:var(--ctg-gap);padding:64px var(--ctg-row-edge)}
 .ctg__slot{flex:0 0 var(--ctg-card-w);aspect-ratio:.76;border-radius:24px;background:#eef0f4;opacity:var(--ctg-ph,1)}
 
 /* ---------- the flying layer: each card sits on its slot, JS poses it in the fan ---------- */
@@ -118,7 +118,7 @@
   .ctg__head{width:auto;gap:12px}
   .ctg__title{font-size:34px}
   .ctg__sub{font-size:15px;line-height:1.45}
-  .ctg__row{min-height:0;flex-direction:column;align-items:stretch;gap:16px;padding:0 var(--ctg-edge)}
+  .ctg__row{min-height:0;flex-direction:column;align-items:stretch;gap:16px;padding:0 var(--ctg-edge) 72px}
   .ctg__slot{display:none}
   .ctg__stage{display:flex;flex-direction:column;gap:16px;padding:0 var(--ctg-edge)}
   .ctg__fly{position:relative;width:auto!important;height:auto!important;transform:none!important}
