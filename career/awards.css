@@ -151,16 +151,24 @@
 .rc-item:focus-visible { outline: 2px solid #82bdff; outline-offset: 6px; border-radius: 4px; }
 
 .rc-txt { grid-area: 1 / 2; min-width: 0; }
+/* The site's type ladder, so the roll reads as part of the page: the eyebrow is the hero's small
+   tracked label, the award's name is set in the heading face, the by-line is quiet body copy. */
 .rc-name {
   margin: 0;
-  font-family: var(--font);
-  font-weight: 600;
-  font-size: clamp(15px, calc(20 * var(--u)), 20px);
+  font-family: var(--font-head);
+  font-weight: 500;
+  font-size: clamp(16px, calc(21 * var(--u)), 21px);
   line-height: 1.2;
+  letter-spacing: -.005em;
   color: inherit;
   transition: font-size .5s var(--ease);
 }
-.rc-item[aria-current="true"] .rc-name { font-size: clamp(18px, calc(27.78 * var(--u)), 28px); }
+.rc-item[aria-current="true"] .rc-name {
+  font-weight: 600;
+  font-size: clamp(22px, calc(32 * var(--u)), 34px);
+  line-height: 1.15;
+  letter-spacing: -.01em;
+}
 /* the eyebrow and the by-line belong to the open award only: they open and close with it */
 .rc-sub {
   display: grid;
@@ -171,17 +179,18 @@
 }
 .rc-sub > span { overflow: hidden; display: block; min-height: 0; }
 .rc-item[aria-current="true"] .rc-sub { grid-template-rows: 1fr; opacity: 1; }
-.rc-item[aria-current="true"] .rc-kicker { margin-bottom: calc(14.4 * var(--u)); }
-.rc-item[aria-current="true"] .rc-by { margin-top: calc(14.4 * var(--u)); }
-.rc-kicker > span,
-.rc-by > span {
-  font-family: var(--font);
-  font-weight: 400;
-  font-size: clamp(14px, calc(24.31 * var(--u)), 25px);
-  line-height: 1.2;
-  color: var(--rc-ink);
+.rc-item[aria-current="true"] .rc-kicker { margin-bottom: clamp(8px, calc(12 * var(--u)), 12px); }
+.rc-item[aria-current="true"] .rc-by { margin-top: clamp(6px, calc(10 * var(--u)), 10px); }
+.rc-kicker > span {
+  font: 600 clamp(11px, calc(14 * var(--u)), 15px)/1.2 var(--font);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #82bdff;
 }
-.rc-kicker > span { text-transform: uppercase; }
+.rc-by > span {
+  font: 400 clamp(14px, calc(18 * var(--u)), 18px)/1.4 var(--font);
+  color: rgba(255, 255, 255, .72);
+}
 
 /* ---- the trophy on its plinth --------------------------------------- */
 /* 915.58 wide in the file with the trophy's globe 376 across, the plate's top 116.7 above the panel's;
