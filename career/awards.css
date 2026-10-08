@@ -10,7 +10,9 @@
    The type keeps the site's own sizes.
    ===================================================================== */
 .rc {
-  --u: calc(100vw / 1707);                   /* one Figma px of the frame */
+  /* one Figma px of the frame; it stops growing once the column reaches the page's maximum, so on a
+     wide screen the whole section holds its proportions instead of the trophy outgrowing the text */
+  --u: min(calc(100vw / 1707), calc(var(--page-max) / 1200.33));
   /* the file's content column, 1200.33 of the 1707 frame, never wider than the page's own column */
   --rc-col: min(calc(100% - 2 * var(--page-pad)), var(--page-max), calc(1200.33 * var(--u)));
   --rc-ink: #fff;
@@ -26,7 +28,7 @@
    so it is sized by the height of the marks — 42 of the frame — rather than by the strip's width,
    which is what makes the logos read at the size they do in the file. */
 .recog-band {
-  --u: calc(100vw / 1707);
+  --u: min(calc(100vw / 1707), calc(var(--page-max) / 1200.33));
   --rc-col: min(calc(100% - 2 * var(--page-pad)), var(--page-max), calc(1200.33 * var(--u)));
 }
 .recog-band .recog { max-width: var(--rc-col); }
@@ -105,7 +107,7 @@
 .rc-notch {
   position: absolute;
   top: -1px;
-  left: calc(-197.48 * var(--u));
+  left: calc(50% - 1051.31 * var(--u));      /* centred on the column, as the frame is: -197.48 at 1707 */
   width: calc(2102.62 * var(--u));
   height: clamp(52px, calc(183.726 * var(--u)), 220px);
   display: block;
@@ -243,11 +245,19 @@
 .rc-stage {
   position: absolute;
   z-index: 1;
-  right: 0;
+  right: max(0px, calc((100% - var(--rc-col)) / 2 - 252.67 * var(--u)));   /* the frame's edge, 252.67 past the column */
   bottom: calc(-36.63 * var(--u));
   width: calc(871.7 * var(--u));
   aspect-ratio: 871.7 / 1082.97;
   pointer-events: none;
+}
+/* past the frame's width the plate no longer runs off the screen edge, so its plinth would end in a
+   hard cut: feather both sides into the panel instead */
+@media (min-width: 1992px) {
+  .rc-stage {
+    -webkit-mask-image: linear-gradient(to right, #0000 0, #000 9%, #000 84%, #0000 100%);
+            mask-image: linear-gradient(to right, #0000 0, #000 9%, #000 84%, #0000 100%);
+  }
 }
 .rc-stage img {
   position: absolute;
