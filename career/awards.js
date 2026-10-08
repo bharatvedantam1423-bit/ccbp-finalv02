@@ -26,6 +26,7 @@
       if (p < -N / 2) p += N;
       el.style.setProperty('--p', p);
       el.style.setProperty('--ap', Math.abs(p));
+      el.dataset.ap = Math.abs(p);
       el.toggleAttribute('data-on', p === 0);
       el.toggleAttribute('data-far', Math.abs(p) > 2);
     });

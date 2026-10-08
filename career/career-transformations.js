@@ -165,7 +165,7 @@
 
     // the rise follows the wall: it starts as the wall's top enters at the foot of the screen and has
     // settled into the arch a quarter of the way down, then the columns keep their own paces
-    const WALL_FROM = 1.0, WALL_TO = 0.25;
+    const WALL_FROM = 1.15, WALL_TO = 0.2;
     const target = () => {
       const top = mask.getBoundingClientRect().top / innerHeight;
       return clamp01((WALL_FROM - top) / (WALL_FROM - WALL_TO));
@@ -175,6 +175,7 @@
     const GAP_FROM = 0.6, GAP_TO = 0.3;
     const gapClose = () => Math.max(0, parseFloat(getComputedStyle(root.querySelector('.ctw-heading')).paddingBottom) - (innerWidth < 810 ? 32 : 80));
     const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
     // the heading fades as the cards reach it: it starts going a little before the highest card meets
     // its foot and is gone by the time that card reaches its top, and comes back on the way up
     const text = root.querySelector('.ctw-heading-text');
@@ -193,8 +194,16 @@
       const e = easeInOut(p);
       // how far the wall has scrolled past the point where the arch settles (0 until then)
       const past = reduce ? 0 : Math.max(0, WALL_TO * innerHeight - mask.getBoundingClientRect().top - (-gapClose() * g));
-      for (const { el, off, settle, pace } of cols)
-        el.style.transform = `translate3d(0, ${(settle + (off - settle) * (1 - e) - past * pace).toFixed(2)}px, 0)`;
+      // the wall sweeps in from the left: the right-hand columns lead, the left ones trail a beat
+      // behind, so it arrives as one moving surface; the rise into the arch is kept, gentler
+      const W = innerWidth * 1.05;
+      cols.forEach(({ el, off, settle, pace }, c) => {
+        const ec = reduce ? 1 : easeOut(clamp01((p - (cols.length - 1 - c) * 0.035) / 0.755));
+        const x = -(1 - ec) * W;
+        const y = settle + (off - settle) * 0.35 * (1 - e) - past * pace;
+        el.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+        el.style.opacity = (0.25 + 0.75 * ec).toFixed(3);
+      });
     };
     function tick() {
       const t = target();

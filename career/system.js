@@ -1,24 +1,129 @@
-/* How we train: the point nearest the middle of the screen is the open one; the panel shows its
-   illustration and the dots mark it. */
+/* How we train: the point under the middle of the screen is the open one. Measured every frame
+   while the section is on screen (an observer's thresholds lag on a fast scroll), so the scene
+   changes exactly as a point's top crosses the middle; the step bar and the rule beside each point
+   fill with how far it has been read. */
 (() => {
   const sec = document.getElementById('what-companies-look-for');
   if (!sec) return;
   const items = [...sec.querySelectorAll('.wlx-item')];
   const vis = [...sec.querySelectorAll('.wlx-vis')];
-  const dots = [...sec.querySelectorAll('.wlx-dots li')];
-  let at = -1;
+  const bars = [...sec.querySelectorAll('.wlx-dots i')];
+  let at = -1, raf = 0, live = false;
   const show = i => {
     if (i === at) return;
     at = i;
     items.forEach((el, k) => el.classList.toggle('is-on', k === i));
     vis.forEach((el, k) => el.classList.toggle('is-on', k === i));
-    dots.forEach((el, k) => el.classList.toggle('is-on', k === i));
   };
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) show(items.indexOf(e.target)); });
-  }, { rootMargin: '-45% 0px -45% 0px' });
-  items.forEach(el => io.observe(el));
-  show(0);
+  const clamp01 = v => Math.min(1, Math.max(0, v));
+  const update = () => {
+    const mid = innerHeight / 2;
+    let idx = 0;
+    items.forEach((el, k) => {
+      const r = el.getBoundingClientRect();
+      if (r.top <= mid) idx = k;
+      const f = clamp01((mid - r.top) / r.height);
+      el.style.setProperty('--f', f.toFixed(3));
+      if (bars[k]) bars[k].style.setProperty('--f', f.toFixed(3));
+    });
+    show(idx);
+  };
+  const loop = () => { update(); if (live) raf = requestAnimationFrame(loop); };
+  new IntersectionObserver(([e]) => {
+    live = e.isIntersecting;
+    cancelAnimationFrame(raf);
+    if (live) raf = requestAnimationFrame(loop);
+  }).observe(sec);
+  update();
+})();
+
+/* Learner stories: one story large, the rest as a playlist. Built from the cards in the markup
+   (each keeps its video id, still, learner, package and company); the big screen plays the video
+   in place. */
+(() => {
+  const sec = document.querySelector('.lx');
+  if (!sec) return;
+  const stage = sec.querySelector('.lx__stage');
+  const items = [...sec.querySelectorAll('.lx-item')].map(it => {
+    const card = it.querySelector('.lx-card');
+    const still = card.querySelector('img');
+    const logo = it.querySelector('.lx-info__logo');
+    return {
+      id: card.getAttribute('data-yt'),
+      label: card.getAttribute('aria-label') || '',
+      still: still ? still.getAttribute('src') : '',
+      avatar: (it.querySelector('.lx-info__avatar img') || {}).src || '',
+      name: (it.querySelector('.lx-info__name') || {}).textContent || '',
+      pill: (it.querySelector('.lx-info__pill') || {}).textContent || '',
+      logo: logo ? logo.getAttribute('src') : '',
+      logoAlt: logo ? logo.alt : ''
+    };
+  });
+  if (!items.length) return;
+  stage.classList.add('is-source');
+  stage.setAttribute('aria-hidden', 'true');
+  stage.querySelectorAll('button').forEach(b => b.tabIndex = -1);
+
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const wrap = document.createElement('div');
+  wrap.className = 'lxp';
+  wrap.innerHTML = `
+    <div class="lxp-feature">
+      <button class="lxp-screen" type="button"><img alt=""><span class="lxp-play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></button>
+      <div class="lxp-meta">
+        <span class="lxp-av"><img alt=""></span>
+        <span class="lxp-who"><span class="lxp-name"></span><span class="lxp-pill"></span></span>
+        <img class="lxp-logo" alt="">
+        <span class="lxp-count"></span>
+      </div>
+    </div>
+    <ol class="lxp-list" aria-label="More learner stories">
+      ${items.map((it, i) => `<li><button type="button" data-i="${i}" aria-current="false" aria-label="${esc(it.label)}">
+        <span class="lxp-th"><img src="${esc(it.still)}" alt="" loading="lazy"></span>
+        <span><b>${esc(it.name)}</b><small>${esc(it.pill)}</small></span></button></li>`).join('')}
+    </ol>`;
+  stage.after(wrap);
+
+  const screen = wrap.querySelector('.lxp-screen');
+  const img = screen.querySelector('img');
+  const meta = {
+    av: wrap.querySelector('.lxp-av img'), name: wrap.querySelector('.lxp-name'), pill: wrap.querySelector('.lxp-pill'),
+    logo: wrap.querySelector('.lxp-logo'), count: wrap.querySelector('.lxp-count')
+  };
+  const rows = [...wrap.querySelectorAll('.lxp-list button')];
+  let at = -1;
+  const stop = () => { const f = screen.querySelector('iframe'); if (f) f.remove(); screen.classList.remove('is-playing'); };
+  const pick = (i, scroll) => {
+    if (i === at) return;
+    at = i;
+    stop();
+    const it = items[i];
+    screen.classList.add('is-swap');
+    setTimeout(() => { img.src = it.still; screen.classList.remove('is-swap'); }, 160);
+    screen.setAttribute('aria-label', 'Play video: ' + it.label);
+    meta.av.src = it.avatar; meta.name.textContent = it.name; meta.pill.textContent = it.pill;
+    meta.logo.src = it.logo; meta.logo.alt = it.logoAlt; meta.logo.hidden = !it.logo;
+    meta.count.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(items.length).padStart(2, '0');
+    rows.forEach((r, k) => r.setAttribute('aria-current', String(k === i)));
+    if (scroll) rows[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  };
+  rows.forEach((r, i) => r.addEventListener('click', () => pick(i, false)));
+  screen.addEventListener('click', () => {
+    if (screen.classList.contains('is-playing')) return;
+    const f = document.createElement('iframe');
+    f.src = 'https://www.youtube.com/embed/' + items[at].id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1';
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    f.title = items[at].label;
+    screen.append(f);
+    screen.classList.add('is-playing');
+  });
+  sec.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' && e.target.closest('.lxp-list')) { e.preventDefault(); pick(Math.min(items.length - 1, at + 1), true); rows[at].focus(); }
+    if (e.key === 'ArrowUp' && e.target.closest('.lxp-list')) { e.preventDefault(); pick(Math.max(0, at - 1), true); rows[at].focus(); }
+  });
+  img.src = items[0].still;
+  pick(0, false);
 })();
 
 /* Hiring partners: the companies on a slowly turning globe. Built from the logos the marquee script

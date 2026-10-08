@@ -1,12 +1,12 @@
 /* =====================================================================
    S3 — AWARDS & RECOGNITIONS
-   A stage at night: a warm spotlight from above, gold dust drifting in it,
-   the five trophies on a turning carousel with the open one in the light
-   and reflected in the floor. The open award is named beneath in large
-   type; the award marks are its tabs, each with a timer bar. Then, on
-   paper, the recognising bodies and the press photographs as prints.
+   A keynote stage: a blue spotlight over a perspective grid floor, the
+   five trophies on a turning carousel with the open one in the light and
+   reflected in the floor. The open award is named beneath; all five are
+   listed as tabs, each with its mark and a timer bar. Then the
+   recognising bodies and the press photographs.
    ===================================================================== */
-.aw2 { position: relative; z-index: 3; background: var(--w-paper, #fbf6ee); }
+.aw2 { position: relative; z-index: 3; background: #fff; }
 
 /* ---- the stage -------------------------------------------------------- */
 .aw2-stage {
@@ -15,9 +15,26 @@
   isolation: isolate;
   padding: clamp(72px, 8vw, 120px) 0 clamp(56px, 6vw, 96px);
   background:
-    radial-gradient(120% 70% at 50% 120%, rgba(255, 140, 70, .16), transparent 60%),
-    linear-gradient(180deg, #120d1f 0%, #1a1230 55%, #221638 100%);
+    radial-gradient(90% 60% at 50% 115%, rgba(37, 99, 235, .35), transparent 60%),
+    linear-gradient(180deg, #030817 0%, #071230 55%, #0a1a42 100%);
   color: #fff;
+}
+/* a perspective grid for the floor the trophies stand on */
+.aw2-stage::before {
+  content: "";
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: 0;
+  height: 62%;
+  z-index: -1;
+  background:
+    repeating-linear-gradient(90deg, rgba(130, 189, 255, .16) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(0deg, rgba(130, 189, 255, .16) 0 1px, transparent 1px 64px);
+  transform: perspective(600px) rotateX(64deg);
+  transform-origin: 50% 100%;
+  -webkit-mask-image: radial-gradient(60% 90% at 50% 100%, #000 20%, transparent 75%);
+          mask-image: radial-gradient(60% 90% at 50% 100%, #000 20%, transparent 75%);
 }
 /* the spotlight: a soft cone from the top centre onto the carousel */
 .aw2-light {
@@ -25,8 +42,8 @@
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(34% 62% at 50% 4%, rgba(255, 214, 160, .30), rgba(255, 170, 90, .10) 45%, transparent 72%),
-    conic-gradient(from 180deg at 50% -8%, transparent 168deg, rgba(255, 220, 170, .10) 176deg, rgba(255, 220, 170, .16) 180deg, rgba(255, 220, 170, .10) 184deg, transparent 192deg);
+    radial-gradient(34% 62% at 50% 4%, rgba(130, 189, 255, .30), rgba(37, 99, 235, .12) 45%, transparent 72%),
+    conic-gradient(from 180deg at 50% -8%, transparent 168deg, rgba(160, 205, 255, .10) 176deg, rgba(160, 205, 255, .16) 180deg, rgba(160, 205, 255, .10) 184deg, transparent 192deg);
   animation: aw2-breathe 7s ease-in-out infinite;
 }
 @keyframes aw2-breathe { 50% { opacity: .78; } }
@@ -36,12 +53,12 @@
   inset: -20% 25% 20%;
   z-index: -1;
   background-image:
-    radial-gradient(1.6px 1.6px at 12% 22%, rgba(255, 220, 160, .9), transparent 60%),
-    radial-gradient(1.2px 1.2px at 32% 64%, rgba(255, 220, 160, .7), transparent 60%),
-    radial-gradient(1.8px 1.8px at 54% 38%, rgba(255, 230, 180, .8), transparent 60%),
-    radial-gradient(1.2px 1.2px at 72% 76%, rgba(255, 220, 160, .6), transparent 60%),
-    radial-gradient(1.5px 1.5px at 86% 30%, rgba(255, 230, 180, .8), transparent 60%),
-    radial-gradient(1px 1px at 44% 88%, rgba(255, 220, 160, .6), transparent 60%);
+    radial-gradient(1.6px 1.6px at 12% 22%, rgba(160, 205, 255, .9), transparent 60%),
+    radial-gradient(1.2px 1.2px at 32% 64%, rgba(160, 205, 255, .7), transparent 60%),
+    radial-gradient(1.8px 1.8px at 54% 38%, rgba(190, 220, 255, .8), transparent 60%),
+    radial-gradient(1.2px 1.2px at 72% 76%, rgba(160, 205, 255, .6), transparent 60%),
+    radial-gradient(1.5px 1.5px at 86% 30%, rgba(190, 220, 255, .8), transparent 60%),
+    radial-gradient(1px 1px at 44% 88%, rgba(160, 205, 255, .6), transparent 60%);
   background-size: 360px 420px;
   animation: aw2-dust 26s linear infinite;
   -webkit-mask-image: radial-gradient(50% 60% at 50% 30%, #000, transparent);
@@ -50,12 +67,16 @@
 @keyframes aw2-dust { to { background-position: 0 -420px; } }
 
 .aw2-head { position: relative; text-align: center; }
-.aw2-head .sx-eyebrow { color: #ffc27a; }
+.aw2-head .sx-eyebrow { color: #82bdff; }
 .aw2 .rc-title {
   margin: 0;
-  font: 600 clamp(36px, 4.6vw, 72px)/1.02 var(--font-head);
+  font: 600 clamp(36px, 4.6vw, 64px)/1.06 var(--font-head);
   letter-spacing: -.02em;
-  color: #fff;
+  background: var(--head-grad-dark);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-bottom: .06em;
 }
 
 /* ---- the carousel ----------------------------------------------------- */
@@ -98,7 +119,7 @@
   height: 90px;
   translate: -50% 0;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 196, 120, .42), rgba(255, 150, 80, .12) 55%, transparent);
+  background: radial-gradient(closest-side, rgba(130, 189, 255, .5), rgba(37, 99, 235, .16) 55%, transparent);
   filter: blur(4px);
   pointer-events: none;
 }
@@ -106,11 +127,11 @@
 /* ---- the caption and its tabs ------------------------------------------ */
 .aw2-caption {
   position: relative;
-  width: min(calc(100% - 2 * var(--page-pad)), 900px);
+  width: min(calc(100% - 2 * var(--page-pad)), 1200px);
   margin: clamp(20px, 2.4vw, 36px) auto 0;
   text-align: center;
 }
-.aw2 .rc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.aw2 .rc-list { list-style: none; margin: 0 auto; padding: 0; display: grid; max-width: 900px; }
 .aw2 .rc-item {
   grid-area: 1 / 1;
   display: flex;
@@ -123,11 +144,11 @@
   pointer-events: none;
 }
 .aw2 .rc-item[aria-current="true"] { opacity: 1; translate: 0 0; transition-delay: .18s; }
-.aw2 .rc-kicker { font: 600 12.5px/1 var(--font); letter-spacing: .18em; text-transform: uppercase; color: #ffc27a; }
+.aw2 .rc-kicker { font: 600 12.5px/1 var(--font); letter-spacing: .18em; text-transform: uppercase; color: #82bdff; }
 .aw2 .rc-name {
   margin: 0;
-  font: 400 clamp(32px, 4vw, 58px)/1.05 var(--font-serif);
-  font-style: italic;
+  font: 600 clamp(28px, 3.4vw, 48px)/1.1 var(--font-head);
+  letter-spacing: -.015em;
   color: #fff;
   text-wrap: balance;
 }
@@ -135,88 +156,83 @@
 
 .aw2 .rc-badges {
   list-style: none;
-  margin: clamp(28px, 3vw, 44px) 0 0;
+  margin: clamp(32px, 3.4vw, 52px) auto 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  gap: clamp(10px, 1.4vw, 18px);
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
 }
 .aw2 .rc-badges button {
   position: relative;
-  width: clamp(60px, 6vw, 84px);
-  height: clamp(60px, 6vw, 84px);
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, .12);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  text-align: left;
+  font: 500 13.5px/1.3 var(--font);
+  color: rgba(255, 255, 255, .62);
+  border: 1px solid rgba(130, 189, 255, .16);
   border-radius: var(--r-md);
-  background: rgba(255, 255, 255, .04);
+  background: rgba(10, 26, 66, .55);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
   overflow: hidden;
   cursor: pointer;
-  transition: background .3s, border-color .3s, transform .3s;
+  transition: background .3s, border-color .3s, color .3s;
 }
-.aw2 .rc-badges button:hover { background: rgba(255, 255, 255, .09); transform: translateY(-2px); }
-.aw2 .rc-badges img { max-width: 70%; max-height: 70%; opacity: .55; transition: opacity .3s; }
-.aw2 .rc-badges button[aria-current="true"] { border-color: rgba(255, 194, 122, .6); background: rgba(255, 194, 122, .1); }
+.aw2 .rc-badges button:hover { color: #fff; border-color: rgba(130, 189, 255, .36); }
+.aw2 .rc-badges img { flex: none; width: 40px; height: 40px; object-fit: contain; opacity: .55; transition: opacity .3s; }
+.aw2 .rc-badges button[aria-current="true"] { color: #fff; border-color: rgba(130, 189, 255, .7); background: rgba(37, 99, 235, .22); }
 .aw2 .rc-badges button[aria-current="true"] img { opacity: 1; }
 /* the timer: fills while the award holds */
-.aw2 .rc-badges i { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: #ffc27a; transform: scaleX(0); transform-origin: 0 50%; }
+.aw2 .rc-badges i { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: linear-gradient(90deg, #2563eb, #82bdff); transform: scaleX(0); transform-origin: 0 50%; }
 .aw2 .rc-badges button[aria-current="true"] i { animation: aw2-timer var(--hold, 3200ms) linear forwards; }
 .aw2.is-held .rc-badges i { animation-play-state: paused; }
 @keyframes aw2-timer { to { transform: none; } }
-.aw2 .rc-badges button:focus-visible { outline: 2px solid #ffc27a; outline-offset: 3px; }
-
-/* ---- on paper: the recognising bodies and the prints -------------------- */
-.aw2-paper {
-  padding: clamp(56px, 6vw, 96px) var(--page-pad) clamp(72px, 8vw, 128px);
-  background:
-    radial-gradient(60% 50% at 50% 0%, rgba(255, 196, 140, .18), transparent 70%),
-    var(--w-paper, #fbf6ee);
+.aw2 .rc-badges button:focus-visible { outline: 2px solid #82bdff; outline-offset: 3px; }
+@media (max-width: 900px) {
+  .aw2 .rc-badges { display: flex; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+  .aw2 .rc-badges li { flex: 0 0 210px; }
 }
+
+/* ---- under the stage: the recognising bodies and the press photographs ---- */
+.aw2-paper { padding: clamp(56px, 6vw, 96px) var(--page-pad) clamp(72px, 8vw, 120px); background: #fff; }
 .aw2 .rc-recog { width: min(100%, 900px); margin: 0 auto; }
 .aw2 .rc-recog img { display: block; width: 100%; height: auto; }
 .aw2 .rc-cards {
   list-style: none;
-  margin: clamp(48px, 5vw, 80px) auto 0;
+  margin: clamp(48px, 5vw, 72px) auto 0;
   padding: 0;
-  width: min(100%, 1120px);
+  width: min(100%, 1200px);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 48px);
+  gap: clamp(16px, 2.4vw, 32px);
   align-items: start;
 }
-/* each photograph is a print: a white border, a deeper bottom margin for its caption, a slight
-   lean that straightens when you look at it */
 .aw2 .rc-cards li {
-  --rot: -3deg;
-  padding: 12px 12px 20px;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(60, 40, 20, .06), 0 24px 40px -20px rgba(60, 40, 20, .32);
-  rotate: var(--rot);
-  translate: 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   opacity: 0;
-  transition: rotate .6s cubic-bezier(.22, .9, .24, 1), translate .8s cubic-bezier(.22, .9, .24, 1), opacity .6s ease, box-shadow .4s;
-  transition-delay: calc(var(--i) * 110ms);
+  translate: 0 28px;
+  transition: translate .8s cubic-bezier(.22, .9, .24, 1), opacity .6s ease;
+  transition-delay: calc(var(--i) * 100ms);
 }
-.aw2 .rc-cards li:nth-child(2) { --rot: 2.2deg; margin-top: 28px; }
-.aw2 .rc-cards li:nth-child(3) { --rot: -1.6deg; }
 .aw2 .rc-cards.is-in li { translate: 0 0; opacity: 1; }
-.aw2 .rc-cards li:hover { rotate: 0deg; translate: 0 -6px; box-shadow: 0 2px 4px rgba(60, 40, 20, .06), 0 36px 56px -24px rgba(60, 40, 20, .4); transition-delay: 0s; }
-.aw2 .rc-cards figure { margin: 0; aspect-ratio: 4 / 3; border-radius: 3px; overflow: hidden; background: #eee; }
-.aw2 .rc-cards img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); }
+.aw2 .rc-cards figure { margin: 0; aspect-ratio: 16 / 10; border-radius: var(--r-md); overflow: hidden; background: #eef2f9; }
+.aw2 .rc-cards img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); transition: transform .8s cubic-bezier(.22, .9, .24, 1); }
+.aw2 .rc-cards li:hover img { transform: scale(1.13); }
 .aw2 .rc-cards li:nth-child(3) img { object-position: 50% 10%; }
-.aw2 .rc-cards p {
-  margin: 16px 4px 0;
-  font: 500 14.5px/1.5 var(--font);
-  color: #6b6358;
-}
-.aw2 .rc-cards b { font-weight: 600; color: #2a2118; }
+.aw2 .rc-cards p { margin: 0; font: 500 15px/1.55 var(--font); color: #64748b; }
+.aw2 .rc-cards b { font-weight: 600; color: #0f172a; }
 
 @media (max-width: 760px) {
-  .aw2-ring { --step: 30vw; }
+  .aw2-ring { --step: 40vw; }
+  .aw2-ring .rc-trophy[data-ap="2"] { opacity: 0; pointer-events: none; }
   .aw2 .rc-cards { grid-template-columns: 1fr; max-width: 420px; }
-  .aw2 .rc-cards li:nth-child(2) { margin-top: 0; }
-  .aw2 .rc-badges { gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .aw2-light, .aw2-dust { animation: none; }
