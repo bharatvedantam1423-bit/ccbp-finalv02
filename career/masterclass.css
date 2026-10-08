@@ -1,8 +1,8 @@
 /* S3b — Masterclasses from Mentors (scoped to .mc).
    Editorial layout (Figma 1234:116 reference): eyebrow + large heading, then a rail of tiles at
    different sizes and heights — the intro copy and its button up top, the masterclass film at full
-   height, mentor tiles alternating bottom / top. The stage pins and vertical scroll slides the rail
-   sideways (career/masterclass.js); the logo ticker follows once the rail has run out. */
+   height, mentor tiles alternating bottom / top. The rail scrolls sideways on its own (swipe, trackpad,
+   or the arrows under it — career/masterclass.js); the page's vertical scroll is left alone. */
 .mc{
   --title-grad:var(--head-grad);   /* the page-wide heading fill (index.html :root) */
   --font:"InterVariable","Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
@@ -24,10 +24,7 @@
 :where(.mc) :is(h2,h3,p){margin:0}
 .mc{padding-bottom:var(--sec);background:#fff;color:var(--text);font-family:var(--font)}
 
-/* ---------- Pin: the track is as tall as the rail is wide (height set by script) ---------- */
-.mc__pin{position:relative}
-.mc__stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#fff;
-  display:flex;flex-direction:column;justify-content:center;gap:var(--head-gap,56px)}
+.mc__stage{padding-top:var(--sec);display:flex;flex-direction:column;gap:var(--head-gap,56px)}
 
 /* ---------- Head ---------- */
 .mc__head{max-width:1200px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:32px}
@@ -48,10 +45,13 @@
 .mc__aff li:nth-child(4) img{width:101px}
 
 /* ---------- Rail ---------- */
-.mc__viewport{position:relative;flex:none;height:var(--rail-h)}
+.mc__viewport{position:relative;flex:none;height:var(--rail-h);overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;scroll-padding-inline:var(--page-edge,var(--m));overscroll-behavior-x:contain;
+  scrollbar-width:none}
+.mc__viewport::-webkit-scrollbar{display:none}
 .mc__rail{display:flex;align-items:stretch;gap:var(--gap);height:100%;width:max-content;
-  padding-inline:var(--page-edge,var(--m));will-change:transform}
-.mc__tile{flex:none;position:relative;height:100%;display:flex;flex-direction:column}
+  padding-inline:var(--page-edge,var(--m))}
+.mc__tile{flex:none;position:relative;height:100%;display:flex;flex-direction:column;scroll-snap-align:start}
 /* stagger: the reference's small tile sits on the bottom edge, the copy hangs from the top */
 .mc__tile--bottom{justify-content:flex-end}
 .mc__tile--top{justify-content:flex-start}
@@ -86,9 +86,15 @@
 .mentor__row{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5}
 .mentor__row svg{flex:none;width:18px;height:18px;margin-top:2px;fill:none;stroke:#0f81e0;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-/* progress hairline under the rail */
-.mc__progress{width:min(240px,40vw);height:2px;margin:0 auto;border-radius:2px;background:var(--line);overflow:hidden}
-.mc__progress span{display:block;height:100%;width:100%;background:var(--blue);transform:scaleX(0);transform-origin:0 50%}
+/* arrows under the rail: same buttons as "Why Top Companies Prefer" (.ht__arrow) */
+.mc__nav{display:flex;justify-content:center;gap:8px;margin-top:calc(8px - var(--head-gap,56px) / 2)}
+.mc__arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;
+  cursor:pointer;transition:background .25s,border-color .25s,opacity .25s}
+.mc__arrow svg{width:18px;height:18px;fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mc__arrow:hover{background:var(--ink);border-color:var(--ink)}
+.mc__arrow:hover svg{stroke:#fff}
+.mc__arrow:disabled{opacity:.3;pointer-events:none}
+.mc__arrow:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
 
 /* ---------- Logo ticker (build S4, same sizing / spacing / drift) ---------- */
 .mc-ticker{display:flex;flex-direction:column;gap:clamp(28px,3vw,44px);overflow:hidden;
@@ -128,16 +134,11 @@
   .mc__aff{gap:18px;flex-wrap:wrap;padding-bottom:0}
   .mc__aff li:nth-child(n) img{width:auto;height:25px}
   .mc__stage{gap:32px}
+  .mc__nav{margin-top:-8px}
   .mentor{height:auto;min-height:0;padding:20px}
   .mc__tile--mentor{width:260px}
 }
-/* reduced motion (or no script): no pin — the rail is an ordinary swipe/scroll row */
 @media (prefers-reduced-motion:reduce){
-  .mc__stage{position:relative;height:auto;padding-block:var(--sec) 0}
-  .mc__viewport{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin}
-  .mc__tile{scroll-snap-align:start}
-  .mc__rail{will-change:auto}
-  .mc__progress{display:none}
   .mc-ticker-row{animation:none}
   .mc > .mc-ticker .mc-ticker-row{opacity:1;translate:none}
   .mc__eyebrow,.mc__title,.mc__aff li{animation:none}

@@ -67,40 +67,28 @@
   new IntersectionObserver(([e], o) => { if (e.isIntersecting) { ticker.classList.add('is-in'); o.disconnect(); } }, { threshold: .2 })
     .observe(ticker);
 
-  // ---- Horizontal scroll: the stage pins and vertical scroll slides the rail sideways.
-  //      The pin is made exactly as tall as the rail's overflow, so one px down = one px across. ----
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;   // CSS leaves a plain swipe row
-  const pin = document.querySelector('.mc__pin');
-  const stage = pin.querySelector('.mc__stage');
-  const viewport = pin.querySelector('.mc__viewport');
-  const bar = pin.querySelector('.mc__progress span');
-  let top = 0, dist = 0, x = -1;
-
-  const measure = () => {
-    dist = Math.max(0, rail.scrollWidth - viewport.clientWidth);
-    pin.style.height = `${stage.offsetHeight + dist}px`;
-    let y = 0, n = pin; while (n) { y += n.offsetTop; n = n.offsetParent; }   // untransformed page offset
-    top = y; x = -1; update();
+  // ---- Arrows: step the rail one tile at a time; each greys out at its end ----
+  const viewport = document.querySelector('.mc__viewport');
+  const [prev, next] = document.querySelectorAll('.mc__arrow');
+  const tiles = () => [...rail.children];
+  const step = (dir) => {
+    const pad = parseFloat(getComputedStyle(rail).paddingLeft) || 0;
+    const x = viewport.scrollLeft;
+    // the first tile whose start is past the current position (or the last one before it, going back)
+    const starts = tiles().map((t) => t.offsetLeft - pad);
+    const to = dir > 0 ? starts.find((s) => s > x + 4) : [...starts].reverse().find((s) => s < x - 4);
+    viewport.scrollTo({ left: to ?? (dir > 0 ? viewport.scrollWidth : 0),
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
-  const update = () => {
-    const p = dist ? Math.min(1, Math.max(0, (scrollY - top) / dist)) : 0;
-    const nx = Math.round(p * dist);
-    if (nx === x) return;
-    x = nx;
-    rail.style.transform = `translate3d(${-x}px,0,0)`;
-    bar.style.transform = `scaleX(${p})`;
+  const sync = () => {
+    const max = viewport.scrollWidth - viewport.clientWidth;
+    prev.disabled = viewport.scrollLeft <= 4;
+    next.disabled = viewport.scrollLeft >= max - 4;
   };
-
-  // keyboard: tabbing to a tile scrolls the page to where that tile is on screen
-  rail.addEventListener('focusin', (e) => {
-    const t = e.target.closest('.mc__tile'); if (!t) return;
-    const want = Math.min(dist, Math.max(0, t.offsetLeft - (viewport.clientWidth - t.offsetWidth) / 2));
-    if (Math.abs(want - x) > 4) scrollTo({ top: top + want, behavior: 'instant' });
-  });
-
-  addEventListener('scroll', update, { passive: true });
-  addEventListener('resize', measure);
-  addEventListener('load', measure);
-  new ResizeObserver(measure).observe(document.body);   // pinned sections above settle after load
-  measure();
+  prev.addEventListener('click', () => step(-1));
+  next.addEventListener('click', () => step(1));
+  viewport.addEventListener('scroll', sync, { passive: true });
+  addEventListener('resize', sync);
+  addEventListener('load', sync);
+  sync();
 })();
