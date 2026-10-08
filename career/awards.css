@@ -258,18 +258,18 @@
   object-position: center bottom;
   display: block;
 }
-/* Each plate is a whole award: the trophy already standing in its plinth, so the plinth hides the
-   trophy's foot exactly as it does in the file. They cross-dissolve in place — the incoming plate
-   fades in over the outgoing one, which holds until it is covered, so the plinth, identical in every
-   plate, never dips in opacity mid-change and nothing shifts but the award itself. */
+/* The trophies cross-fade behind a fixed plinth. The plinth is the part every supplied plate has
+   in common, lifted out once (plinth.webp) and laid on top, so it hides each trophy's foot as the
+   file does and stays perfectly still while the awards change. The outgoing trophy leaves a beat
+   before the incoming one arrives, so the two are never seen standing in the plinth together. */
 .rc-trophy {
   z-index: 1;
   opacity: 0;
-  transition: opacity .38s ease;
+  transition: opacity .22s ease;
   will-change: opacity;
 }
-.rc-trophy[data-prev] { opacity: 1; z-index: 2; transition: none; }
-.rc-trophy[data-on]   { opacity: 1; z-index: 3; }
+.rc-trophy[data-on] { z-index: 2; opacity: 1; transition: opacity .32s ease .12s; }
+.rc-plinth { z-index: 3; }
 
 @media (max-width: 900px) {
   .rc { --rc-col: calc(100% - 2 * var(--page-pad)); }   /* stacked: the page's own column */
