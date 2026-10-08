@@ -49,34 +49,43 @@
   const logo = f => F + (f.endsWith('.svg') ? f : 'trim/' + f.replace(/\.\w+$/, '.png'));
   const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   /* HD covers (article originals where the source had them) */
-  /* text-poster covers that lose their words in the tall desktop slot of the two stacked cards get a square re-framing */
-  const SQ = new Set(['krZDWpBsncwt7rRpwL9syFM8as.png']);
   const cover = img => F + 'hd/' + img.replace(/\.\w+$/, '') + '.jpg?v=2';   /* v=2: covers re-cropped (baked-in side strips removed) — busts stale browser caches */
+  /* the photograph is the card: publication + date ride on its top edge, the headline on a scrim at the foot */
   const card = ([lg,date,img,title,url], i) => `
-    <li class="fm__card${i === 0 ? ' fm__card--feat' : i > 2 ? ' fm__card--sm' : ''}">
+    <li class="fm__card${i === 0 ? ' fm__card--feat' : ''}">
       <a class="fm__link" href="${url}" target="_blank" rel="noopener" aria-label="${esc(title)} — ${pub(url)}, ${when(date)}">
+        <picture class="fm__img"><img src="${cover(img)}" alt="" loading="lazy"></picture>
+        <span class="fm__scrim" aria-hidden="true"></span>
+        <div class="fm__top"><span class="fm__pub"><img class="fm__logo" src="${logo(lg)}" alt="${pub(url)}" loading="lazy"></span><span class="fm__date">${when(date)}</span></div>
         <div class="fm__body">
-          <div class="fm__top"><img class="fm__logo" src="${logo(lg)}" alt="${pub(url)}" loading="lazy"><span class="fm__date">${when(date)}</span></div>
           <h3 class="fm__h">${esc(title)}</h3>
-          <span class="fm__cta">View More${ARROW}</span>
+          <span class="fm__cta">Read the story${ARROW}</span>
         </div>
-        <picture class="fm__img">${SQ.has(img) && (i === 1 || i === 2) ? `<source media="(min-width:1181px)" srcset="${cover(img).replace('.jpg', '-sq.jpg')}">` : ''}<img src="${cover(img)}" alt="" loading="lazy"></picture>
       </a>
     </li>`;
   const grid = document.getElementById('fm-grid'), more = document.getElementById('fm-more');
   /* equal visual weight: height from a constant logo area, clamped so tall and very wide marks stay legible */
   const sizeLogo = (im, lo, hi, area, wmax) => { const r = im.naturalWidth / im.naturalHeight || 4;
     const h = Math.min(hi, Math.max(lo, Math.sqrt(area / r))); im.style.height = Math.min(h, wmax / r) + 'px'; };
-  const fit = im => sizeLogo(im, 14, 27, 2200, 172);
+  const fit = im => sizeLogo(im, 12, 22, 1500, 120);
+  /* cards rise in as they scroll into view, staggered along each row */
+  const seen = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('is-in'); seen.unobserve(e.target); }
+  }), { rootMargin: '0px 0px -8% 0px' }) : null;
   let shown = 0;
   const add = n => {
+    const from = shown;
     grid.insertAdjacentHTML('beforeend', A.slice(shown, shown + n).map((a, k) => card(a, shown + k)).join(''));
     shown = Math.min(A.length, shown + n);
+    [...grid.children].slice(from).forEach((li, k) => {
+      li.style.setProperty('--d', from + k < 3 ? from + k : (from + k - 3) % 3);   // position in its row
+      seen ? seen.observe(li) : li.classList.add('is-in');
+    });
     grid.querySelectorAll('.fm__logo:not([style])').forEach(im => im.complete ? fit(im) : im.addEventListener('load', () => fit(im), { once: true }));
     more.hidden = shown >= A.length;
   };
-  add(11);                                  // featured + 2 stacked + two rows of four
-  more.addEventListener('click', () => add(4));
+  add(9);                                   // featured + 2 stacked + two rows of three
+  more.addEventListener('click', () => add(6));
 
   /* "Featured in" — publication marks under the section title (ccbp.in press strip) */
   const P = [
@@ -89,11 +98,13 @@
   ];
   const press = document.getElementById('fm-press');
   if (press) {
-    press.insertAdjacentHTML('beforeend', P.map(([lg, name]) =>
-      `<li class="fm__press-item"><img src="${logo(lg)}" alt="${esc(name)}" loading="lazy"></li>`).join(''));
-    /* same optical-weight rule as the card marks, one step up so the strip reads as the headline of the section */
+    /* the row runs twice so the drift loops seamlessly; the copy is hidden from assistive tech */
+    const marks = hide => P.map(([lg, name]) =>
+      `<li class="fm__press-item"${hide ? ' aria-hidden="true"' : ''}><img src="${logo(lg)}" alt="${hide ? '' : esc(name)}" loading="lazy"></li>`).join('');
+    press.insertAdjacentHTML('beforeend', marks(false) + marks(true));
+    /* same optical-weight rule as the card marks, kept small so the strip stays a quiet band */
     press.querySelectorAll('img').forEach(im => {
-      const go = () => sizeLogo(im, 20, 36, 4200, 168);
+      const go = () => sizeLogo(im, 14, 26, 2400, 132);
       im.complete ? go() : im.addEventListener('load', go, { once: true });
     });
   }
