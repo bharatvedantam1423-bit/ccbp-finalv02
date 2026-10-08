@@ -1,0 +1,363 @@
+/* =====================================================================
+   SECTION SYSTEM — every section under the awards is built from the same
+   few parts, so the page reads as one product rather than a stack of
+   separate builds:
+   · one column (1200 max) and one vertical rhythm
+   · one header: an eyebrow, the heading, one line of support, and any
+     actions for the section on the right
+   · three grounds that alternate down the page: white, mist, and navy
+   · one card: white, a hairline border, the family radius
+   The hero, the programme cards and the awards keep their own designs.
+   ===================================================================== */
+:root {
+  --sx-col: min(calc(100% - 2 * var(--page-pad)), 1200px);
+  --sx-y: clamp(72px, 8vw, 128px);          /* a section's top and bottom room */
+  --sx-ink: #0b1530;
+  --sx-muted: #55617a;
+  --sx-line: #e4e9f2;
+  --sx-mist: #f5f7fb;
+  --sx-blue: #2563eb;
+  --sx-navy: #06112b;
+  --sx-head-gap: clamp(36px, 4vw, 56px);    /* header -> content */
+  --sx-shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 24px 48px -28px rgba(16, 24, 40, .18);
+}
+
+/* ---- the header ------------------------------------------------------ */
+.sx-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font: 600 12.5px/1 var(--font);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--sx-blue);
+}
+.sx-eyebrow::before {
+  content: "";
+  width: 20px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.sx-dark .sx-eyebrow { color: #82bdff; }
+
+/* =====================================================================
+   HIRING PARTNERS — the claim on the left, the companies drifting past
+   in a framed wall on the right
+   ===================================================================== */
+.nw-hire {
+  --nw-hire-bg: #fff;
+  --nw-hire-card-w: 132px;
+  --nw-hire-card-h: 78px;
+  --nw-hire-gap: 12px;
+  --nw-hire-fade: 88px;
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 80px);
+  padding: var(--sx-y) max(var(--page-pad), calc((100% - 1200px) / 2));
+  background: var(--sx-mist);
+}
+.nw-hire__head {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+  text-align: left;
+}
+.nw-hire .nw-hire__title { width: auto; margin: 0; text-wrap: balance; }
+.nw-hire .nw-hire__sub { margin: 18px 0 0; max-width: 420px; }
+.nw-hire__rows {
+  margin: 0;
+  padding: 24px 0;
+  gap: var(--nw-hire-gap);
+  background: #fff;
+  border: 1px solid var(--sx-line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sx-shadow);
+}
+.nw-hire__card { background: #fff; border-color: var(--sx-line); }
+@media (max-width: 900px) {
+  .nw-hire { grid-template-columns: 1fr; }
+}
+
+/* ---- shared header for the sections below ---------------------------- */
+:root { --sx-h2: clamp(32px, 3.5vw, 52px); }
+.nw-hire .nw-hire__title,
+.mentors .mw-title, .mc .mc__title, .lx .lx__title, .cs .wl__title,
+.cs .ht__title, .cs .inv-title, .cs .fm__title {
+  font-size: var(--sx-h2);
+  line-height: 1.08;
+  text-align: left;
+  margin: 0;
+}
+.cs .wl__sub, .cs .ht__sub, .cs .inv-sub, .nw-hire .nw-hire__sub {
+  margin: 16px 0 0;
+  max-width: 560px;
+  font: 400 clamp(15px, 1.15vw, 17px)/1.55 var(--font);
+  letter-spacing: normal;
+  color: var(--sx-muted);
+}
+/* the column every section's content sits on */
+.cs { --m: max(var(--page-pad), calc((100vw - 1200px) / 2)); }
+
+/* =====================================================================
+   MENTORS — the heading on the left, the places they come from on the
+   right; the film runs beneath, unchanged
+   ===================================================================== */
+.mentors .mw-head {
+  width: var(--sx-col);
+  max-width: none;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 48px;
+  text-align: left;
+  padding-inline: 0;
+}
+.mentors .mw-title { max-width: none; }
+.mentors .mw-alumni { width: auto; align-items: flex-end; margin: 0; gap: 12px; }
+.mentors .mw-alumni-row { justify-content: flex-end; flex-wrap: nowrap; gap: clamp(16px, 2vw, 28px); }
+.mentors .mw-alumni-row img { height: clamp(22px, 2vw, 30px); }
+@media (max-width: 900px) {
+  .mentors .mw-head { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .mentors .mw-alumni { align-items: flex-start; }
+  .mentors .mw-alumni-row { justify-content: flex-start; }
+}
+
+/* the success-stories heading keeps its full-screen moment, now with its eyebrow */
+.ctw .ctw-heading-text .sx-eyebrow { margin-bottom: 20px; }
+
+/* =====================================================================
+   MASTERCLASSES — on mist; the heading left, the mentors' schools and
+   companies right; one card style for the film and the mentors
+   ===================================================================== */
+.mc { background: var(--sx-mist); padding-bottom: var(--sx-y); }
+.mc .mc__head { width: var(--sx-col); max-width: none; margin: 0 auto; padding-top: var(--sx-y); align-items: flex-end; }
+.mc .mc__body { max-width: none; width: var(--sx-col); margin: 0 auto; padding: var(--sx-head-gap) 0 0; }
+.mc .mentor { background: #fff; border: 1px solid var(--sx-line); box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+.mc .mc__video { box-shadow: var(--sx-shadow); }
+.mc > .mc-ticker { margin-top: clamp(48px, 5vw, 72px); }
+@media (max-width: 900px) {
+  .mc .mc__head { flex-direction: column; align-items: flex-start; }
+}
+
+/* =====================================================================
+   LEARNER STORIES — the heading on the column, the carousel full bleed
+   ===================================================================== */
+.lx { padding-block: var(--sx-y); }
+.lx__head { width: var(--sx-col); margin: 0 auto; }
+.lx .lx__title { padding: 0; width: fit-content; }
+.lx .lx__stage { margin-top: var(--sx-head-gap); }
+
+/* =====================================================================
+   HOW WE TRAIN — the navy band. Four numbered points; the panel on the
+   left holds the illustration for the point being read.
+   ===================================================================== */
+.cs .wl {
+  padding: var(--sx-y) 0;
+  color: #fff;
+  background:
+    radial-gradient(60% 50% at 85% 0%, rgba(37, 99, 235, .28), transparent 70%),
+    radial-gradient(50% 60% at 0% 100%, rgba(14, 65, 171, .35), transparent 70%),
+    var(--sx-navy);
+}
+.cs .wl__head { width: var(--sx-col); margin: 0 auto var(--sx-head-gap); align-items: flex-start; text-align: left; }
+.cs .wl__title { background-image: var(--head-grad-dark); }
+.cs .wl__sub { color: rgba(255, 255, 255, .68); }
+.cs .wl__sub b { color: #82bdff; }
+
+.wlx {
+  width: var(--sx-col);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+}
+.wlx-panel {
+  position: sticky;
+  top: max(96px, calc(50vh - 280px));
+  height: min(560px, 72vh);
+  border-radius: var(--r-lg);
+  background: linear-gradient(160deg, #f4f8ff 0%, #dbe7ff 100%);
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .6);
+  overflow: hidden;
+  display: grid;
+  grid-template: 100% / 100%;
+}
+.wlx-vis {
+  min-height: 0;
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 40px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .45s ease, visibility 0s linear .45s;
+}
+.wlx-vis.is-on { opacity: 1; visibility: visible; transition: opacity .55s ease .1s; }
+.wlx-vis > svg { width: min(100%, 480px); height: auto; max-height: 78%; overflow: visible; }
+.cs .wlx .wl__note { font-size: 14px; }
+/* the small illustrations from the old cards, set free and enlarged */
+.wlx .wl__viz { position: static; translate: none; }
+.wlx-vis--stack .wl__viz, .wlx-vis--flow .wl__viz, .wlx-vis--rounds .wl__viz { scale: 1.75; }
+/* each illustration builds in when its point arrives (the parts keep their own delays) */
+.wlx .wl__viz--rounds li { width: 172px; }
+.wl .wlx-vis.is-on .wl-a { opacity: 1; transform: none; }
+.wl .wlx-vis.is-on .wl-wire { stroke-dashoffset: 0; }
+.wl .wlx-vis.is-on .wl-node { animation: wl-float 6s ease-in-out var(--d, 0s) infinite; }
+.wlx-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  translate: -50% 0;
+  display: flex;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.wlx-dots li { width: 6px; height: 6px; border-radius: 6px; background: rgba(11, 21, 48, .2); transition: width .4s ease, background-color .4s ease; }
+.wlx-dots li.is-on { width: 22px; background: var(--sx-blue); }
+
+.wlx-list { list-style: none; margin: 0; padding: 0; }
+.wlx-item {
+  min-height: 58vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 32px;
+  border-left: 1px solid rgba(255, 255, 255, .14);
+  position: relative;
+  opacity: .34;
+  transition: opacity .45s ease;
+}
+.wlx-item::before {                          /* the progress bar on the rule */
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 30%;
+  bottom: 30%;
+  width: 2px;
+  background: #3b82f6;
+  transform: scaleY(0);
+  transition: transform .5s cubic-bezier(.22,.61,.36,1);
+}
+.wlx-item.is-on { opacity: 1; }
+.wlx-item.is-on::before { transform: none; }
+.wlx-item:first-child { min-height: min(560px, 72vh); }
+.wlx-copy { display: flex; flex-direction: column; gap: 14px; }
+.wlx-num { font: 600 13px/1 var(--font); letter-spacing: .14em; color: #82bdff; }
+.cs .wlx .wl__h { font-size: clamp(24px, 2.3vw, 34px); line-height: 1.2; color: #fff; }
+.cs .wlx .wl__p { font-size: clamp(15px, 1.2vw, 18px); line-height: 1.55; color: rgba(255, 255, 255, .7); max-width: 440px; }
+@media (max-width: 900px) {
+  .wlx { grid-template-columns: 1fr; gap: 0; }
+  .wlx-panel { top: 72px; height: 42vh; z-index: 2; }
+  /* the panel is pinned at the top here; each point's words pin just under it while it is open */
+  .wlx-item, .wlx-item:first-child { min-height: 64vh; justify-content: flex-start; padding-top: 24px; }
+  .wlx-copy { position: sticky; top: calc(72px + 42vh + 28px); }
+  .wlx-vis--stack .wl__viz, .wlx-vis--flow .wl__viz, .wlx-vis--rounds .wl__viz { scale: 1.3; }
+  .wlx-vis > svg { width: min(100%, 340px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wlx-vis, .wlx-item, .wlx-item::before, .wlx-dots li { transition: none; }
+}
+
+/* =====================================================================
+   HIRING MANAGERS — heading on the column, the rail runs off the right
+   ===================================================================== */
+.cs .ht { padding-top: var(--sx-y); }
+.cs .ht__head { width: var(--sx-col); margin: 0 auto var(--sx-head-gap); align-items: flex-start; text-align: left; }
+.cs .ht__head > div:first-child { align-items: flex-start; }
+.cs .ht__nav { justify-content: flex-end; padding: 0 max(var(--page-pad), calc((100% - 1200px) / 2)); }
+.cs .ht__track {
+  padding-inline: max(var(--page-pad), calc((100% - 1200px) / 2));
+  scroll-padding-inline: max(var(--page-pad), calc((100% - 1200px) / 2));
+}
+
+/* =====================================================================
+   INVESTORS — on mist: the claim on the left, the three firms in ruled
+   cells on the right
+   ===================================================================== */
+.cs .inv {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 80px);
+  margin-top: var(--sx-y);
+  padding: var(--sx-y) max(var(--page-pad), calc((100% - 1200px) / 2));
+  background: var(--sx-mist);
+}
+.cs .inv-head { align-items: flex-start; text-align: left; gap: 0; max-width: none; }
+.inv-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  background: #fff;
+  border: 1px solid var(--sx-line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sx-shadow);
+}
+.inv-row li { justify-content: center; height: clamp(120px, 11vw, 168px); padding: 24px; }
+.inv-row li + li { border-left: 1px solid var(--sx-line); }
+.inv-row .lf { display: none; }
+.inv-logo { max-width: 100%; }
+.inv-gp img, .inv-orios img { width: auto; max-width: 100%; height: auto; max-height: 52px; }
+.inv-better { width: auto; height: auto; padding: 12px 18px; }
+.inv-better img { width: 92px; }
+@media (max-width: 900px) {
+  .cs .inv { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .fm__press-item { flex-basis: 104px; min-height: 64px; padding: 12px; }
+  .fm__press-item img { height: 18px; max-width: 92px; }
+  .inv-row { grid-template-columns: 1fr; }
+  .inv-row li { zoom: 1; }
+  .inv-row li + li { border-left: 0; border-top: 1px solid var(--sx-line); }
+}
+
+/* =====================================================================
+   IN THE NEWS — heading on the column, the publications in a ruled grid,
+   the stories as bordered cards
+   ===================================================================== */
+.cs .fm { padding: var(--sx-y) 0; }
+.fm__head { width: var(--sx-col); margin: 0 auto var(--sx-head-gap); }
+.cs .fm__title { margin: 0; text-align: left; }
+.fm__press { max-width: none; width: var(--sx-col); margin: 0 auto 40px; padding: 0; box-sizing: border-box; }
+/* ruled cells: each cell draws the rule to its right and below; the frame clips the outer ones,
+   and the last row's cells stretch so no empty cell is left */
+.fm__press-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border: 1px solid var(--sx-line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.fm__press-item {
+  flex: 1 0 150px;
+  min-height: 84px;
+  padding: 16px;
+  margin: 0 -1px -1px 0;
+  border-right: 1px solid var(--sx-line);
+  border-bottom: 1px solid var(--sx-line);
+}
+.fm__press-item img { height: 24px; max-width: 132px; filter: grayscale(1); opacity: .72; transition: filter .3s, opacity .3s; }
+.fm__press-item:hover img { filter: none; opacity: 1; }
+.fm__grid { max-width: none; width: var(--sx-col); padding: 0; box-sizing: border-box; }
+.fm__link { background: #fff; border: 1px solid var(--sx-line); }
+.fm__link:hover { box-shadow: var(--sx-shadow); }
+.fm__more {
+  background: #fff;
+  color: var(--sx-ink);
+  border: 1px solid var(--sx-line);
+}
+.fm__more:hover { background: var(--sx-ink); color: #fff; }
