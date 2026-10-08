@@ -168,23 +168,3 @@ addEventListener('DOMContentLoaded', () => {
   addEventListener('load', () => { layout(); kick(); });
   kick();
 });
-
-/* What companies hire for — two reveal units: the hero card, and the three cards
-   on the right as one block. Each settles in once, then its parts stagger in (CSS). */
-(() => {
-  const units = [...document.querySelectorAll('.wl [data-reveal]')];
-  if (!units.length) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    units.forEach(u => u.classList.add('is-in'));
-    return;
-  }
-  const io = new IntersectionObserver((entries, obs) => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('is-in');
-      e.target.addEventListener('transitionend', () => { e.target.style.willChange = 'auto'; }, { once: true });
-      obs.unobserve(e.target);
-    });
-  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
-  units.forEach(u => io.observe(u));
-})();

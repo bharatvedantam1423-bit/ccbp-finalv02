@@ -26,8 +26,9 @@ the programmes cards and the rest of the NxtWave homepage (from the CCBP-v02 bui
    have done the job** (pinned, scroll-scrubbed film) · **Career Transformations** · **Masterclasses** ·
    **Learner's Experiences** · **We train you for what companies hire for** · **Why Top Companies
    Prefer NxtWave Students** · **Investors** · **Recognized by Leading Media** · footer.
-   The logo marquee, Career Transformations and Learner's Experiences are supplied drop-in builds
-   (`career/hiring-companies.*`, `career/career-transformations.*`, `career/learner-experiences.*`);
+   The logo marquee, Career Transformations, Learner's Experiences and We train you for what
+   companies hire for are supplied drop-in builds (`career/hiring-companies.*`,
+   `career/career-transformations.*`, `career/learner-experiences.*`, `career/we-train-section.*`);
    their headings, sublines and spacing follow the page tokens through overrides in `index.html`.
 
 Also from v02: the **navbar** (fixed over the particle hero, fades out when the white sections
