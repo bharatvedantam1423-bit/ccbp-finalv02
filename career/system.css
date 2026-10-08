@@ -54,7 +54,7 @@
   --nw-hire-fade: 88px;
   max-width: none;
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
   align-items: center;
   gap: clamp(32px, 5vw, 80px);
   padding: var(--sx-y) max(var(--page-pad), calc((100% - 1200px) / 2));
@@ -361,3 +361,16 @@
   border: 1px solid var(--sx-line);
 }
 .fm__more:hover { background: var(--sx-ink); color: #fff; }
+
+/* the hiring claim reads as two lines, not a number on its own */
+.nw-hire .nw-hire__title { text-wrap: balance; }
+
+/* =====================================================================
+   FOOTER — on the page's navy, so the last band matches the How we train
+   band rather than introducing a third dark
+   ===================================================================== */
+.ft__inner {
+  background:
+    radial-gradient(50% 60% at 100% 0%, rgba(37, 99, 235, .22), transparent 70%),
+    var(--sx-navy);
+}
