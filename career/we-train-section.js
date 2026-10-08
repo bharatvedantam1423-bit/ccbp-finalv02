@@ -1,11 +1,13 @@
 /*!
  * "We train you for what companies hire for" — fan → row scroll section.
+ * Desktop: .ctg__pin is sticky for the section's length; scrolling through it flies the cards from the fan
+ * into the row under the heading. Positions are measured inside the pin, so they hold while it sticks.
  * No dependencies. Works with native scroll and with Lenis (both drive window scroll).
  * Markup: index.html (#what-companies-look-for) · Styles: career/we-train-section.css
  */
 (() => {
   // Fan pose in section 1: tilted cards stepping up to the right and running off the edge,
-  // the first one in front. x/y are card centres as fractions of the hero box.
+  // the first one in front. x/y are card centres as fractions of the pinned box.
   const FAN = [
     { x: .575, y: .60 },
     { x: .70,  y: .50 },
@@ -26,7 +28,7 @@
     root.dataset.ctgReady = '1';
 
     const hero  = root.querySelector('.ctg__hero');
-    const row   = root.querySelector('.ctg__row');
+    const pin   = root.querySelector('.ctg__pin');
     const slots = [...root.querySelectorAll('.ctg__slot')];
     const flies = [...root.querySelectorAll('.ctg__fly')];
     const cards = [...root.querySelectorAll('.ctg-card')];
@@ -34,18 +36,19 @@
     const mq = matchMedia(MOBILE);
 
     let geo = [], start = 0, span = 1, target = 0, cur = 0, raf = 0;
+    const LAND = 0.82;       // the cards are home by this share of the pinned scroll; the rest is a short hold
 
     function measure(){
+      root.style.marginBottom = '';
       if (mq.matches || reduce) {
         flies.forEach(f => { f.style.cssText = ''; f.classList.remove('ctg-is-landed'); });
         if (reduce && !mq.matches) placeOnSlots();
         return;
       }
-      const base = docTop(root), w = root.clientWidth, h = hero.offsetHeight;
-      const rootLeft = root.getBoundingClientRect().left;
+      const box = pin.getBoundingClientRect(), w = box.width, h = box.height;
       geo = slots.map((s, i) => {
         const r = s.getBoundingClientRect();
-        const left = r.left - rootLeft, top = r.top + scrollY - base;
+        const left = r.left - box.left, top = r.top - box.top;
         return {
           left, top, w: r.width, h: r.height,
           dx: FAN[i].x * w - (left + r.width / 2),
@@ -56,18 +59,22 @@
         const g = geo[i];
         Object.assign(f.style, { width: g.w + 'px', height: g.h + 'px', left: g.left + 'px', top: g.top + 'px' });
       });
-      // the flight runs from the section's top edge reaching the viewport top
-      // until the row sits centred in the viewport
-      start = base;
-      span = Math.max(1, docTop(row) + row.offsetHeight / 2 - innerHeight / 2 - start);
+      // the flight runs while the pin sticks: from the section's top reaching the viewport top
+      // until its bottom reaches the viewport bottom
+      start = docTop(root);
+      span = Math.max(1, (root.offsetHeight - pin.offsetHeight) * LAND);
+      // the pin is a screen tall; tuck the white under the landed row beneath the next section so the
+      // gap to its heading is that section's own room above the heading, as everywhere else on the page
+      const rowBottom = Math.max(...slots.map(s => s.getBoundingClientRect().bottom));
+      root.style.marginBottom = -Math.max(0, Math.round(box.bottom - rowBottom)) + 'px';
       read(); cur = target; paint();
     }
 
     function placeOnSlots(){
-      const base = docTop(root), rootLeft = root.getBoundingClientRect().left;
+      const box = pin.getBoundingClientRect();
       slots.forEach((s, i) => {
         const r = s.getBoundingClientRect();
-        Object.assign(flies[i].style, { width: r.width + 'px', height: r.height + 'px', left: (r.left - rootLeft) + 'px', top: (r.top + scrollY - base) + 'px' });
+        Object.assign(flies[i].style, { width: r.width + 'px', height: r.height + 'px', left: (r.left - box.left) + 'px', top: (r.top - box.top) + 'px' });
       });
     }
 
@@ -85,8 +92,6 @@
         f.style.zIndex = 10 - i;
         f.classList.toggle('ctg-is-landed', t >= 1);   // landed cards levitate (CSS)
       });
-      // grey slots fade as the cards drop into them
-      row.style.setProperty('--ctg-ph', clamp(1 - cur * 1.1).toFixed(3));
     }
 
     function tick(){
