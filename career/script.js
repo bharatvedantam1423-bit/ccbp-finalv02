@@ -127,9 +127,9 @@ modal.querySelector(".ht__close").addEventListener("click", close);
 modal.addEventListener("click", e => { if (e.target === modal) close(); });
 modal.addEventListener("close", () => { frame.innerHTML = ""; });
 
-/* Recognised media cards — each grows from small to full size as it scrolls into view (one-way) */
+/* Recognised media cards — the top three grow from small to full size as they scroll into view (one-way); the ticker below moves on its own */
 addEventListener('DOMContentLoaded', () => {
-  const cards = [...document.querySelectorAll('.fm__card')];
+  const cards = [...document.querySelectorAll('.fm__grid > .fm__card')];
   if (!cards.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const MIN = 0.5, TRAVEL = 0.6;                    // start scale · viewport-heights of scroll to reach full size
   const target = cards.map(() => 0), cur = cards.map(() => 0);

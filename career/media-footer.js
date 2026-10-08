@@ -72,20 +72,24 @@
   const seen = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('is-in'); seen.unobserve(e.target); }
   }), { rootMargin: '0px 0px -8% 0px' }) : null;
-  let shown = 0;
-  const add = n => {
-    const from = shown;
-    grid.insertAdjacentHTML('beforeend', A.slice(shown, shown + n).map((a, k) => card(a, shown + k)).join(''));
-    shown = Math.min(A.length, shown + n);
-    [...grid.children].slice(from).forEach((li, k) => {
-      li.style.setProperty('--d', from + k < 3 ? from + k : (from + k - 3) % 3);   // position in its row
-      seen ? seen.observe(li) : li.classList.add('is-in');
-    });
-    grid.querySelectorAll('.fm__logo:not([style])').forEach(im => im.complete ? fit(im) : im.addEventListener('load', () => fit(im), { once: true }));
-    more.hidden = shown >= A.length;
-  };
-  add(9);                                   // featured + 2 stacked + two rows of three
-  more.addEventListener('click', () => add(6));
+  /* the top three sit in the bento grid; the rest of the coverage runs below them as a ticker */
+  grid.innerHTML = A.slice(0, 3).map(card).join('');
+  [...grid.children].forEach((li, k) => { li.style.setProperty('--d', k); seen ? seen.observe(li) : li.classList.add('is-in'); });
+  const sec = document.getElementById('featured-in-media'), tick = document.getElementById('fm-ticker'), row = document.getElementById('fm-ticker-row');
+  const rest = A.slice(3).map((a, k) => card(a, k + 3));
+  /* two copies so the loop is seamless; the copy is skipped by keyboard and screen readers */
+  row.innerHTML = rest.join('') + rest.map(h => h.replace('<li class="fm__card"', '<li class="fm__card" aria-hidden="true"').replace('<a class="fm__link"', '<a class="fm__link" tabindex="-1"')).join('');
+  [...row.children].forEach((li, k) => li.style.setProperty('--d', k % 3));
+  row.style.setProperty('--dur', rest.length * 7 + 's');   // ~50px a second, whatever the number of stories
+  grid.querySelectorAll('.fm__logo').forEach(im => im.complete ? fit(im) : im.addEventListener('load', () => fit(im), { once: true }));
+  row.querySelectorAll('.fm__logo').forEach(im => im.complete ? fit(im) : im.addEventListener('load', () => fit(im), { once: true }));
+  /* View More: the ticker stops and opens out into rows of three */
+  more.addEventListener('click', () => {
+    const open = sec.classList.toggle('fm--all');
+    more.textContent = open ? 'View Less' : 'View More';
+    more.setAttribute('aria-expanded', open);
+    if (!open) tick.scrollIntoView({ block: 'nearest' });
+  });
 
   /* "Featured in" — publication marks under the section title (ccbp.in press strip) */
   const P = [
@@ -98,13 +102,11 @@
   ];
   const press = document.getElementById('fm-press');
   if (press) {
-    /* the row runs twice so the drift loops seamlessly; the copy is hidden from assistive tech */
-    const marks = hide => P.map(([lg, name]) =>
-      `<li class="fm__press-item"${hide ? ' aria-hidden="true"' : ''}><img src="${logo(lg)}" alt="${hide ? '' : esc(name)}" loading="lazy"></li>`).join('');
-    press.insertAdjacentHTML('beforeend', marks(false) + marks(true));
-    /* same optical-weight rule as the card marks, kept small so the strip stays a quiet band */
+    press.insertAdjacentHTML('beforeend', P.map(([lg, name]) =>
+      `<li class="fm__press-item"><img src="${logo(lg)}" alt="${esc(name)}" loading="lazy"></li>`).join(''));
+    /* same optical-weight rule as the card marks, kept small so the board stays quiet */
     press.querySelectorAll('img').forEach(im => {
-      const go = () => sizeLogo(im, 14, 26, 2400, 132);
+      const go = () => sizeLogo(im, 14, 28, 2800, 150);
       im.complete ? go() : im.addEventListener('load', go, { once: true });
     });
   }
