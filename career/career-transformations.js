@@ -163,9 +163,9 @@
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let cur = 0;
 
-    // the rise follows the wall: it starts as the wall comes up from below the screen and has settled
-    // into the arch by the time the heading pins at the top, then the columns keep their own paces
-    const WALL_FROM = 1.2, WALL_TO = 0.33;
+    // the rise follows the wall: it starts as the wall's top enters at the foot of the screen and has
+    // settled into the arch a quarter of the way down, then the columns keep their own paces
+    const WALL_FROM = 1.0, WALL_TO = 0.25;
     const target = () => {
       const top = mask.getBoundingClientRect().top / innerHeight;
       return clamp01((WALL_FROM - top) / (WALL_FROM - WALL_TO));
