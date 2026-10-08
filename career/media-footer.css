@@ -1,6 +1,6 @@
 /* ── Featured in the media (rebuilt from niatindia.com) ───────── */
 .fm{padding:var(--sec) 0;overflow:hidden;--fm-accent:#042ac0}
-.fm__title{font-size:48px;line-height:1.1;font-weight:600;letter-spacing:-.02em;font-variation-settings:"opsz" 32;margin:0 0 36px;text-align:left}
+.fm__title{font-size:48px;line-height:1.1;font-weight:600;letter-spacing:-.02em;font-variation-settings:"opsz" 32;margin:0 auto 36px;text-align:center}
 /* heading and logo board share the content line with the cards */
 .fm__head{max-width:1200px;margin:0 auto;padding:0 var(--m);box-sizing:content-box}
 /* "Featured in" — the publications on a quiet bordered board: seven across, then five */
