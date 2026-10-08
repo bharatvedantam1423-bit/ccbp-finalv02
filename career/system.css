@@ -1,174 +1,281 @@
 /* =====================================================================
-   SECTION SYSTEM — every section under the awards is built from the same
-   few parts, so the page reads as one product rather than a stack of
-   separate builds:
-   · one column (1200 max) and one vertical rhythm
-   · one header: an eyebrow, the heading, one line of support, and any
-     actions for the section on the right
-   · three grounds that alternate down the page: white, mist, and navy
-   · one card: white, a hairline border, the family radius
-   The hero, the programme cards and the awards keep their own designs.
+   THE WARM SYSTEM — everything under the hero and the programme cards.
+   Paper rather than white, a warm night rather than navy, coral and amber
+   beside the brand blue, and an italic serif for the words that matter in
+   each heading. Each section has its own set piece; they share the
+   eyebrow, the heading type, the paper and the night.
    ===================================================================== */
 :root {
+  --w-paper: #fbf6ee;
+  --w-paper-2: #f3eadc;
+  --w-ink: #1e1a2b;
+  --w-muted: #6e6559;
+  --w-line: #e9dece;
+  --w-coral: #ef5b2e;
+  --w-amber: #ffb547;
+  --w-night: #151022;
+  --w-night-2: #21173a;
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
   --sx-col: min(calc(100% - 2 * var(--page-pad)), 1200px);
-  --sx-y: clamp(72px, 8vw, 128px);          /* a section's top and bottom room */
-  --sx-ink: #0b1530;
-  --sx-muted: #55617a;
-  --sx-line: #e4e9f2;
-  --sx-mist: #f5f7fb;
-  --sx-blue: #2563eb;
-  --sx-navy: #06112b;
-  --sx-head-gap: clamp(36px, 4vw, 56px);    /* header -> content */
-  --sx-shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 24px 48px -28px rgba(16, 24, 40, .18);
+  --sx-y: clamp(80px, 9vw, 140px);
+  --sx-head-gap: clamp(40px, 4.5vw, 64px);
+  --sx-h2: clamp(36px, 4.4vw, 64px);
+  --w-shadow: 0 2px 4px rgba(60, 40, 20, .05), 0 30px 60px -30px rgba(60, 40, 20, .35);
 }
 
-/* ---- the header ------------------------------------------------------ */
+/* ---- the shared type -------------------------------------------------- */
 .sx-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   font: 600 12.5px/1 var(--font);
-  letter-spacing: .16em;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--sx-blue);
+  color: var(--w-coral);
 }
 .sx-eyebrow::before {
   content: "";
-  width: 20px;
-  height: 1.5px;
-  border-radius: 2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
   background: currentColor;
+  box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 18%, transparent);
 }
-.sx-dark .sx-eyebrow { color: #82bdff; }
+.sx-em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -.005em;
+}
+/* every heading below the cards: solid warm ink, the serif words in coral */
+.nw-hire .nw-hire__title, .mentors .mw-title, .ctw .ctw-heading h2, .mc .mc__title,
+.lx .lx__title, .cs .wl__title, .cs .ht__title, .cs .inv-title, .cs .fm__title {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--w-ink);
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--sx-h2);
+  line-height: 1.04;
+  letter-spacing: -.025em;
+  margin: 0;
+  width: auto;
+  text-wrap: balance;
+}
+:is(.nw-hire, .mentors, .mc, .lx, .ht, .fm) .sx-em { color: var(--w-coral); }
+.nw-hire__sub, .cs .ht__sub, .cs .inv-sub, .ctw .ctw-heading-sub, .cs .wl__sub {
+  font: 400 clamp(15px, 1.2vw, 18px)/1.55 var(--font);
+  letter-spacing: normal;
+  color: var(--w-muted);
+}
 
 /* =====================================================================
-   HIRING PARTNERS — the claim on the left, the companies drifting past
-   in a framed wall on the right
+   HIRING PARTNERS — the number, enormous, beside a slowly turning globe
+   of the companies that hire
    ===================================================================== */
 .nw-hire {
-  --nw-hire-bg: #fff;
-  --nw-hire-card-w: 132px;
-  --nw-hire-card-h: 78px;
-  --nw-hire-gap: 12px;
-  --nw-hire-fade: 88px;
   max-width: none;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   align-items: center;
   gap: clamp(32px, 5vw, 80px);
   padding: var(--sx-y) max(var(--page-pad), calc((100% - 1200px) / 2));
-  background: var(--sx-mist);
-}
-.nw-hire__head {
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  display: block;
-  text-align: left;
-}
-.nw-hire .nw-hire__title { width: auto; margin: 0; text-wrap: balance; }
-.nw-hire .nw-hire__sub { margin: 18px 0 0; max-width: 420px; }
-.nw-hire__rows {
-  margin: 0;
-  padding: 24px 0;
-  gap: var(--nw-hire-gap);
-  background: #fff;
-  border: 1px solid var(--sx-line);
-  border-radius: var(--r-lg);
+  background:
+    radial-gradient(50% 60% at 78% 50%, rgba(255, 181, 71, .22), transparent 70%),
+    var(--w-paper);
   overflow: hidden;
-  box-shadow: var(--sx-shadow);
 }
-.nw-hire__card { background: #fff; border-color: var(--sx-line); }
+.nw-hire__head { max-width: none; margin: 0; padding: 0; display: block; text-align: left; }
+.nw-hire .nw-hire__title { font-size: clamp(30px, 3vw, 46px); line-height: 1.1; }
+.nh-num {
+  display: block;
+  margin-bottom: 6px;
+  font-size: clamp(88px, 11vw, 176px);
+  line-height: .9;
+  letter-spacing: -.05em;
+  background: linear-gradient(100deg, var(--w-coral) 10%, var(--w-amber) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.nw-hire .nw-hire__sub { margin: 22px 0 0; max-width: 420px; }
+.nw-hire__rows { display: none; }           /* the globe below is built from the same logos */
+.nh-globe {
+  --R: min(270px, 31vw);
+  position: relative;
+  width: calc(var(--R) * 2 + 120px);
+  max-width: 100%;
+  aspect-ratio: 1;
+  margin-inline: auto;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+.nh-globe.is-drag { cursor: grabbing; }
+.nh-globe::before {                          /* the sphere's glow */
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #fff 0%, #ffe9cf 38%, rgba(255, 196, 140, .35) 62%, transparent 72%);
+  filter: blur(2px);
+}
+.nh-globe::after {                           /* an orbit ring, tilted */
+  content: "";
+  position: absolute;
+  inset: 6% -2%;
+  border: 1px dashed rgba(239, 91, 46, .35);
+  border-radius: 50%;
+  transform: rotate(-16deg) scaleY(.32);
+}
+.nh-chip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 104px;
+  height: 52px;
+  margin: -26px 0 0 -52px;
+  display: grid;
+  place-items: center;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid var(--w-line);
+  border-radius: var(--r-sm);
+  box-shadow: 0 10px 24px -14px rgba(60, 40, 20, .45);
+  will-change: transform, opacity;
+}
+.nh-chip img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; pointer-events: none; }
 @media (max-width: 900px) {
-  .nw-hire { grid-template-columns: 1fr; }
+  .nw-hire { grid-template-columns: minmax(0, 1fr); }
+  .nh-globe { --R: min(170px, 36vw); }
+  .nh-chip { width: 92px; height: 46px; margin: -23px 0 0 -46px; padding: 8px 10px; }
 }
-
-/* ---- shared header for the sections below ---------------------------- */
-:root { --sx-h2: clamp(32px, 3.5vw, 52px); }
-.nw-hire .nw-hire__title,
-.mentors .mw-title, .mc .mc__title, .lx .lx__title, .cs .wl__title,
-.cs .ht__title, .cs .inv-title, .cs .fm__title {
-  font-size: var(--sx-h2);
-  line-height: 1.08;
-  text-align: left;
-  margin: 0;
-}
-.cs .wl__sub, .cs .ht__sub, .cs .inv-sub, .nw-hire .nw-hire__sub {
-  margin: 16px 0 0;
-  max-width: 560px;
-  font: 400 clamp(15px, 1.15vw, 17px)/1.55 var(--font);
-  letter-spacing: normal;
-  color: var(--sx-muted);
-}
-/* the column every section's content sits on */
-.cs { --m: max(var(--page-pad), calc((100vw - 1200px) / 2)); }
 
 /* =====================================================================
-   MENTORS — the heading on the left, the places they come from on the
-   right; the film runs beneath, unchanged
+   MENTORS — on warmer paper; the heading centred, the film in a framed
+   card that fills the stage
    ===================================================================== */
-.mentors .mw-head {
-  width: var(--sx-col);
-  max-width: none;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 48px;
-  text-align: left;
-  padding-inline: 0;
+.mentors { background: var(--w-paper-2); }
+.mentors .mw-head { width: var(--sx-col); max-width: none; align-items: center; text-align: center; padding-inline: 0; }
+.mentors .sx-titles { display: flex; flex-direction: column; align-items: center; }
+.mentors .mw-alumni {
+  margin-top: 14px;
+  padding: 12px 22px;
+  background: #fff;
+  border: 1px solid var(--w-line);
+  border-radius: 999px;
+  box-shadow: var(--w-shadow);
+  width: auto;
 }
-.mentors .mw-title { max-width: none; }
-.mentors .mw-alumni { width: auto; align-items: flex-end; margin: 0; gap: 12px; }
-.mentors .mw-alumni-row { justify-content: flex-end; flex-wrap: nowrap; gap: clamp(16px, 2vw, 28px); }
+.mentors .mw-alumni-row { gap: 14px clamp(16px, 2vw, 28px); }
 .mentors .mw-alumni-row img { height: clamp(22px, 2vw, 30px); }
-@media (max-width: 900px) {
-  .mentors .mw-head { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .mentors .mw-alumni { align-items: flex-start; }
-  .mentors .mw-alumni-row { justify-content: flex-start; }
+.mentors .mw-alumni-more { display: none; }
+.mentors .mw-screen {
+  width: var(--sx-col);
+  margin: 0 auto;
+  background: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: var(--w-shadow);
+  overflow: hidden;
 }
 
-/* the success-stories heading keeps its full-screen moment, now with its eyebrow */
-.ctw .ctw-heading-text .sx-eyebrow { margin-bottom: 20px; }
+/* =====================================================================
+   SUCCESS STORIES — the warm night; the wall of stories laid on a tilted
+   plane, rising over the heading
+   ===================================================================== */
+.ctw { --bg: var(--w-night); background: var(--w-night); }
+.ctw .ctw-heading {
+  background:
+    radial-gradient(40% 45% at 50% 50%, rgba(239, 91, 46, .22), transparent 70%),
+    var(--w-night);
+}
+.ctw .ctw-heading h2 { color: #fff; font-size: clamp(44px, 7vw, 112px); line-height: .98; }
+.ctw .ctw-heading h2 .sx-em { color: var(--w-amber); }
+.ctw .sx-eyebrow { color: var(--w-amber); }
+.ctw .ctw-heading-sub { color: rgba(255, 255, 255, .62); }
+.ctw .ctw-mask::before { background: linear-gradient(to right, var(--w-night), transparent); }
+.ctw .ctw-mask::after { background: linear-gradient(to left, var(--w-night), transparent); }
+.ctw .ctw-fade-bottom { background: linear-gradient(to bottom, transparent, var(--w-night) 72%); }
+.ctw .ctw-images {
+  transform: perspective(1800px) rotateX(16deg) rotateZ(-7deg) scale(var(--grid-scale));
+  transform-origin: 50% 0;
+}
+.ctw .ctw-card-text { background: #fffaf3; border-color: transparent; box-shadow: 0 20px 40px -24px rgba(0, 0, 0, .7); }
+.ctw .ctw-card-video { box-shadow: 0 20px 40px -24px rgba(0, 0, 0, .8); }
+.ctw .ctw-end { background: var(--w-night); }
+.ctw .ctw-cta {
+  background: linear-gradient(100deg, var(--w-coral), var(--w-amber));
+  color: #1e1a2b;
+  font-weight: 600;
+  border-radius: 999px;
+  filter: none;
+  box-shadow: 0 16px 36px -14px rgba(239, 91, 46, .7);
+}
 
 /* =====================================================================
-   MASTERCLASSES — on mist; the heading left, the mentors' schools and
-   companies right; one card style for the film and the mentors
+   MASTERCLASSES — on paper; the film large, the mentors as ticket stubs
    ===================================================================== */
-.mc { background: var(--sx-mist); padding-bottom: var(--sx-y); }
+.mc { background: var(--w-paper); padding-bottom: var(--sx-y); }
 .mc .mc__head { width: var(--sx-col); max-width: none; margin: 0 auto; padding-top: var(--sx-y); align-items: flex-end; }
+.mc .sx-titles { display: flex; flex-direction: column; }
+.mc .mc__aff { padding: 12px 22px; background: #fff; border: 1px solid var(--w-line); border-radius: 999px; }
 .mc .mc__body { max-width: none; width: var(--sx-col); margin: 0 auto; padding: var(--sx-head-gap) 0 0; }
-.mc .mentor { background: #fff; border: 1px solid var(--sx-line); box-shadow: 0 1px 2px rgba(16,24,40,.04); }
-.mc .mc__video { box-shadow: var(--sx-shadow); }
-.mc > .mc-ticker { margin-top: clamp(48px, 5vw, 72px); }
+.mc .mc__video { border-radius: var(--r-lg); box-shadow: 0 40px 80px -40px rgba(239, 91, 46, .55); }
+/* a mentor card is a ticket: a dashed tear line and two punched notches */
+.mc .mentor {
+  position: relative;
+  background: #fff;
+  border: 0;
+  border-radius: var(--r-md);
+  box-shadow: var(--w-shadow);
+  -webkit-mask: radial-gradient(circle 9px at 0 62%, #0000 98%, #000) left / 51% 100% no-repeat,
+                radial-gradient(circle 9px at 100% 62%, #0000 98%, #000) right / 51% 100% no-repeat;
+          mask: radial-gradient(circle 9px at 0 62%, #0000 98%, #000) left / 51% 100% no-repeat,
+                radial-gradient(circle 9px at 100% 62%, #0000 98%, #000) right / 51% 100% no-repeat;
+  transition: transform .4s cubic-bezier(.22, .9, .24, 1);
+}
+.mc .mentor::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 62%;
+  border-top: 1.5px dashed var(--w-line);
+}
+.mc .mentor:hover { transform: translateY(-4px) rotate(-.6deg); }
+.mc > .mc-ticker { margin-top: clamp(56px, 6vw, 88px); }
 @media (max-width: 900px) {
   .mc .mc__head { flex-direction: column; align-items: flex-start; }
 }
 
 /* =====================================================================
-   LEARNER STORIES — the heading on the column, the carousel full bleed
+   LEARNER STORIES — centred heading over the lens carousel, on paper
    ===================================================================== */
-.lx { padding-block: var(--sx-y); }
-.lx__head { width: var(--sx-col); margin: 0 auto; }
-.lx .lx__title { padding: 0; width: fit-content; }
+.lx { --lx-bg: var(--w-paper-2); background: var(--w-paper-2); padding-block: var(--sx-y); }
+.lx__head { width: var(--sx-col); margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.lx .lx__title { padding: 0; }
 .lx .lx__stage { margin-top: var(--sx-head-gap); }
+.lx .lx-card { box-shadow: 0 30px 60px -30px rgba(60, 40, 20, .5); }
 
 /* =====================================================================
-   HOW WE TRAIN — the navy band. Four numbered points; the panel on the
-   left holds the illustration for the point being read.
+   HOW WE TRAIN — the plum night; four numbered points beside a sticky
+   panel whose illustration builds in for the point being read
    ===================================================================== */
 .cs .wl {
   padding: var(--sx-y) 0;
   color: #fff;
   background:
-    radial-gradient(60% 50% at 85% 0%, rgba(37, 99, 235, .28), transparent 70%),
-    radial-gradient(50% 60% at 0% 100%, rgba(14, 65, 171, .35), transparent 70%),
-    var(--sx-navy);
+    radial-gradient(50% 40% at 90% 0%, rgba(255, 181, 71, .16), transparent 70%),
+    radial-gradient(50% 60% at 0% 100%, rgba(239, 91, 46, .18), transparent 70%),
+    linear-gradient(180deg, var(--w-night) 0%, var(--w-night-2) 100%);
 }
 .cs .wl__head { width: var(--sx-col); margin: 0 auto var(--sx-head-gap); align-items: flex-start; text-align: left; }
-.cs .wl__title { background-image: var(--head-grad-dark); }
-.cs .wl__sub { color: rgba(255, 255, 255, .68); }
-.cs .wl__sub b { color: #82bdff; }
+.cs .wl__title { color: #fff; }
+.cs .wl__title .sx-em { color: var(--w-amber); }
+.cs .wl .sx-eyebrow { color: var(--w-amber); }
+.cs .wl__sub { color: rgba(255, 255, 255, .66); margin-top: 18px; max-width: 560px; }
+.cs .wl__sub b { color: var(--w-amber); }
 
 .wlx {
   width: var(--sx-col);
@@ -182,16 +289,18 @@
   position: sticky;
   top: max(96px, calc(50vh - 280px));
   height: min(560px, 72vh);
-  border-radius: var(--r-lg);
-  background: linear-gradient(160deg, #f4f8ff 0%, #dbe7ff 100%);
-  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .6);
+  border-radius: 28px;
+  background:
+    radial-gradient(70% 60% at 50% 40%, #fff 0%, transparent 70%),
+    linear-gradient(160deg, #fff4e6 0%, #ffd9b8 100%);
+  box-shadow: 0 50px 100px -40px rgba(0, 0, 0, .7), inset 0 0 0 1px rgba(255, 255, 255, .6);
   overflow: hidden;
   display: grid;
   grid-template: 100% / 100%;
 }
 .wlx-vis {
-  min-height: 0;
   grid-area: 1 / 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -200,177 +309,186 @@
   padding: 40px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity .45s ease, visibility 0s linear .45s;
+  scale: .96;
+  transition: opacity .45s ease, scale .6s ease, visibility 0s linear .45s;
 }
-.wlx-vis.is-on { opacity: 1; visibility: visible; transition: opacity .55s ease .1s; }
+.wlx-vis.is-on { opacity: 1; visibility: visible; scale: 1; transition: opacity .55s ease .1s, scale .8s cubic-bezier(.22, .9, .24, 1) .1s; }
 .wlx-vis > svg { width: min(100%, 480px); height: auto; max-height: 78%; overflow: visible; }
 .cs .wlx .wl__note { font-size: 14px; }
-/* the small illustrations from the old cards, set free and enlarged */
 .wlx .wl__viz { position: static; translate: none; }
 .wlx-vis--stack .wl__viz, .wlx-vis--flow .wl__viz, .wlx-vis--rounds .wl__viz { scale: 1.75; }
-/* each illustration builds in when its point arrives (the parts keep their own delays) */
 .wlx .wl__viz--rounds li { width: 172px; }
 .wl .wlx-vis.is-on .wl-a { opacity: 1; transform: none; }
 .wl .wlx-vis.is-on .wl-wire { stroke-dashoffset: 0; }
 .wl .wlx-vis.is-on .wl-node { animation: wl-float 6s ease-in-out var(--d, 0s) infinite; }
-.wlx-dots {
-  position: absolute;
-  left: 50%;
-  bottom: 22px;
-  translate: -50% 0;
-  display: flex;
-  gap: 6px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.wlx-dots li { width: 6px; height: 6px; border-radius: 6px; background: rgba(11, 21, 48, .2); transition: width .4s ease, background-color .4s ease; }
-.wlx-dots li.is-on { width: 22px; background: var(--sx-blue); }
+.wlx-dots { position: absolute; left: 50%; bottom: 22px; translate: -50% 0; display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.wlx-dots li { width: 6px; height: 6px; border-radius: 6px; background: rgba(30, 26, 43, .2); transition: width .4s ease, background-color .4s ease; }
+.wlx-dots li.is-on { width: 22px; background: var(--w-coral); }
 
 .wlx-list { list-style: none; margin: 0; padding: 0; }
 .wlx-item {
+  position: relative;
   min-height: 58vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding-left: 32px;
-  border-left: 1px solid rgba(255, 255, 255, .14);
-  position: relative;
-  opacity: .34;
+  border-left: 1px solid rgba(255, 255, 255, .12);
+  opacity: .3;
   transition: opacity .45s ease;
 }
-.wlx-item::before {                          /* the progress bar on the rule */
+.wlx-item::before {
   content: "";
   position: absolute;
   left: -1px;
   top: 30%;
   bottom: 30%;
   width: 2px;
-  background: #3b82f6;
+  background: linear-gradient(var(--w-coral), var(--w-amber));
   transform: scaleY(0);
-  transition: transform .5s cubic-bezier(.22,.61,.36,1);
+  transition: transform .5s cubic-bezier(.22, .61, .36, 1);
 }
 .wlx-item.is-on { opacity: 1; }
 .wlx-item.is-on::before { transform: none; }
 .wlx-item:first-child { min-height: min(560px, 72vh); }
 .wlx-copy { display: flex; flex-direction: column; gap: 14px; }
-.wlx-num { font: 600 13px/1 var(--font); letter-spacing: .14em; color: #82bdff; }
+.wlx-num { font: 400 clamp(40px, 4vw, 60px)/1 var(--font-serif); font-style: italic; color: var(--w-amber); }
 .cs .wlx .wl__h { font-size: clamp(24px, 2.3vw, 34px); line-height: 1.2; color: #fff; }
 .cs .wlx .wl__p { font-size: clamp(15px, 1.2vw, 18px); line-height: 1.55; color: rgba(255, 255, 255, .7); max-width: 440px; }
 @media (max-width: 900px) {
   .wlx { grid-template-columns: 1fr; gap: 0; }
   .wlx-panel { top: 72px; height: 42vh; z-index: 2; }
-  /* the panel is pinned at the top here; each point's words pin just under it while it is open */
   .wlx-item, .wlx-item:first-child { min-height: 64vh; justify-content: flex-start; padding-top: 24px; }
   .wlx-copy { position: sticky; top: calc(72px + 42vh + 28px); }
   .wlx-vis--stack .wl__viz, .wlx-vis--flow .wl__viz, .wlx-vis--rounds .wl__viz { scale: 1.3; }
   .wlx-vis > svg { width: min(100%, 340px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .wlx-vis, .wlx-item, .wlx-item::before, .wlx-dots li { transition: none; }
+  .wlx-num { font-size: 36px; }
 }
 
 /* =====================================================================
-   HIRING MANAGERS — heading on the column, the rail runs off the right
+   HIRING MANAGERS — on paper; the portraits lean like prints and
+   straighten under the pointer
    ===================================================================== */
-.cs .ht { padding-top: var(--sx-y); }
+.cs .ht { padding-top: var(--sx-y); background: var(--w-paper); }
 .cs .ht__head { width: var(--sx-col); margin: 0 auto var(--sx-head-gap); align-items: flex-start; text-align: left; }
 .cs .ht__head > div:first-child { align-items: flex-start; }
-.cs .ht__nav { justify-content: flex-end; padding: 0 max(var(--page-pad), calc((100% - 1200px) / 2)); }
+.cs .ht__sub { margin-top: 18px; max-width: 520px; }
 .cs .ht__track {
   padding-inline: max(var(--page-pad), calc((100% - 1200px) / 2));
   scroll-padding-inline: max(var(--page-pad), calc((100% - 1200px) / 2));
+  padding-block: 18px 30px;
 }
+.cs .ht__media {
+  border: 6px solid #fff;
+  box-shadow: var(--w-shadow);
+  rotate: -1.6deg;
+  transition: rotate .5s cubic-bezier(.22, .9, .24, 1), translate .5s cubic-bezier(.22, .9, .24, 1);
+}
+.cs .ht__card:nth-child(even) .ht__media { rotate: 1.4deg; }
+.cs .ht__card:hover .ht__media { rotate: 0deg; translate: 0 -6px; }
+.cs .ht__name { color: var(--w-ink); }
+.cs .ht__nav { justify-content: flex-end; padding: 0 max(var(--page-pad), calc((100% - 1200px) / 2)); }
+.cs .ht__arrow { background: #fff; border-color: var(--w-line); }
+.cs .ht__arrow:hover { background: var(--w-coral); border-color: var(--w-coral); }
 
 /* =====================================================================
-   INVESTORS — on mist: the claim on the left, the three firms in ruled
-   cells on the right
+   INVESTORS — a full band of warm colour; the three firms on white cards
+   that float in it
    ===================================================================== */
 .cs .inv {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   align-items: center;
   gap: clamp(32px, 5vw, 80px);
   margin-top: var(--sx-y);
   padding: var(--sx-y) max(var(--page-pad), calc((100% - 1200px) / 2));
-  background: var(--sx-mist);
+  background:
+    radial-gradient(60% 80% at 100% 0%, rgba(255, 255, 255, .25), transparent 60%),
+    linear-gradient(110deg, var(--w-coral) 0%, #ff8a3c 45%, var(--w-amber) 100%);
 }
 .cs .inv-head { align-items: flex-start; text-align: left; gap: 0; max-width: none; }
+.cs .inv .sx-eyebrow { color: #fff; }
+.cs .inv-title { color: #fff; }
+.cs .inv-title .sx-em { color: var(--w-ink); }
+.cs .inv-sub { margin-top: 18px; color: rgba(30, 26, 43, .78); max-width: 420px; }
 .inv-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  background: #fff;
-  border: 1px solid var(--sx-line);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  box-shadow: var(--sx-shadow);
+  gap: 16px;
 }
-.inv-row li { justify-content: center; height: clamp(120px, 11vw, 168px); padding: 24px; }
-.inv-row li + li { border-left: 1px solid var(--sx-line); }
+.inv-row li {
+  justify-content: center;
+  height: clamp(130px, 12vw, 180px);
+  padding: 24px;
+  background: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: 0 30px 50px -28px rgba(120, 40, 0, .6);
+  animation: inv-float 6s ease-in-out infinite;
+}
+.inv-row li:nth-child(2) { animation-delay: -2s; translate: 0 22px; }
+.inv-row li:nth-child(3) { animation-delay: -4s; }
+@keyframes inv-float { 50% { transform: translateY(-8px); } }
 .inv-row .lf { display: none; }
 .inv-logo { max-width: 100%; }
 .inv-gp img, .inv-orios img { width: auto; max-width: 100%; height: auto; max-height: 52px; }
 .inv-better { width: auto; height: auto; padding: 12px 18px; }
 .inv-better img { width: 92px; }
 @media (max-width: 900px) {
-  .cs .inv { grid-template-columns: 1fr; }
+  .cs .inv { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 640px) {
-  .fm__press-item { flex-basis: 104px; min-height: 64px; padding: 12px; }
-  .fm__press-item img { height: 18px; max-width: 92px; }
   .inv-row { grid-template-columns: 1fr; }
   .inv-row li { zoom: 1; }
-  .inv-row li + li { border-left: 0; border-top: 1px solid var(--sx-line); }
+  .inv-row li:nth-child(2) { translate: none; }
 }
+@media (prefers-reduced-motion: reduce) { .inv-row li { animation: none; } }
 
 /* =====================================================================
-   IN THE NEWS — heading on the column, the publications in a ruled grid,
-   the stories as bordered cards
+   IN THE NEWS — a newspaper: a masthead between double rules, the
+   publications running on a ticker, the stories as clippings
    ===================================================================== */
-.cs .fm { padding: var(--sx-y) 0; }
-.fm__head { width: var(--sx-col); margin: 0 auto var(--sx-head-gap); }
-.cs .fm__title { margin: 0; text-align: left; }
-.fm__press { max-width: none; width: var(--sx-col); margin: 0 auto 40px; padding: 0; box-sizing: border-box; }
-/* ruled cells: each cell draws the rule to its right and below; the frame clips the outer ones,
-   and the last row's cells stretch so no empty cell is left */
+.cs .fm { padding: var(--sx-y) 0; background: var(--w-paper); }
+.fm__head {
+  width: var(--sx-col);
+  margin: 0 auto var(--sx-head-gap);
+  padding: 22px 0 26px;
+  text-align: center;
+  border-top: 3px double var(--w-ink);
+  border-bottom: 1px solid var(--w-ink);
+}
+.fm__head .sx-eyebrow { color: var(--w-ink); }
+.fm__head .sx-eyebrow::before { display: none; }
+.cs .fm__title { font-family: var(--font-serif); font-weight: 400; font-size: clamp(44px, 6vw, 96px); line-height: 1; letter-spacing: -.01em; text-align: center; }
+.fm__press { max-width: none; width: 100%; margin: 0 0 clamp(40px, 4vw, 64px); padding: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
 .fm__press-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  border: 1px solid var(--sx-line);
-  border-radius: var(--r-md);
-  overflow: hidden;
+  flex-wrap: nowrap;
+  gap: clamp(40px, 5vw, 72px);
+  width: max-content;
+  justify-content: flex-start;
+  animation: fm-ticker 40s linear infinite;
 }
-.fm__press-item {
-  flex: 1 0 150px;
-  min-height: 84px;
-  padding: 16px;
-  margin: 0 -1px -1px 0;
-  border-right: 1px solid var(--sx-line);
-  border-bottom: 1px solid var(--sx-line);
-}
-.fm__press-item img { height: 24px; max-width: 132px; filter: grayscale(1); opacity: .72; transition: filter .3s, opacity .3s; }
+.fm__press:hover .fm__press-row { animation-play-state: paused; }
+@keyframes fm-ticker { to { transform: translateX(-50%); } }
+.fm__press-item img { height: 26px; max-width: 160px; filter: grayscale(1) sepia(.25); opacity: .8; transition: filter .3s, opacity .3s; }
 .fm__press-item:hover img { filter: none; opacity: 1; }
 .fm__grid { max-width: none; width: var(--sx-col); padding: 0; box-sizing: border-box; }
-.fm__link { background: #fff; border: 1px solid var(--sx-line); }
-.fm__link:hover { box-shadow: var(--sx-shadow); }
-.fm__more {
-  background: #fff;
-  color: var(--sx-ink);
-  border: 1px solid var(--sx-line);
-}
-.fm__more:hover { background: var(--sx-ink); color: #fff; }
-
-/* the hiring claim reads as two lines, not a number on its own */
-.nw-hire .nw-hire__title { text-wrap: balance; }
+.fm__link { background: #fffdf8; border: 1px solid var(--w-line); border-radius: 4px; }
+.fm__link:hover { box-shadow: var(--w-shadow); }
+.fm__h { font-family: var(--font-serif); font-size: 20px; line-height: 1.2; letter-spacing: 0; color: var(--w-ink); }
+.fm__card--sm .fm__h { font-size: 18px; }
+.fm__cta { color: var(--w-coral); }
+.fm__more { background: var(--w-ink); color: #fff; border-radius: 999px; }
+.fm__more:hover { background: var(--w-coral); }
+@media (prefers-reduced-motion: reduce) { .fm__press-row { animation: none; flex-wrap: wrap; width: auto; justify-content: center; } }
 
 /* =====================================================================
-   FOOTER — on the page's navy, so the last band matches the How we train
-   band rather than introducing a third dark
+   FOOTER — the warm night
    ===================================================================== */
 .ft__inner {
   background:
-    radial-gradient(50% 60% at 100% 0%, rgba(37, 99, 235, .22), transparent 70%),
-    var(--sx-navy);
+    radial-gradient(50% 60% at 100% 0%, rgba(239, 91, 46, .2), transparent 70%),
+    var(--w-night);
 }

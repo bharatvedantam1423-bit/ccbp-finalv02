@@ -1,321 +1,224 @@
 /* =====================================================================
-   S3 — AWARDS & RECOGNITIONS (Figma CCBP-v02, node 1219:352)
-   On white: the heading, the four bodies that recognise NxtWave, and
-   three press photographs whose captions end in the notch cut into the
-   top of a navy panel. In the panel: the roll of awards on the left with one open at a
-   time, the five award marks and the trophy on its plinth on the right;
-   the trophy is cut by the panel's own edge.
-
-   Every measurement is a pixel of the 1707-wide Figma frame, taken
-   through --u, so the section keeps the file's proportions at any width.
+   S3 — AWARDS & RECOGNITIONS
+   A stage at night: a warm spotlight from above, gold dust drifting in it,
+   the five trophies on a turning carousel with the open one in the light
+   and reflected in the floor. The open award is named beneath in large
+   type; the award marks are its tabs, each with a timer bar. Then, on
+   paper, the recognising bodies and the press photographs as prints.
    ===================================================================== */
-.rc {
-  /* one Figma px of the frame; it stops growing once the column reaches the page's maximum */
-  --u: min(calc(100vw / 1707), calc(var(--page-max) / 1200.33));
-  /* the file's content column, 1200.33 of the 1707 frame */
-  --rc-col: min(calc(100% - 2 * var(--page-pad)), var(--page-max), calc(1200.33 * var(--u)));
-  --rc-ink: #fff;
-  --rc-dim: #d1d1d1;
-  position: relative;
-  z-index: 3;
-  background: #fff;
-  overflow-x: clip;                           /* the panel is wider than the screen, as in the file */
-  padding: var(--sec-y) 0 clamp(48px, calc(85 * var(--u)), 96px);
-}
+.aw2 { position: relative; z-index: 3; background: var(--w-paper, #fbf6ee); }
 
-/* ---- on white: the heading and the recognising bodies --------------- */
-.rc-top {
+/* ---- the stage -------------------------------------------------------- */
+.aw2-stage {
   position: relative;
-  z-index: 2;
-  width: var(--rc-col);
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-.rc-title {
-  margin: 0;
-  font-family: var(--font-head);
-  font-weight: 600;
-  font-size: clamp(30px, calc(56 * var(--u)), 56px);
-  line-height: 1.12;
-  letter-spacing: -.01em;
-  background: linear-gradient(127.89deg, #000 20.055%, #0b1e40 32.942%, #2563eb 65.853%);
-  -webkit-background-clip: text;
-          background-clip: text;
-  color: transparent;
-  text-wrap: balance;
-}
-.rc-recog { width: 100%; margin-top: clamp(16px, calc(37.6 * var(--u)), 44px); }
-.rc-recog picture { display: block; }
-.rc-recog img {
-  display: block;
-  width: calc(960 * var(--u));               /* the strip is 960 wide in the file, its marks 42 tall */
-  max-width: 100%;
-  height: auto;
-  margin-inline: auto;
-}
-
-/* ---- the panel ------------------------------------------------------- */
-.rc-in {
-  position: relative;
+  overflow: hidden;
   isolation: isolate;
-  width: var(--rc-col);
-  /* the panel's top edge (189.11 above this box) rises 60 past the captions' last line, so they end
-     inside the white notch, clear of its slopes */
-  margin: calc(129.11 * var(--u)) auto 0;
-  min-height: calc(689.7 * var(--u));        /* down to the press photos */
+  padding: clamp(72px, 8vw, 120px) 0 clamp(56px, 6vw, 96px);
+  background:
+    radial-gradient(120% 70% at 50% 120%, rgba(255, 140, 70, .16), transparent 60%),
+    linear-gradient(180deg, #120d1f 0%, #1a1230 55%, #221638 100%);
+  color: #fff;
 }
-/* 2102.62 x 881.11 in the file, its top and bottom notches centred on the page (the file had them
-   4.4 and 21.3 off its middle, and the shape itself 16.59 left of the frame's); its top runs up behind the
-   heading, so the white notch in its top edge holds the recognising marks. Its sides carry straight on
-   past the screen's edges at any width, so a wide screen never shows the panel's ends. The shape is both the
-   panel's paint and its mask, and the panel stretches with the roll should the roll need more room. */
-.rc-panel {
+/* the spotlight: a soft cone from the top centre onto the carousel */
+.aw2-light {
   position: absolute;
-  z-index: 0;
-  top: calc(-189.11 * var(--u));
-  bottom: calc(-2.3 * var(--u));
-  left: calc(50% - 2551.31 * var(--u));     /* centred; its sides run on 1500 past each end */
-  width: calc(5102.62 * var(--u));
-  background: url("../assets/awards/panel.svg") 0 0 / 100% 100% no-repeat;
-  -webkit-mask: url("../assets/awards/panel.svg") 0 0 / 100% 100% no-repeat;
-          mask: url("../assets/awards/panel.svg") 0 0 / 100% 100% no-repeat;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(34% 62% at 50% 4%, rgba(255, 214, 160, .30), rgba(255, 170, 90, .10) 45%, transparent 72%),
+    conic-gradient(from 180deg at 50% -8%, transparent 168deg, rgba(255, 220, 170, .10) 176deg, rgba(255, 220, 170, .16) 180deg, rgba(255, 220, 170, .10) 184deg, transparent 192deg);
+  animation: aw2-breathe 7s ease-in-out infinite;
+}
+@keyframes aw2-breathe { 50% { opacity: .78; } }
+/* gold dust drifting in the beam */
+.aw2-dust {
+  position: absolute;
+  inset: -20% 25% 20%;
+  z-index: -1;
+  background-image:
+    radial-gradient(1.6px 1.6px at 12% 22%, rgba(255, 220, 160, .9), transparent 60%),
+    radial-gradient(1.2px 1.2px at 32% 64%, rgba(255, 220, 160, .7), transparent 60%),
+    radial-gradient(1.8px 1.8px at 54% 38%, rgba(255, 230, 180, .8), transparent 60%),
+    radial-gradient(1.2px 1.2px at 72% 76%, rgba(255, 220, 160, .6), transparent 60%),
+    radial-gradient(1.5px 1.5px at 86% 30%, rgba(255, 230, 180, .8), transparent 60%),
+    radial-gradient(1px 1px at 44% 88%, rgba(255, 220, 160, .6), transparent 60%);
+  background-size: 360px 420px;
+  animation: aw2-dust 26s linear infinite;
+  -webkit-mask-image: radial-gradient(50% 60% at 50% 30%, #000, transparent);
+          mask-image: radial-gradient(50% 60% at 50% 30%, #000, transparent);
+}
+@keyframes aw2-dust { to { background-position: 0 -420px; } }
+
+.aw2-head { position: relative; text-align: center; }
+.aw2-head .sx-eyebrow { color: #ffc27a; }
+.aw2 .rc-title {
+  margin: 0;
+  font: 600 clamp(36px, 4.6vw, 72px)/1.02 var(--font-head);
+  letter-spacing: -.02em;
+  color: #fff;
+}
+
+/* ---- the carousel ----------------------------------------------------- */
+.aw2-ring {
+  --k: clamp(.34px, .05vw, .68px);          /* trophy px per plate px */
+  --step: min(31vw, 420px);                 /* the gap between neighbours */
+  position: relative;
+  height: calc(640 * var(--k) + 40px);
+  margin-top: clamp(24px, 3vw, 48px);
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+.aw2-ring .rc-trophy {
+  --p: 0; --ap: 0;
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  height: calc(var(--ph) * var(--k));
+  width: auto;
+  translate: -50% 0;
+  transform: translateX(calc(var(--p) * var(--step))) translateZ(calc(var(--ap) * -340px)) rotateY(calc(var(--p) * -24deg)) scale(calc(1 - var(--ap) * .16));
+  transform-origin: 50% 100%;
+  opacity: calc(1 - var(--ap) * .34);
+  filter: brightness(calc(1 - var(--ap) * .32)) saturate(calc(1 - var(--ap) * .25));
+  z-index: calc(10 - var(--ap));
+  cursor: pointer;
+  transition: transform .9s cubic-bezier(.22, .9, .24, 1), opacity .7s ease, filter .7s ease;
+  -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+  -webkit-box-reflect: below 0 linear-gradient(transparent 72%, rgba(255, 255, 255, .16));
+}
+.aw2-ring .rc-trophy[data-on] { cursor: default; }
+.aw2-ring .rc-trophy[data-far] { opacity: 0; pointer-events: none; }
+/* the floor: a pool of warm light under the open trophy */
+.aw2-floor {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: min(62vw, 760px);
+  height: 90px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 196, 120, .42), rgba(255, 150, 80, .12) 55%, transparent);
+  filter: blur(4px);
   pointer-events: none;
 }
 
-/* the five award marks, top right; each at the size the file gives it */
-.rc-badges {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: calc(706.7 * var(--u));
-  height: calc(116.93 * var(--u));
-  list-style: none;
+/* ---- the caption and its tabs ------------------------------------------ */
+.aw2-caption {
+  position: relative;
+  width: min(calc(100% - 2 * var(--page-pad)), 900px);
+  margin: clamp(20px, 2.4vw, 36px) auto 0;
+  text-align: center;
+}
+.aw2 .rc-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.aw2 .rc-item {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  translate: 0 14px;
+  transition: opacity .45s ease, translate .6s cubic-bezier(.22, .9, .24, 1);
+  pointer-events: none;
+}
+.aw2 .rc-item[aria-current="true"] { opacity: 1; translate: 0 0; transition-delay: .18s; }
+.aw2 .rc-kicker { font: 600 12.5px/1 var(--font); letter-spacing: .18em; text-transform: uppercase; color: #ffc27a; }
+.aw2 .rc-name {
   margin: 0;
+  font: 400 clamp(32px, 4vw, 58px)/1.05 var(--font-serif);
+  font-style: italic;
+  color: #fff;
+  text-wrap: balance;
+}
+.aw2 .rc-by { font: 400 clamp(15px, 1.2vw, 18px)/1.4 var(--font); color: rgba(255, 255, 255, .66); }
+
+.aw2 .rc-badges {
+  list-style: none;
+  margin: clamp(28px, 3vw, 44px) 0 0;
   padding: 0;
   display: flex;
-  align-items: center;
-  gap: calc(47 * var(--u));
+  justify-content: center;
+  gap: clamp(10px, 1.4vw, 18px);
 }
-.rc-badges li { display: flex; }
-.rc-badges img {
-  display: block;
-  width: auto;
-  opacity: .9;
-  transition: opacity .4s ease, filter .4s ease;
-}
-.rc-badges li:nth-child(1) img { height: calc(65 * var(--u)); }
-.rc-badges li:nth-child(2) img { height: calc(66 * var(--u)); }
-.rc-badges li:nth-child(3) img { height: calc(85 * var(--u)); }
-.rc-badges li:nth-child(4) img { height: calc(89 * var(--u)); }
-.rc-badges li:nth-child(5) img { height: calc(52 * var(--u)); }
-.rc-badges li[aria-current="true"] img { opacity: 1; filter: drop-shadow(0 0 14px rgba(150,190,255,.55)); }
-
-/* ---- the roll of awards ---------------------------------------------- */
-.rc-list {
+.aw2 .rc-badges button {
   position: relative;
-  z-index: 2;
-  list-style: none;
-  margin: 0;
-  /* clear of the bottom notch (59.4 tall) with the same air the roll has above it */
-  padding: calc(83.7 * var(--u)) 0 clamp(40px, calc(124 * var(--u)), 140px);
+  width: clamp(60px, 6vw, 84px);
+  height: clamp(60px, 6vw, 84px);
   display: grid;
-  gap: calc(20 * var(--u));
-  width: max(calc(470 * var(--u)), 300px);
-}
-/* closed: a 4px rule and the name, 79.8 tall. Open: a blue rule, the eyebrow, the name a step larger
-   and the by-line, 119.8 tall, the text pushed 20 off the rule rather than 9 */
-.rc-item {
-  --ease: cubic-bezier(.22,.61,.36,1);
-  position: relative;
-  display: grid;
-  grid-template-columns: max(3px, calc(4 * var(--u))) 1fr;
-  column-gap: calc(9 * var(--u));
-  align-items: center;
-  padding-block: calc(27.9 * var(--u));
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, .04);
+  overflow: hidden;
   cursor: pointer;
-  color: var(--rc-dim);
-  transition: color .45s ease, padding .5s var(--ease), column-gap .5s var(--ease);
+  transition: background .3s, border-color .3s, transform .3s;
 }
-.rc-item::before {
-  content: "";
-  grid-area: 1 / 1;
-  align-self: stretch;
-  margin-block: calc(-27.9 * var(--u));      /* the rule runs the item's full height */
-  background: rgba(229, 229, 229, .32);
-  transition: background-color .45s ease, margin .5s var(--ease);
-}
-.rc-item:hover::before { background: #e5e5e5; }
-.rc-item[aria-current="true"] { color: var(--rc-ink); padding-block: 0; column-gap: calc(20 * var(--u)); }
-.rc-item[aria-current="true"]::before { background: #0050ff; margin-block: calc(1.4 * var(--u)); }
-.rc-item:hover { color: #eaf1ff; }
-.rc-item:focus-visible { outline: 2px solid #82bdff; outline-offset: 6px; border-radius: 4px; }
+.aw2 .rc-badges button:hover { background: rgba(255, 255, 255, .09); transform: translateY(-2px); }
+.aw2 .rc-badges img { max-width: 70%; max-height: 70%; opacity: .55; transition: opacity .3s; }
+.aw2 .rc-badges button[aria-current="true"] { border-color: rgba(255, 194, 122, .6); background: rgba(255, 194, 122, .1); }
+.aw2 .rc-badges button[aria-current="true"] img { opacity: 1; }
+/* the timer: fills while the award holds */
+.aw2 .rc-badges i { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: #ffc27a; transform: scaleX(0); transform-origin: 0 50%; }
+.aw2 .rc-badges button[aria-current="true"] i { animation: aw2-timer var(--hold, 3200ms) linear forwards; }
+.aw2.is-held .rc-badges i { animation-play-state: paused; }
+@keyframes aw2-timer { to { transform: none; } }
+.aw2 .rc-badges button:focus-visible { outline: 2px solid #ffc27a; outline-offset: 3px; }
 
-.rc-txt { grid-area: 1 / 2; min-width: 0; }
-/* The site's type ladder, so the roll reads as part of the page: the eyebrow is the hero's small
-   tracked label, the award's name is set in the heading face, the by-line is quiet body copy. */
-.rc-name {
-  margin: 0;
-  font-family: var(--font-head);
-  font-weight: 500;
-  font-size: clamp(16px, calc(21 * var(--u)), 21px);
-  line-height: 1.2;
-  letter-spacing: -.005em;
-  color: inherit;
-  transition: font-size .5s var(--ease);
+/* ---- on paper: the recognising bodies and the prints -------------------- */
+.aw2-paper {
+  padding: clamp(56px, 6vw, 96px) var(--page-pad) clamp(72px, 8vw, 128px);
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(255, 196, 140, .18), transparent 70%),
+    var(--w-paper, #fbf6ee);
 }
-.rc-item[aria-current="true"] .rc-name {
-  font-weight: 600;
-  font-size: clamp(22px, calc(32 * var(--u)), 34px);
-  line-height: 1.15;
-  letter-spacing: -.01em;
-}
-/* the eyebrow and the by-line belong to the open award only: they open and close with it */
-.rc-sub {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  margin: 0;
-  transition: grid-template-rows .5s var(--ease), opacity .35s ease, margin .5s var(--ease);
-}
-.rc-sub > span { overflow: hidden; display: block; min-height: 0; }
-.rc-item[aria-current="true"] .rc-sub { grid-template-rows: 1fr; opacity: 1; }
-.rc-item[aria-current="true"] .rc-kicker { margin-bottom: clamp(8px, calc(12 * var(--u)), 12px); }
-.rc-item[aria-current="true"] .rc-by { margin-top: clamp(6px, calc(10 * var(--u)), 10px); }
-.rc-kicker > span {
-  font: 600 clamp(11px, calc(14 * var(--u)), 15px)/1.2 var(--font);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: #82bdff;
-}
-.rc-by > span {
-  font: 400 clamp(14px, calc(18 * var(--u)), 18px)/1.4 var(--font);
-  color: rgba(255, 255, 255, .72);
-}
-
-/* ---- the trophy on its plinth --------------------------------------- */
-/* 915.58 wide in the file with the trophy's globe 376 across, the plate's top 116.7 above the panel's;
-   the panel's mask cuts it at the top notch and at the bottom edge */
-.rc-stage {
-  position: absolute;
-  top: calc(-116.69 * var(--u));
-  left: calc(2505.95 * var(--u));
-  width: calc(915.58 * var(--u));
-  aspect-ratio: 1400 / 1739;
-}
-/* past the frame's width the plate's right side would show as a hard cut inside the panel */
-@media (min-width: 1992px) {
-  .rc-stage {
-    -webkit-mask-image: linear-gradient(to right, #000 84%, #0000 100%);
-            mask-image: linear-gradient(to right, #000 84%, #0000 100%);
-  }
-}
-.rc-stage img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-  display: block;
-}
-/* The trophies cross-fade behind a fixed plinth (the part every plate has in common, lifted out
-   once), so the plinth stays still while the awards change, and the outgoing trophy leaves a beat
-   before the incoming one arrives. */
-.rc-trophy {
-  z-index: 1;
-  opacity: 0;
-  transition: opacity .22s ease;
-  will-change: opacity;
-}
-.rc-trophy[data-on] { z-index: 2; opacity: 1; transition: opacity .32s ease .12s; }
-.rc-plinth { z-index: 3; }
-
-/* ---- under the marks: three press photographs ----------------------- */
-.rc-cards {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  margin: clamp(32px, calc(56 * var(--u)), 64px) 0 0;
-  text-align: left;
-  padding: 0;
+.aw2 .rc-recog { width: min(100%, 900px); margin: 0 auto; }
+.aw2 .rc-recog img { display: block; width: 100%; height: auto; }
+.aw2 .rc-cards {
   list-style: none;
+  margin: clamp(48px, 5vw, 80px) auto 0;
+  padding: 0;
+  width: min(100%, 1120px);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));   /* three equal cards */
-  gap: clamp(16px, calc(40 * var(--u)), 40px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 48px);
   align-items: start;
 }
-.rc-cards li { display: flex; flex-direction: column; gap: clamp(10px, calc(16 * var(--u)), 16px); }
-/* a 45deg chamfer off the bottom-left corner, its legs 64 of the frame; a mask rather than a clip,
-   so the other three corners keep the family radius */
-.rc-cards figure {
-  position: relative;
-  margin: 0;
-  height: calc(285.5 * var(--u));           /* the three photos share one height, as in the file */
-  border-radius: var(--r-md);
-  overflow: hidden;
-  background: #eef2f9;
-  -webkit-mask-image: linear-gradient(45deg, #0000 calc(45.25 * var(--u)), #000 0);
-          mask-image: linear-gradient(45deg, #0000 calc(45.25 * var(--u)), #000 0);
+/* each photograph is a print: a white border, a deeper bottom margin for its caption, a slight
+   lean that straightens when you look at it */
+.aw2 .rc-cards li {
+  --rot: -3deg;
+  padding: 12px 12px 20px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(60, 40, 20, .06), 0 24px 40px -20px rgba(60, 40, 20, .32);
+  rotate: var(--rot);
+  translate: 0 40px;
+  opacity: 0;
+  transition: rotate .6s cubic-bezier(.22, .9, .24, 1), translate .8s cubic-bezier(.22, .9, .24, 1), opacity .6s ease, box-shadow .4s;
+  transition-delay: calc(var(--i) * 110ms);
 }
-.rc-cards img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* the supplied photos carry a gold frame at their edges: these crops take it off */
-.rc-cards li:nth-child(1) img { transform: scale(1.09); transform-origin: 50% 40%; }
-.rc-cards li:nth-child(3) img { position: absolute; left: -6%; top: -2.59%; width: 112%; height: 105.17%; max-width: none; object-position: 50% 0; }
-.rc-cards p {
-  margin: 0;
-  font: 600 clamp(13px, calc(16 * var(--u)), 16px)/1.5 "Inter Display", "InterVariable", "Inter", sans-serif;
-  color: #818181;
+.aw2 .rc-cards li:nth-child(2) { --rot: 2.2deg; margin-top: 28px; }
+.aw2 .rc-cards li:nth-child(3) { --rot: -1.6deg; }
+.aw2 .rc-cards.is-in li { translate: 0 0; opacity: 1; }
+.aw2 .rc-cards li:hover { rotate: 0deg; translate: 0 -6px; box-shadow: 0 2px 4px rgba(60, 40, 20, .06), 0 36px 56px -24px rgba(60, 40, 20, .4); transition-delay: 0s; }
+.aw2 .rc-cards figure { margin: 0; aspect-ratio: 4 / 3; border-radius: 3px; overflow: hidden; background: #eee; }
+.aw2 .rc-cards img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); }
+.aw2 .rc-cards li:nth-child(3) img { object-position: 50% 10%; }
+.aw2 .rc-cards p {
+  margin: 16px 4px 0;
+  font: 500 14.5px/1.5 var(--font);
+  color: #6b6358;
 }
-.rc-cards b { font-weight: 600; color: #0f0f0f; }
+.aw2 .rc-cards b { font-weight: 600; color: #2a2118; }
 
-/* ---- narrow screens: the panel becomes a rounded navy card ----------- */
-@media (max-width: 900px) {
-  .rc { --rc-col: calc(100% - 2 * var(--page-pad)); --u: calc(100vw / 900); }
-  .rc-recog img { width: min(100%, 560px); }
-  .rc-in {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    margin-top: 32px;
-    padding: 32px 20px 0;
-    border-radius: var(--r-lg);
-    overflow: hidden;
-    background: linear-gradient(170deg, #060f22 0%, #143479 62%, #0e41ab 100%);
-  }
-  .rc-panel { display: contents; }
-  .rc-badges { position: static; order: 1; height: auto; flex-wrap: wrap; justify-content: center; gap: 18px 24px; }
-  .rc-badges li:nth-child(n) img { height: 44px; }
-  .rc-list { order: 2; width: 100%; max-width: 520px; margin-inline: auto; padding: 24px 0 0; gap: 10px; }
-  .rc-item { column-gap: 12px; padding-block: 14px; }
-  .rc-item::before { margin-block: -14px; }
-  .rc-item[aria-current="true"] { column-gap: 16px; }
-  .rc-item[aria-current="true"]::before { margin-block: 0; }
-  .rc-item[aria-current="true"] .rc-kicker { margin-bottom: 8px; }
-  .rc-item[aria-current="true"] .rc-by { margin-top: 8px; }
-  /* the plinth flows under the roll; the plates are transparent across their top third, so the
-     stage is pulled up by that much */
-  .rc-stage {
-    order: 3;
-    position: relative;
-    top: auto;
-    left: auto;
-    width: min(100%, 420px);
-    margin: clamp(-150px, -28vw, -40px) auto clamp(-90px, -16vw, -30px);
-  }
-  .rc-cards { grid-template-columns: 1fr; max-width: 420px; margin: 32px auto 0; }
-  .rc-cards figure { height: auto; aspect-ratio: 3 / 2; }
-  .rc-cards figure {
-    -webkit-mask-image: linear-gradient(45deg, #0000 32px, #000 0);
-            mask-image: linear-gradient(45deg, #0000 32px, #000 0);
-  }
+@media (max-width: 760px) {
+  .aw2-ring { --step: 30vw; }
+  .aw2 .rc-cards { grid-template-columns: 1fr; max-width: 420px; }
+  .aw2 .rc-cards li:nth-child(2) { margin-top: 0; }
+  .aw2 .rc-badges { gap: 8px; }
 }
-@media (max-width: 640px) {
-  .rc-recog img { width: min(100%, 360px); }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .rc-trophy, .rc-sub, .rc-item, .rc-item::before, .rc-name, .rc-badges img { transition-duration: .01ms; }
+  .aw2-light, .aw2-dust { animation: none; }
+  .aw2 .rc-trophy, .aw2 .rc-item, .aw2 .rc-cards li { transition-duration: .01ms; }
 }

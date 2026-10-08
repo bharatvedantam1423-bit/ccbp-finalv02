@@ -23,6 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
 <!-- section 2: programmes (styles scoped to .programmes) -->
 <link rel="stylesheet" href="programmes.css">
 <style>
@@ -829,98 +830,88 @@ html.lenis,html.lenis body{height:auto}
   </section>
 
 <!-- ===================================================================
-     S3 — AWARDS & RECOGNITIONS (Figma CCBP-v02, node 1219:352)
-     The heading and the four bodies that recognise NxtWave sit on white, cradled by the notch in the
-     navy panel's top edge. In the panel: the roll of awards on the left with one open at a time, the
-     five award marks and the trophy on its plinth on the right. Under the panel, three press photos.
+     S3 — AWARDS & RECOGNITIONS: a spotlit stage where the five trophies turn on a carousel, the
+     open award named beneath in large type, the award marks as its tabs. Then, on paper, the bodies
+     that recognise NxtWave and the press photographs as prints. Styles career/awards.css, behaviour
+     career/awards.js.
      =================================================================== -->
-<section class="rc" id="recognition" aria-labelledby="record-title">
-  <div class="rc-band">
-    <header class="rc-top">
-      <h2 class="rc-title" id="record-title">Awards &amp; Recognitions</h2>
-      <!-- the bodies that recognise NxtWave, under the heading -->
-      <div class="rc-recog" id="recognised-by">
-        <picture>
-          <source media="(max-width:640px)" srcset="assets/recognised-by-mobile.png">
-          <img src="assets/recognised-by.png" width="3621" height="157" alt="Recognised by NASSCOM, Ministry of Commerce and Industry (Government of India), Startup India and NSDC" loading="lazy">
-        </picture>
-      </div>
-      <!-- the press photographs; their captions end inside the notch at the panel's top edge -->
-      <ul class="rc-cards">
-        <li class="reveal-up" style="--i:0">
-          <figure><img src="assets/award-forbes30.jpg" alt="Anupam Pedarla and Sashank Gujjula on the Forbes India 30 Under 30 cover" loading="lazy"></figure>
-          <p>Founders <b>Mr. Anupam Pedarla</b> &amp; <b>Mr. Sashank Gujjula</b> made it to the prestigious 2024 Forbes India 30 Under 30 list!</p></li>
-        <li class="reveal-up" style="--i:1">
-          <figure><img src="assets/award-times-1.jpg" alt="Sashank Gujjula receiving the Times Business Award on stage" loading="lazy"></figure>
-          <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
-        <li class="reveal-up" style="--i:2">
-          <figure><img src="assets/award-times-2.jpg" alt="Sashank Gujjula receiving an award from the Times Business Awards jury" loading="lazy"></figure>
-          <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
-      </ul>
+<section class="rc aw2" id="recognition" aria-labelledby="record-title">
+  <!-- the stage: a warm night, a spotlight, the five trophies turning on a carousel -->
+  <div class="aw2-stage">
+    <div class="aw2-light" aria-hidden="true"></div>
+    <div class="aw2-dust" aria-hidden="true"></div>
+    <header class="aw2-head">
+      <p class="sx-eyebrow">Recognition</p>
+      <h2 class="rc-title" id="record-title">Awards &amp; <em class="sx-em">Recognitions</em></h2>
     </header>
 
-    <div class="rc-in">
-      <!-- the panel's shape (top and bottom notches) is its own background and its own mask, so the
-           trophy is cut by the same edge the eye sees -->
-      <div class="rc-panel" aria-hidden="true">
-        <div class="rc-stage">
-          <img class="rc-trophy" src="assets/awards/t-mpb.webp" alt="" loading="lazy">
-          <img class="rc-trophy" src="assets/awards/t-asia.webp" alt="" loading="lazy">
-          <img class="rc-trophy" src="assets/awards/t-prime.webp" alt="" loading="lazy">
-          <img class="rc-trophy" src="assets/awards/t-star.webp" alt="" loading="lazy">
-          <img class="rc-trophy" src="assets/awards/t-wef.webp" alt="" loading="lazy">
-          <img class="rc-plinth" src="assets/awards/plinth.webp" alt="" loading="lazy">
-        </div>
-      </div>
+    <div class="aw2-ring" aria-hidden="true">
+      <img class="rc-trophy" src="assets/awards/c-mpb.webp" alt="" style="--ph:572" loading="lazy">
+      <img class="rc-trophy" src="assets/awards/c-asia.webp" alt="" style="--ph:568" loading="lazy">
+      <img class="rc-trophy" src="assets/awards/c-prime.webp" alt="" style="--ph:535" loading="lazy">
+      <img class="rc-trophy" src="assets/awards/c-star.webp" alt="" style="--ph:604" loading="lazy">
+      <img class="rc-trophy" src="assets/awards/c-wef.webp" alt="" style="--ph:606" loading="lazy">
+      <span class="aw2-floor"></span>
+    </div>
 
-      <ul class="rc-badges">
-        <li aria-current="false"><img src="assets/awards/b-mpb.webp" alt="Most Preferred Brands 2021" loading="lazy"></li>
-        <li aria-current="false"><img src="assets/awards/b-asia.webp" alt="India’s Greatest Brands &amp; Leaders 2021-22" loading="lazy"></li>
-        <li aria-current="false"><img src="assets/awards/b-prime.webp" alt="Prime Insights Trusted Brand in Education" loading="lazy"></li>
-        <li aria-current="false"><img src="assets/awards/b-star.webp" alt="Times Business Awards trophy" loading="lazy"></li>
-        <li aria-current="false"><img src="assets/awards/b-wef.webp" alt="World Economic Forum" loading="lazy"></li>
-      </ul>
-
+    <div class="aw2-caption">
       <ol class="rc-list">
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
-            <p class="rc-name">Most Preferred Brands</p>
-            <span class="rc-sub rc-by"><span>by Marksmen Daily in 2021</span></span>
-          </span>
+        <li class="rc-item" aria-current="false">
+          <span class="rc-kicker">Recognised as</span>
+          <p class="rc-name">Most Preferred Brands</p>
+          <span class="rc-by">by Marksmen Daily in 2021</span>
         </li>
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
-            <p class="rc-name">India’s Greatest Brands &amp; Leaders</p>
-            <span class="rc-sub rc-by"><span>by Asia One in 2021-22</span></span>
-          </span>
+        <li class="rc-item" aria-current="false">
+          <span class="rc-kicker">Recognised as</span>
+          <p class="rc-name">India’s Greatest Brands &amp; Leaders</p>
+          <span class="rc-by">by Asia One in 2021-22</span>
         </li>
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
-            <p class="rc-name">Trusted Brand in Education</p>
-            <span class="rc-sub rc-by"><span>by Prime Insights in 2023</span></span>
-          </span>
+        <li class="rc-item" aria-current="false">
+          <span class="rc-kicker">Recognised as</span>
+          <p class="rc-name">Trusted Brand in Education</p>
+          <span class="rc-by">by Prime Insights in 2023</span>
         </li>
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
-            <p class="rc-name">Best Tech Skilling EdTech Company</p>
-            <span class="rc-sub rc-by"><span>by Times Business Awards in 2022</span></span>
-          </span>
+        <li class="rc-item" aria-current="false">
+          <span class="rc-kicker">Recognised as</span>
+          <p class="rc-name">Best Tech Skilling EdTech Company</p>
+          <span class="rc-by">by Times Business Awards in 2022</span>
         </li>
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>We are honoured to be a</span></span>
-            <p class="rc-name">2024 Technology Pioneer</p>
-            <span class="rc-sub rc-by"><span>100 Startups worldwide made the cut.</span></span>
-          </span>
+        <li class="rc-item" aria-current="false">
+          <span class="rc-kicker">We are honoured to be a</span>
+          <p class="rc-name">2024 Technology Pioneer</p>
+          <span class="rc-by">100 Startups worldwide made the cut.</span>
         </li>
       </ol>
+      <ul class="rc-badges">
+        <li><button type="button" aria-current="false" aria-label="Most Preferred Brands 2021"><img src="assets/awards/b-mpb.webp" alt="" loading="lazy"><i></i></button></li>
+        <li><button type="button" aria-current="false" aria-label="India’s Greatest Brands &amp; Leaders 2021-22"><img src="assets/awards/b-asia.webp" alt="" loading="lazy"><i></i></button></li>
+        <li><button type="button" aria-current="false" aria-label="Prime Insights Trusted Brand in Education"><img src="assets/awards/b-prime.webp" alt="" loading="lazy"><i></i></button></li>
+        <li><button type="button" aria-current="false" aria-label="Times Business Awards"><img src="assets/awards/b-star.webp" alt="" loading="lazy"><i></i></button></li>
+        <li><button type="button" aria-current="false" aria-label="World Economic Forum Technology Pioneer"><img src="assets/awards/b-wef.webp" alt="" loading="lazy"><i></i></button></li>
+      </ul>
     </div>
   </div>
 
+  <!-- on paper: the bodies that recognise NxtWave, and the press photographs as prints -->
+  <div class="aw2-paper">
+    <div class="rc-recog" id="recognised-by">
+      <picture>
+        <source media="(max-width:640px)" srcset="assets/recognised-by-mobile.png">
+        <img src="assets/recognised-by.png" width="3621" height="157" alt="Recognised by NASSCOM, Ministry of Commerce and Industry (Government of India), Startup India and NSDC" loading="lazy">
+      </picture>
+    </div>
+    <ul class="rc-cards">
+      <li style="--i:0">
+        <figure><img src="assets/award-forbes30.jpg" alt="Anupam Pedarla and Sashank Gujjula on the Forbes India 30 Under 30 cover" loading="lazy"></figure>
+        <p>Founders <b>Mr. Anupam Pedarla</b> &amp; <b>Mr. Sashank Gujjula</b> made it to the prestigious 2024 Forbes India 30 Under 30 list!</p></li>
+      <li style="--i:1">
+        <figure><img src="assets/award-times-1.jpg" alt="Sashank Gujjula receiving the Times Business Award on stage" loading="lazy"></figure>
+        <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
+      <li style="--i:2">
+        <figure><img src="assets/award-times-2.jpg" alt="Sashank Gujjula receiving an award from the Times Business Awards jury" loading="lazy"></figure>
+        <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
+    </ul>
+  </div>
 </section>
 
 <!-- ===================================================================
@@ -931,7 +922,7 @@ html.lenis,html.lenis body{height:auto}
 <section class="nw-hire" id="hiring-network" aria-labelledby="nw-hire-title" data-logo-path="assets/hiring-companies/logos/">
   <div class="nw-hire__head">
     <p class="sx-eyebrow">Hiring partners</p>
-    <h2 class="nw-hire__title" id="nw-hire-title">3,000+ companies hire NxtWave learners</h2>
+    <h2 class="nw-hire__title" id="nw-hire-title"><span class="nh-num">3,000+</span> companies hire <em class="sx-em">NxtWave learners</em></h2>
     <p class="nw-hire__sub">Across product companies, startups, and global services firms.</p>
   </div>
   <div class="nw-hire__rows"></div>
@@ -947,7 +938,7 @@ html.lenis,html.lenis body{height:auto}
       <header class="mw-head">
         <div class="sx-titles">
           <p class="sx-eyebrow">Mentors</p>
-          <h2 class="mw-title" id="mw-title">Taught by people<br>who have done the job.</h2>
+          <h2 class="mw-title" id="mw-title">Taught by people<br><em class="sx-em">who have done the job.</em></h2>
         </div>
         <div class="mw-alumni">
           <ul class="mw-alumni-row">
@@ -980,7 +971,7 @@ html.lenis,html.lenis body{height:auto}
   <div class="ctw-heading">
     <div class="ctw-heading-text">
       <p class="sx-eyebrow">Success stories</p>
-      <h2 id="ct-title">Career Transformations</h2>
+      <h2 id="ct-title">Career <em class="sx-em">Transformations</em></h2>
       <p class="ctw-heading-sub">Real people. Named companies. Their own words.</p>
     </div>
   </div>
@@ -1000,7 +991,7 @@ html.lenis,html.lenis body{height:auto}
   <header class="mc__head">
     <div class="sx-titles">
       <p class="sx-eyebrow">Masterclasses</p>
-      <h2 class="mc__title" id="mc-title">Masterclasses from<br>Mentors in the Community</h2>
+      <h2 class="mc__title" id="mc-title">Masterclasses from<br><em class="sx-em">Mentors in the Community</em></h2>
     </div>
     <ul class="mc__aff" aria-label="Mentors from">
       <li><img src="assets/masterclass/logos/stanford-color.png" alt="Stanford University" width="243" height="104"></li>
@@ -1031,7 +1022,7 @@ html.lenis,html.lenis body{height:auto}
 <section class="lx" id="learner-experiences" aria-labelledby="lx-title">
   <header class="lx__head">
     <p class="sx-eyebrow">Learner stories</p>
-    <h2 class="lx__title" id="lx-title">NxtWave Learner's Experiences</h2>
+    <h2 class="lx__title" id="lx-title">NxtWave Learner's <em class="sx-em">Experiences</em></h2>
   </header>
   <div class="lx__stage" role="region" aria-label="Learner testimonial videos">
     <div class="lx-item">
@@ -1313,7 +1304,7 @@ html.lenis,html.lenis body{height:auto}
 <section class="wl sx-dark" id="what-companies-look-for" aria-labelledby="wl-title">
   <header class="wl__head">
     <p class="sx-eyebrow">How we train</p>
-    <h2 class="wl__title" id="wl-title">We train you for what<br>companies hire for</h2>
+    <h2 class="wl__title" id="wl-title">We train you for what<br><em class="sx-em">companies hire for</em></h2>
     <p class="wl__sub"><b>3,000+ companies</b> have hired from our programmes. This is what we teach that gets people through.</p>
   </header>
   <div class="wlx">
@@ -1450,7 +1441,7 @@ html.lenis,html.lenis body{height:auto}
   <header class="ht__head">
     <div>
       <p class="sx-eyebrow">Hiring managers</p>
-      <h2 class="ht__title" id="ht-title">Why Top Companies Prefer NxtWave Students</h2>
+      <h2 class="ht__title" id="ht-title">Why Top Companies Prefer <em class="sx-em">NxtWave Students</em></h2>
       <p class="ht__sub">The people who actually make the hiring decision, on why they keep coming back.</p>
     </div>
   </header>
@@ -1467,7 +1458,7 @@ html.lenis,html.lenis body{height:auto}
 <section class="inv" id="investors" aria-labelledby="inv-title">
   <header class="inv-head reveal-up">
     <p class="sx-eyebrow">Investors</p>
-    <h2 class="inv-title" id="inv-title">Backed by Leading Global Investors</h2>
+    <h2 class="inv-title" id="inv-title">Backed by Leading <em class="sx-em">Global Investors</em></h2>
     <p class="inv-sub">Supported by investors who share our vision for the future of tech education.</p>
   </header>
   <ul class="inv-row" aria-label="Investors">
@@ -1480,7 +1471,7 @@ html.lenis,html.lenis body{height:auto}
 <section class="fm" id="featured-in-media" aria-labelledby="fm-title">
   <header class="fm__head">
     <p class="sx-eyebrow">In the news</p>
-    <h2 class="fm__title" id="fm-title">Recognized by Leading Media</h2>
+    <h2 class="fm__title" id="fm-title">Recognized by <em class="sx-em">Leading Media</em></h2>
   </header>
   <div class="fm__press">
     <ul class="fm__press-row" id="fm-press" aria-label="Publications that have featured NxtWave"></ul>
