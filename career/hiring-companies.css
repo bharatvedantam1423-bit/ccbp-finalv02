@@ -88,7 +88,7 @@
   padding: 12px;
   background: var(--nw-hire-card-bg);
   border: 0.95px solid var(--nw-hire-card-border);
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   display: flex;
   align-items: center;
   justify-content: center;

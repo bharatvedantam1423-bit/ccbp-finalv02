@@ -133,7 +133,7 @@
   height: 100%;
   overflow: hidden;
   border: 1px solid var(--p-border);
-  border-radius: 20px;
+  border-radius: var(--r-lg);
   cursor: pointer;
   outline: none;
   transition:
@@ -337,7 +337,7 @@
   height: 42px;
   padding: 0 20px;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   font-weight: 500;
   font-size: 15px;
   line-height: 1;
@@ -644,7 +644,7 @@
   place-items: center;
   width: 40px;
   height: 40px;
-  border-radius: 12px;
+  border-radius: var(--r-sm);
   background: #fff;
   color: var(--p-brand);
 }
@@ -1015,7 +1015,7 @@
     bottom: calc(26.67 * var(--u));
     gap: 12px;
   }
-  .programme__btn { height: 44px; border-radius: 12px; font-size: 14px; }
+  .programme__btn { height: 44px; border-radius: var(--r-sm); font-size: 14px; }
   .programme__btn--ghost { height: 46px; background: #f6f5fa; border-color: #cbd5e1; }
 
   /* open card: the colour photo in the 751px media half, the side panel in the card's tint */

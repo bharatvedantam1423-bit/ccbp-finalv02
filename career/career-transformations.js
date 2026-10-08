@@ -60,6 +60,10 @@
     const COL_OFFSETS = [1400, 900, 500, 0, 0, 500, 900, 1400];  // shorter travel → calmer rise
     // Where each column settles after scrolling (approved mock): a gentle arch, centre pair highest.
     const SETTLE = [336, 222, 110, 0, 0, 110, 222, 336];
+    // Once the arch has formed, each column keeps its own pace through the rest of the scroll: a share of
+    // the distance scrolled since, added (lagging) or taken away (running ahead). Neighbours alternate, so
+    // the wall keeps moving against itself instead of sliding up as one sheet.
+    const PACE = [0.12, -0.07, 0.16, -0.03, 0.06, -0.12, 0.09, -0.05];
 
     const PLAY_ICON = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5.2v9.6a.6.6 0 0 0 .92.5l7.4-4.8a.6.6 0 0 0 0-1L7.92 4.7A.6.6 0 0 0 7 5.2Z" fill="#0f172a"/></svg>';
 
@@ -106,24 +110,30 @@
         : textCard(QUOTES[qi++ % QUOTES.length]).replace('<article class="ctw-card-text"', '<article class="ctw-card-text ctw-extra"');
       col.innerHTML = html;
       imagesEl.appendChild(col);
-      return { el: col, off, settle: SETTLE[c] };
+      return { el: col, off, settle: SETTLE[c], pace: PACE[c] };
     });
 
-    // Hover a video card → muted preview loop.
-    root.querySelectorAll('.ctw-card-video').forEach(card => {
-      let v;
-      card.addEventListener('mouseenter', () => {
-        if (!v) {
-          v = document.createElement('video');
-          v.src = card.dataset.video; v.muted = true; v.loop = true; v.playsInline = true;
-          card.insertBefore(v, card.querySelector('.ctw-shade'));
+    // Video cards play on their own, muted and looping, while they are on screen, and pause when they
+    // leave, so only the few in view are ever loading or running. Reduced motion keeps the stills.
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const playIO = !reduceMotion && 'IntersectionObserver' in window && new IntersectionObserver(entries => {
+      for (const { target: card, isIntersecting } of entries) {
+        let v = card.querySelector('video');
+        if (isIntersecting) {
+          if (!v) {
+            v = document.createElement('video');
+            v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true;
+            v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+            v.preload = 'auto'; v.src = card.dataset.video;
+            card.insertBefore(v, card.querySelector('.ctw-shade'));
+          }
+          v.play().then(() => card.classList.add('ctw-playing')).catch(() => {});
+        } else if (v) {
+          v.pause();
         }
-        v.play().then(() => card.classList.add('ctw-playing')).catch(() => {});
-      });
-      card.addEventListener('mouseleave', () => {
-        if (v) { v.pause(); card.classList.remove('ctw-playing'); }
-      });
-    });
+      }
+    }, { rootMargin: '120px 0px', threshold: 0.15 });
+    if (playIO) root.querySelectorAll('.ctw-card-video').forEach(card => playIO.observe(card));
 
     // Mobile: the scaled grid keeps its unscaled layout height, so trim the mask to match.
     const mask = root.querySelector('.ctw-mask');
@@ -153,8 +163,8 @@
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let cur = 0;
 
-    // the heading is a full pinned screen, so the rise follows the wall itself: it starts as the wall's
-    // top enters at the foot of the screen and settles into the arch by the time it is a quarter down
+    // the rise follows the wall: it starts as the wall's top enters at the foot of the screen and has
+    // settled into the arch a quarter of the way down, then the columns keep their own paces
     const WALL_FROM = 1.0, WALL_TO = 0.25;
     const target = () => {
       const top = mask.getBoundingClientRect().top / innerHeight;
@@ -165,11 +175,26 @@
     const GAP_FROM = 0.6, GAP_TO = 0.3;
     const gapClose = () => Math.max(0, parseFloat(getComputedStyle(root.querySelector('.ctw-heading')).paddingBottom) - (innerWidth < 810 ? 32 : 80));
     const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    // the heading fades as the cards reach it: it starts going a little before the highest card meets
+    // its foot and is gone by the time that card reaches its top, and comes back on the way up
+    const text = root.querySelector('.ctw-heading-text');
+    const fadeText = () => {
+      if (!text) return;
+      const t = text.getBoundingClientRect();
+      let wall = Infinity;
+      for (const { el } of cols) { const c = el.firstElementChild; if (c) wall = Math.min(wall, c.getBoundingClientRect().top); }
+      const LEAD = 40;
+      text.style.opacity = (1 - clamp01((t.bottom + LEAD - wall) / (t.height + LEAD))).toFixed(3);
+    };
     const render = p => {
+      fadeText();
       const g = clamp01((GAP_FROM - section.getBoundingClientRect().top / innerHeight) / (GAP_FROM - GAP_TO));
       mask.style.transform = `translate3d(0, ${(-gapClose() * g).toFixed(2)}px, 0)`;
       const e = easeInOut(p);
-      for (const { el, off, settle } of cols) el.style.transform = `translate3d(0, ${(settle + (off - settle) * (1 - e)).toFixed(2)}px, 0)`;
+      // how far the wall has scrolled past the point where the arch settles (0 until then)
+      const past = reduce ? 0 : Math.max(0, WALL_TO * innerHeight - mask.getBoundingClientRect().top - (-gapClose() * g));
+      for (const { el, off, settle, pace } of cols)
+        el.style.transform = `translate3d(0, ${(settle + (off - settle) * (1 - e) - past * pace).toFixed(2)}px, 0)`;
     };
     function tick() {
       const t = target();
