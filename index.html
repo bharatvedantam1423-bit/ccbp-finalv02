@@ -465,7 +465,6 @@ a{color:inherit;text-decoration:none}
   margin-top:-48px;padding:16px 0 var(--sec-y)}
 /* Masterclasses */
 .mc .mc__head{width:calc(100% - 2 * var(--m));max-width:var(--page-max);margin-inline:auto}
-.mc .mc__body{max-width:calc(var(--page-max) + 2 * var(--m))}
 /* Learner's Experiences (supplied build, career/learner-experiences.css): room above the heading, none below */
 .lx{padding:var(--sec-y) 0 0}
 .lx__title{margin-inline:auto;padding-inline:0;max-width:calc(100% - 2 * var(--page-pad))}
@@ -483,7 +482,6 @@ a{color:inherit;text-decoration:none}
 .rc-recog{margin-top:var(--head-gap)}
 /* the sections built from the supplied pages: heading → content on the same gap */
 .cs .wl__head,.cs .ht__head{margin-bottom:var(--head-gap)}
-.mc .mc__body{padding-top:var(--head-gap)}
 .cs .fm__title{margin-bottom:clamp(24px,2.6vw,40px)}
 .cs .fm__press{margin-bottom:var(--head-gap)}
 /* Recognized by Leading Media */
@@ -990,21 +988,36 @@ html.lenis,html.lenis body{height:auto}
      Career Transformations, so it is the section that slides up over its pinned dark screen.
      =================================================================== -->
 <section class="mc" id="masterclasses" aria-labelledby="mc-title">
-  <header class="mc__head">
-    <h2 class="mc__title" id="mc-title">Masterclasses from<br>Mentors in the Community</h2>
-    <ul class="mc__aff" aria-label="Mentors from">
-      <li><img src="assets/masterclass/logos/stanford-color.png" alt="Stanford University" width="243" height="104"></li>
-      <li><img src="assets/masterclass/logos/google-color.png" alt="Google" width="238" height="104"></li>
-      <li><img src="assets/masterclass/logos/amazon-color.png" alt="Amazon" width="229" height="104"></li>
-      <li><img src="assets/masterclass/logos/microsoft-color.png" alt="Microsoft" width="276" height="104"></li>
-    </ul>
-  </header>
-  <div class="mc__body">
-    <div class="mc__grid">
-      <button class="mc__video" type="button" data-yt="wLOkQDXN8RQ" aria-label="Play: Sneak Peek Of Masterclass by Rakesh Misra">
-        <img src="assets/masterclass/rakesh.jpg" alt="" width="1184" height="800" loading="lazy">
-      </button>
-      <!-- mentor cards injected by career/masterclass.js -->
+  <!-- pinned stage: vertical scroll slides the rail of tiles sideways (career/masterclass.js) -->
+  <div class="mc__pin">
+    <div class="mc__stage">
+      <header class="mc__head">
+        <div class="mc__intro">
+          <p class="mc__eyebrow"><span class="mc__dot" aria-hidden="true"></span>NxtWave Masterclasses</p>
+          <h2 class="mc__title" id="mc-title">Masterclasses from<br>Mentors in the Community</h2>
+        </div>
+        <ul class="mc__aff" aria-label="Mentors from">
+          <li><img src="assets/masterclass/logos/stanford-color.png" alt="Stanford University" width="243" height="104"></li>
+          <li><img src="assets/masterclass/logos/google-color.png" alt="Google" width="238" height="104"></li>
+          <li><img src="assets/masterclass/logos/amazon-color.png" alt="Amazon" width="229" height="104"></li>
+          <li><img src="assets/masterclass/logos/microsoft-color.png" alt="Microsoft" width="276" height="104"></li>
+        </ul>
+      </header>
+      <div class="mc__viewport">
+        <div class="mc__rail" role="list" aria-label="Masterclass and mentors">
+          <div class="mc__tile mc__tile--text" role="listitem">
+            <p class="mc__lede">Scientists and engineers from Stanford, Google, NVIDIA and Amazon teach what they actually build at work.</p>
+            <button class="mc__cta" type="button" data-play>Watch the sneak peek<span class="mc__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+          </div>
+          <div class="mc__tile mc__tile--video" role="listitem">
+            <button class="mc__video" type="button" data-yt="wLOkQDXN8RQ" aria-label="Play: Sneak Peek Of Masterclass by Rakesh Misra">
+              <img src="assets/masterclass/rakesh.jpg" alt="" width="1184" height="800" loading="lazy">
+            </button>
+          </div>
+          <!-- mentor tiles injected by career/masterclass.js -->
+        </div>
+      </div>
+      <div class="mc__progress" aria-hidden="true"><span></span></div>
     </div>
   </div>
   <div class="mc-ticker" data-ticker="companies" role="region" aria-label="Companies in our mentor community"></div>

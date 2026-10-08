@@ -1,5 +1,8 @@
-/* S3b — Masterclasses from Mentors (merged from masterclass-mentors/; scoped to .mc).
-   Tokens mirror the career build (localhost:5182): section-2+ headings, --m side margin, --sec rhythm, S4 logo ticker. */
+/* S3b — Masterclasses from Mentors (scoped to .mc).
+   Editorial layout (Figma 1234:116 reference): eyebrow + large heading, then a rail of tiles at
+   different sizes and heights — the intro copy and its button up top, the masterclass film at full
+   height, mentor tiles alternating bottom / top. The stage pins and vertical scroll slides the rail
+   sideways (career/masterclass.js); the logo ticker follows once the rail has run out. */
 .mc{
   --title-grad:var(--head-grad);   /* the page-wide heading fill (index.html :root) */
   --font:"InterVariable","Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
@@ -12,7 +15,8 @@
   --chip:#eef4ff;
   --m:120px;           /* side margin (build: 120 / 48 / 20) */
   --sec:80px;          /* section rhythm (build --sec) */
-  --gap:16px;
+  --gap:clamp(16px,1.6vw,24px);   /* between tiles on the rail */
+  --rail-h:clamp(300px,52vh,520px);
   --r:var(--r-md);
   --ease:cubic-bezier(.22,1,.36,1);
 }
@@ -20,19 +24,71 @@
 :where(.mc) :is(h2,h3,p){margin:0}
 .mc{padding-bottom:var(--sec);background:#fff;color:var(--text);font-family:var(--font)}
 
-/* ---------- Head (Figma 778:1123) ---------- */
-.mc__head{max-width:1200px;margin:0 auto;padding:var(--sec) 0 0;display:flex;align-items:center;justify-content:space-between;gap:32px}
+/* ---------- Pin: the track is as tall as the rail is wide (height set by script) ---------- */
+.mc__pin{position:relative}
+.mc__stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#fff;
+  display:flex;flex-direction:column;justify-content:center;gap:var(--head-gap,56px)}
+
+/* ---------- Head ---------- */
+.mc__head{max-width:1200px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:32px}
 @media (max-width:1439px){.mc__head{margin:0 var(--m)}}
+.mc__intro{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+/* eyebrow chip, as the reference's "Introducing…" pill */
+.mc__eyebrow{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:999px;
+  background:var(--chip);font-family:var(--font-sub,var(--font));font-size:13px;font-weight:500;line-height:1;color:var(--blue-ink)}
+.mc__dot{width:18px;height:18px;border-radius:50%;background:var(--blue);box-shadow:inset 0 0 0 5px #fff;flex:none}
 /* build .companies-title */
 .mc__title{font-family:Outfit,sans-serif;font-weight:600;font-size:48px;line-height:1.1;letter-spacing:-.01em;padding-bottom:.08em;
   background:var(--title-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.mc__aff{display:flex;align-items:center;gap:28px;flex:none}
+.mc__aff{display:flex;align-items:center;gap:28px;flex:none;padding-bottom:10px}
 .mc__aff img{display:block;height:auto}
 .mc__aff li:nth-child(1) img{width:84px}
 .mc__aff li:nth-child(2) img{width:76px}
 .mc__aff li:nth-child(3) img{width:79px}
 .mc__aff li:nth-child(4) img{width:101px}
-.mc__video:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
+
+/* ---------- Rail ---------- */
+.mc__viewport{position:relative;flex:none;height:var(--rail-h)}
+.mc__rail{display:flex;align-items:stretch;gap:var(--gap);height:100%;width:max-content;
+  padding-inline:var(--page-edge,var(--m));will-change:transform}
+.mc__tile{flex:none;position:relative;height:100%;display:flex;flex-direction:column}
+/* stagger: the reference's small tile sits on the bottom edge, the copy hangs from the top */
+.mc__tile--bottom{justify-content:flex-end}
+.mc__tile--top{justify-content:flex-start}
+
+/* intro copy + button, hung from the top like the reference */
+.mc__tile--text{width:clamp(240px,22vw,320px);padding-top:clamp(8px,2vh,24px);gap:24px}
+.mc__lede{font-family:var(--font-sub,var(--font));font-size:clamp(16px,1.25vw,19px);line-height:1.5;color:var(--sub-ink,#3b4a63);text-wrap:pretty}
+.mc__cta{align-self:flex-start;display:inline-flex;align-items:center;gap:12px;padding:6px 6px 6px 20px;border:0;border-radius:999px;
+  background:var(--blue);color:#fff;font:600 15px/1 var(--font);cursor:pointer;transition:background var(--dur,.28s) var(--ease)}
+.mc__cta:hover{background:var(--blue-ink)}
+.mc__cta-arrow{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--blue);
+  transition:transform var(--dur,.28s) var(--ease)}
+.mc__cta:hover .mc__cta-arrow{transform:translateX(3px)}
+.mc__cta svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.mc__cta:focus-visible,.mc__video:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
+
+/* the masterclass film: the big tile, full rail height */
+.mc__tile--video{aspect-ratio:1184/800}
+.mc__video{position:relative;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer;
+  border-radius:var(--r-lg,24px);overflow:hidden;background:#111;isolation:isolate}
+.mc__video img,.mc__video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.mc__video img{object-fit:cover;object-position:50% 50%}  /* play badge is part of the thumbnail, centred */
+.mc__video.is-playing{cursor:default}
+
+/* Mentor tile: the small tiles, alternating bottom / top */
+.mc__tile--mentor{width:clamp(250px,21vw,300px)}
+.mentor{display:flex;flex-direction:column;gap:20px;height:62%;min-height:240px;padding:24px;background:#f8f9ff;
+  border:1px solid #eef1fb;border-radius:var(--r-lg,24px);color:#183b56}
+.mentor__avatar{flex:none;width:72px;height:72px;border-radius:50%;object-fit:cover;background:#e2e8f0;box-shadow:0 0 0 4px #fff}
+.mentor__name{font-family:Outfit,sans-serif;font-size:20px;line-height:1.25;font-weight:600;color:#183b56}
+.mentor__panel{display:flex;flex-direction:column;gap:10px;margin-top:auto}
+.mentor__row{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5}
+.mentor__row svg{flex:none;width:18px;height:18px;margin-top:2px;fill:none;stroke:#0f81e0;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* progress hairline under the rail */
+.mc__progress{width:min(240px,40vw);height:2px;margin:0 auto;border-radius:2px;background:var(--line);overflow:hidden}
+.mc__progress span{display:block;height:100%;width:100%;background:var(--blue);transform:scaleX(0);transform-origin:0 50%}
 
 /* ---------- Logo ticker (build S4, same sizing / spacing / drift) ---------- */
 .mc-ticker{display:flex;flex-direction:column;gap:clamp(28px,3vw,44px);overflow:hidden;
@@ -47,33 +103,15 @@
 @keyframes mcTickR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 .mc > .mc-ticker{margin-top:var(--sec)}
 
-/* ---------- Video + mentor cards: 592x400 | 2x(288x192), 16px gaps ---------- */
-.mc__body{max-width:calc(1200px + var(--m) * 2);margin:0 auto;padding:56px var(--m) 0}
-.mc__grid{display:grid;grid-template-columns:592fr 288fr 288fr;gap:var(--gap)}
-
-.mc__video{position:relative;grid-row:span 2;border:0;padding:0;margin:0;cursor:pointer;
-  border-radius:var(--r);overflow:hidden;background:#111;isolation:isolate}
-.mc__video img,.mc__video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.mc__video img{object-fit:cover;object-position:50% 50%}  /* play badge is part of the thumbnail, centred */
-.mc__video.is-playing{cursor:default}
-
-/* Mentor card (Figma 778:1625): avatar + name, then role / education with line icons */
-.mentor{display:flex;flex-direction:column;gap:16px;aspect-ratio:288/192;padding:16px;background:#f8f9ff;border-radius:var(--r);overflow:hidden;color:#183b56}
-.mentor__top{display:flex;gap:10px;align-items:center}
-.mentor__avatar{flex:none;width:48px;height:48px;border-radius:50%;object-fit:cover;background:#e2e8f0}
-.mentor__name{font-family:Outfit,sans-serif;font-size:18px;line-height:1.3;font-weight:600;color:#183b56}
-.mentor__panel{display:flex;flex-direction:column;gap:8px}
-.mentor__row{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5}
-.mentor__row svg{flex:none;width:18px;height:18px;margin-top:2px;fill:none;stroke:#0f81e0;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-
-/* Logo rows fade up only after the five cards have finished growing in (set by script.js, one-way) */
+/* Logo rows fade up once they come into view (set by masterclass.js, one-way) */
 .mc > .mc-ticker .mc-ticker-row{opacity:0;translate:0 14px;transition:opacity .7s var(--ease),translate .8s var(--ease)}
 .mc > .mc-ticker.is-in .mc-ticker-row{opacity:1;translate:none}
 .mc > .mc-ticker .mc-ticker-row:nth-child(2){transition-delay:.1s}
 .mc > .mc-ticker .mc-ticker-row:nth-child(3){transition-delay:.2s}
 
 /* Head fades up once on load */
-.mc__title,.mc__aff li{animation:mc-in .9s var(--ease) both}
+.mc__eyebrow,.mc__title,.mc__aff li{animation:mc-in .9s var(--ease) both}
+.mc__title{animation-delay:.06s}
 .mc__aff li:nth-child(1){animation-delay:.08s}.mc__aff li:nth-child(2){animation-delay:.14s}
 .mc__aff li:nth-child(3){animation-delay:.2s}.mc__aff li:nth-child(4){animation-delay:.26s}
 @keyframes mc-in{from{opacity:0;translate:0 24px}}
@@ -82,21 +120,25 @@
 @media (max-width:1199px){
   .mc{--m:48px;--sec:64px}
   .mc__title{font-size:36px}
-  .mc__head{flex-direction:column;align-items:flex-start}
-  .mc__grid{grid-template-columns:1fr 1fr}
-  .mc__video{grid-column:1 / -1;grid-row:auto;aspect-ratio:592/400}
+  .mc__head{flex-direction:column;align-items:flex-start;gap:20px}
 }
 @media (max-width:640px){
-  .mc{--m:20px;--sec:56px}
+  .mc{--m:20px;--sec:56px;--rail-h:clamp(300px,50svh,420px)}
   .mc__title{font-size:30px}
-  .mc__aff{gap:18px;flex-wrap:wrap}
+  .mc__aff{gap:18px;flex-wrap:wrap;padding-bottom:0}
   .mc__aff li:nth-child(n) img{width:auto;height:25px}
-  .mc__body{padding-top:40px}
-  .mc__grid{grid-template-columns:1fr}
-  .mentor{aspect-ratio:auto}
+  .mc__stage{gap:32px}
+  .mentor{height:auto;min-height:0;padding:20px}
+  .mc__tile--mentor{width:260px}
 }
+/* reduced motion (or no script): no pin — the rail is an ordinary swipe/scroll row */
 @media (prefers-reduced-motion:reduce){
+  .mc__stage{position:relative;height:auto;padding-block:var(--sec) 0}
+  .mc__viewport{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin}
+  .mc__tile{scroll-snap-align:start}
+  .mc__rail{will-change:auto}
+  .mc__progress{display:none}
   .mc-ticker-row{animation:none}
   .mc > .mc-ticker .mc-ticker-row{opacity:1;translate:none}
-  .mc__title,.mc__aff li{animation:none}
+  .mc__eyebrow,.mc__title,.mc__aff li{animation:none}
 }
