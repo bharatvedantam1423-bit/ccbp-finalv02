@@ -12,14 +12,16 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="vendor/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="vendor/fonts.css">
-<!-- lower sections (v02 build): styles scoped to .cs / .mc / .ft; the supplied sections to .nw-hire / .ctw / .lx -->
+<!-- lower sections (v02 build): styles scoped to .cs / .mc / .ft; the supplied sections to .nw-hire / .ctw -->
 <link rel="stylesheet" href="career/style.css">
+<link rel="stylesheet" href="career/motion.css">
 <link rel="stylesheet" href="career/media-footer.css">
 <link rel="stylesheet" href="career/masterclass.css">
 <link rel="stylesheet" href="career/awards.css">
 <link rel="stylesheet" href="career/hiring-companies.css">
+<link rel="stylesheet" href="career/mentors.css">
+<link rel="stylesheet" href="career/investors.css">
 <link rel="stylesheet" href="career/career-transformations.css">
-<link rel="stylesheet" href="career/learner-experiences.css">
 <link rel="stylesheet" href="career/we-train-section.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,7 +91,7 @@ a{color:inherit;text-decoration:none}
    Subheadings: Geist. The hero (.hx) is deliberately left out of this.
    ===================================================================== */
 .prog-title,.record-title,.mw-title,.nw-hire__title,.inv-title,.mc .mc__title,
-.ctw-heading h2,.lx__title,.cs .ht__title,.cs .fm__title,.cs .cta__title{
+.ctw-heading h2,.cs .ht__title,.cs .fm__title,.cs .cta__title{
   font-family:var(--font-head);font-weight:600;
   line-height:.98;letter-spacing:-.01em;font-variation-settings:normal;
   background-image:var(--head-grad);
@@ -105,7 +107,7 @@ a{color:inherit;text-decoration:none}
   font-family:var(--font-sub);font-weight:400;line-height:1.5;letter-spacing:normal;color:var(--sub-ink);
 }
 /* the sections below the awards share one heading size */
-.prog-title,.record-title,.mw-title,.ctw-heading h2,.lx__title,
+.prog-title,.record-title,.mw-title,.ctw-heading h2,
 .nw-hire__title,.inv-title,.mc .mc__title,.cs .ht__title,.cs .fm__title{font-size:var(--head-size);line-height:1.12}
 /* ...and one subheading size */
 .prog-sub,.mw-sub,.nw-hire__sub,.inv-sub,
@@ -257,24 +259,6 @@ a{color:inherit;text-decoration:none}
 
 
 
-/* =====================================================================
-   S7b — BACKED BY LEADING GLOBAL INVESTORS (from the supplied build)
-   ===================================================================== */
-.cs .inv{background:#fff;padding:var(--sec-y) 24px 0;display:flex;flex-direction:column;align-items:center;gap:clamp(40px,5vw,72px)}
-.inv-head{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;max-width:898px}
-.inv-sub{margin:0}
-.inv-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:32px 56px;list-style:none;margin:0;padding:0}
-.inv-row li{display:flex;align-items:center;gap:16px}
-.inv-row .lf{width:36px;height:110px;display:block}
-.inv-logo{display:flex;align-items:center;justify-content:center;transition:transform .45s var(--ease)}
-.inv-row li:hover .inv-logo{transform:scale(1.06)}
-.inv-logo img{display:block;height:auto}
-.inv-better{width:118px;height:48px;background:#000;border-radius:var(--r-sm)}
-.inv-better img{width:80px;border-radius:var(--r-xs)}
-.inv-gp img{width:192px;border-radius:var(--r-sm)}
-.inv-orios img{width:166px}
-@media (max-width:640px){ .inv-row{gap:24px} .inv-row li{zoom:.72} }
-
 /* Why Top Companies Prefer NxtWave Students: portrait cards sized ~5.4 across, capped at 280px wide
    and kept inside the window height, so the section stays compact on big screens as well as small */
 .cs .ht{--cw:clamp(170px,min(calc((100vw - 2 * var(--m) - 4 * var(--gap)) / 5.4),calc((100svh - 380px) * .5625)),280px)}
@@ -282,66 +266,12 @@ a{color:inherit;text-decoration:none}
 .cs .ht__head{margin-bottom:clamp(32px,4vw,56px)}
 .cs .ht__name{font-size:clamp(15px,1.15vw,18px)}
 .cs .ht__role{font-size:clamp(13px,.95vw,14px)}
-.inv-row li.reveal-up{transition-delay:calc(var(--i,0) * 90ms)}
 
 /* scroll reveal for both new sections */
 .reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform 1s var(--ease)}
 .is-in .reveal-up,.reveal-up.is-in{opacity:1;transform:none}
 .aw-cards li.reveal-up{transition-delay:calc(var(--i,0) * 90ms)}
 @media (prefers-reduced-motion:reduce){ .reveal-up{opacity:1;transform:none;transition:none} }
-
-/* =====================================================================
-   S3 — MENTORS: scroll-scrubbed video ("Taught by people who have done the job")
-   ===================================================================== */
-.mentors{position:relative;background:#fff}
-.mw-track{position:relative;height:var(--mw-track,340vh)}
-/* heading + film pin together: the heading stays in view for the whole scrub, the film takes
-   the room left beneath it */
-.mw-stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;
-  padding-bottom:clamp(24px,6vh,64px)}   /* breathing room under the table */
-.mw-head{flex:none;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;
-  padding:clamp(40px,8vh,96px) 16px clamp(12px,2.6vh,28px);max-width:1080px;margin:0 auto}
-.mw-title{max-width:820px}
-.mw-sub{max-width:640px}
-
-/* the alumni strip that sits under the mentors heading, in place of a subhead */
-.mw-alumni{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:10px;width:100%}
-.mw-alumni-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
-  gap:clamp(14px,2.2vw,34px);list-style:none;margin:0;padding:0}
-.mw-alumni-row li{display:flex;align-items:center;gap:8px}
-.mw-alumni-row img{display:block;width:auto;height:clamp(32px,2.7vw,42px);object-fit:contain}
-.mw-alumni-row b{font-family:var(--font-head);font-size:clamp(14px,1.15vw,17px);
-  font-weight:600;color:#0f172a;letter-spacing:-.01em;white-space:nowrap}
-.mw-alumni-more{margin:0;font-family:var(--font-sub);font-size:13px;color:#64748b}
-@media (max-width:640px){ .mw-alumni-row{gap:14px 20px} }
-/* heading rises in as the section arrives */
-.mw-head > *{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .9s var(--ease)}
-.mw-head > * + *{transition-delay:.12s}
-.mentors.is-in .mw-head > *{opacity:1;transform:none}
-
-/* the film: whole frame, uncropped, sitting on the desk edge at the foot of the stage */
-.mw-screen{position:relative;flex:1 1 0;min-height:0;width:100%}
-.mw-screen video,.mw-screen canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
-  /* fallback video: same thin feather as the canvas draws (sides + top) */
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%),linear-gradient(180deg,transparent 0,#000 6%);
-  -webkit-mask-composite:source-in;
-          mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%),linear-gradient(180deg,transparent 0,#000 6%);
-          mask-composite:intersect}
-.mw-screen video{object-fit:contain;object-position:50% 100%}
-/* the film's backdrop is rgb(253,253,251); lift it to pure white so it melts into the white section */
-.mw-screen video,.mw-screen canvas{filter:brightness(1.016)}
-.mw-screen canvas{opacity:0;transition:opacity .2s;-webkit-mask-image:none;mask-image:none}
-.mw-screen.frames canvas{opacity:1}
-.mw-screen.frames video{visibility:hidden}
-
-@media (max-width:860px){
-  .mentors{--mw-track:240vh}
-  .mw-head{gap:12px}
-  /* on a phone the film is far wider than it is tall: heading + film sit together in the middle
-     of the screen rather than the film dropping to the bottom with a gap above it */
-  .mw-stage{justify-content:center}
-  .mw-screen{flex:none;height:calc(100vw * 728 / 1262)}
-}
 
 /* everything from Masterclasses down is opaque and layered above, so nothing
    below can show through a short section */
@@ -353,11 +283,6 @@ a{color:inherit;text-decoration:none}
 .cs{--sec:var(--sec-y)}
 .mc{--sec:var(--sec-y);padding-bottom:0}
 
-@media (prefers-reduced-motion:reduce){
-  .mentors{--mw-track:auto}
-  .mw-stage{position:relative;height:auto;min-height:100svh}
-  .mw-screen{flex:none;height:min(80vh,calc(100vw * 728 / 1262))}
-  .mw-head > *{opacity:1;transform:none}
 }
 
 /* =====================================================================
@@ -434,44 +359,10 @@ a{color:inherit;text-decoration:none}
 .aw-inner{max-width:var(--page-max)}
 .aw-wall{width:min(100%,var(--page-max))}
 .aw-cards{width:100%}   /* the photo cards span the column, edge to edge with the panel above */
-/* 3,000+ companies (supplied build, career/hiring-companies.css): the page's room above the heading and
-   heading → subline → logos gaps; the small bottom pad stays, as the mentors section brings its own top room */
-.nw-hire{padding:var(--sec-y) 0 clamp(40px,4vw,64px)}
-.nw-hire__head{gap:16px;align-items:center;padding-inline:var(--page-pad)}
-.nw-hire__rows{margin-top:var(--head-gap)}
-/* Career Transformations (supplied build, career/career-transformations.css): same room above the heading
-   and the page's side margin. The 130px → 80px heading-to-wall close is the build's own scroll motion. */
-.ctw{font-family:var(--font)}
-.ctw-heading{padding-top:var(--sec-y);padding-inline:var(--page-pad)}
-.ctw-heading-text{gap:16px}
-/* the wall's last 62px are solid white (the bottom fade is opaque from 72% of its 220px) and the gap close
-   lifts the wall 50px (24px on phones) without giving the space back. Tuck all but 12px of that under the
-   masterclasses section (opaque, layered above), so the gap to the next heading is about the page's --sec-y
-   and the fade is never clipped */
-.ctw{margin-bottom:-100px}
-@media (max-width:809px){ .ctw{margin-bottom:-74px} }
-/* The heading fills the screen and stays pinned; the wall of cards scrolls up over it, the heading
-   fading as they reach it (career-transformations.js). View All sits after the wall on clear white:
-   it starts where the wall's fade has turned solid, so no card ever shows through behind it. */
-.ctw{margin-bottom:0}
-.ctw-heading{position:sticky;top:0;z-index:0;height:100vh;height:100svh;box-sizing:border-box;
-  justify-content:center;padding-block:0}
-.ctw-heading-text{will-change:opacity}
-.ctw-mask{z-index:1}
-.ctw-end{position:relative;z-index:3;display:flex;justify-content:center;background:#fff;
-  margin-top:-48px;padding:16px 0 0}   /* the masterclasses section brings the --sec-y above its heading */
-/* Masterclasses */
-.mc .mc__head{width:calc(100% - 2 * var(--m));max-width:var(--page-max);margin-inline:auto}
-/* Learner's Experiences (supplied build, career/learner-experiences.css): room above the heading, none below */
-.lx{padding:var(--sec-y) 0 0}
-.lx__title{margin-inline:auto;padding-inline:0;max-width:calc(100% - 2 * var(--page-pad))}
-.lx__stage{margin-top:var(--head-gap)}
 /* Why Top Companies Prefer NxtWave Students: the rail starts on the content line and runs off the right */
 .cs .ht__head{margin-inline:var(--page-edge)}
 .cs .ht__track,.cs .ht__nav{padding-inline:var(--page-edge)}
 .cs .ht__track{scroll-padding-inline:var(--page-edge)}   /* snapping lands the first card on the line too */
-/* Investors */
-.cs .inv{padding-inline:var(--page-pad);gap:var(--head-gap)}
 /* Awards: heading → the recognising bodies. The panel (and its notch) hangs off the block below,
    so it moves down with the strip and the strip stays held in the notch */
 .rc-recog{margin-top:var(--head-gap)}
@@ -487,7 +378,7 @@ a{color:inherit;text-decoration:none}
 .cs .ft__inner{padding-inline:max(24px,calc(var(--page-pad) - 20px))}
 .cs .ft__rights{margin-inline:auto}
 /* heading sweep on every section title: the split words stay inline so the gradient clip covers them */
-:is(.programmes__title,.record-title,.nw-hire__title,.mw-title,.ctw-heading h2,.lx__title,.mc__title,.inv-title) .sw-w{display:inline}
+:is(.programmes__title,.record-title,.nw-hire__title,.mw-title,.ctw-heading h2,.mc__title,.inv-title) .sw-w{display:inline}
 
 @media (prefers-reduced-motion:reduce){ .dn-track,.dn-thumb{transition-duration:.01s} }
 </style>
@@ -820,122 +711,120 @@ html.lenis,html.lenis body{height:auto}
   </section>
 
 <!-- ===================================================================
-     S3 — AWARDS & RECOGNITIONS (Figma CCBP-v02, node 1219:352)
-     The heading and the four bodies that recognise NxtWave sit on white, cradled by the notch in the
-     navy panel's top edge. In the panel: the roll of awards on the left with one open at a time, the
-     five award marks and the trophy on its plinth on the right. Under the panel, three press photos.
+     S3 — AWARDS & RECOGNITIONS
+     On white: the heading and the four bodies that recognise NxtWave. Then a navy stage that pins
+     while the scroll walks through the five awards one at a time: the stage opens out to the full
+     width, each trophy rises onto the plinth under a spotlight while its name takes the left side.
+     The three press photographs follow the stage. Styles career/awards.css, motion career/awards.js.
      =================================================================== -->
 <section class="rc" id="recognition" aria-labelledby="record-title">
-  <div class="rc-band">
-    <header class="rc-top">
-      <h2 class="rc-title" id="record-title">Awards &amp; Recognitions</h2>
-      <!-- the bodies that recognise NxtWave, under the heading -->
-      <div class="rc-recog" id="recognised-by">
-        <picture>
-          <source media="(max-width:640px)" srcset="assets/recognised-by-mobile.png">
-          <img src="assets/recognised-by.png" width="3621" height="157" alt="Recognised by NASSCOM, Ministry of Commerce and Industry (Government of India), Startup India and NSDC" loading="lazy">
-        </picture>
-      </div>
-      <!-- the press photographs; their captions end inside the notch at the panel's top edge -->
-      <ul class="rc-cards">
-        <li class="reveal-up" style="--i:0">
-          <figure><img src="assets/award-forbes30.jpg" alt="Anupam Pedarla and Sashank Gujjula on the Forbes India 30 Under 30 cover" loading="lazy"></figure>
-          <p>Founders <b>Mr. Anupam Pedarla</b> &amp; <b>Mr. Sashank Gujjula</b> made it to the prestigious 2024 Forbes India 30 Under 30 list!</p></li>
-        <li class="reveal-up" style="--i:1">
-          <figure><img src="assets/award-times-1.jpg" alt="Sashank Gujjula receiving the Times Business Award on stage" loading="lazy"></figure>
-          <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
-        <li class="reveal-up" style="--i:2">
-          <figure><img src="assets/award-times-2.jpg" alt="Sashank Gujjula receiving an award from the Times Business Awards jury" loading="lazy"></figure>
-          <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
-      </ul>
-    </header>
+  <header class="rc-top">
+    <h2 class="rc-title" id="record-title" data-head>Awards &amp; Recognitions</h2>
+    <div class="rc-recog" id="recognised-by">
+      <picture>
+        <source media="(max-width:640px)" srcset="assets/recognised-by-mobile.png">
+        <img src="assets/recognised-by.png" width="3621" height="157" alt="Recognised by NASSCOM, Ministry of Commerce and Industry (Government of India), Startup India and NSDC" loading="lazy">
+      </picture>
+    </div>
+  </header>
 
-    <div class="rc-in">
-      <!-- the panel's shape (top and bottom notches) is its own background and its own mask, so the
-           trophy is cut by the same edge the eye sees -->
-      <div class="rc-panel" aria-hidden="true">
-        <div class="rc-stage">
-          <img class="rc-trophy" src="assets/awards/t-mpb.webp" alt="" loading="lazy">
-          <img class="rc-trophy" src="assets/awards/t-asia.webp" alt="" loading="lazy">
-          <img class="rc-trophy" src="assets/awards/t-prime.webp" alt="" loading="lazy">
-          <img class="rc-trophy" src="assets/awards/t-star.webp" alt="" loading="lazy">
-          <img class="rc-trophy" src="assets/awards/t-wef.webp" alt="" loading="lazy">
+  <div class="rc-scene" data-rc>
+    <div class="rc-pin">
+      <div class="rc-stage">
+        <div class="rc-floor" aria-hidden="true"></div>
+
+        <ol class="rc-list">
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-kicker">Recognised as</span>
+            <p class="rc-name">Most Preferred Brands</p>
+            <span class="rc-by">by Marksmen Daily in 2021</span>
+          </li>
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-kicker">Recognised as</span>
+            <p class="rc-name">India’s Greatest Brands &amp; Leaders</p>
+            <span class="rc-by">by Asia One in 2021-22</span>
+          </li>
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-kicker">Recognised as</span>
+            <p class="rc-name">Trusted Brand in Education</p>
+            <span class="rc-by">by Prime Insights in 2023</span>
+          </li>
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-kicker">Recognised as</span>
+            <p class="rc-name">Best Tech Skilling EdTech Company</p>
+            <span class="rc-by">by Times Business Awards in 2022</span>
+          </li>
+          <li class="rc-item" tabindex="0" role="button" aria-current="false">
+            <span class="rc-kicker">We are honoured to be a</span>
+            <p class="rc-name">2024 Technology Pioneer</p>
+            <span class="rc-by">100 Startups worldwide made the cut.</span>
+          </li>
+        </ol>
+
+        <div class="rc-show" aria-hidden="true">
+          <div class="rc-orbit">
+            <img class="rc-trophy" src="assets/awards/t-mpb.webp" alt="" loading="lazy">
+            <img class="rc-trophy" src="assets/awards/t-asia.webp" alt="" loading="lazy">
+            <img class="rc-trophy" src="assets/awards/t-prime.webp" alt="" loading="lazy">
+            <img class="rc-trophy" src="assets/awards/t-star.webp" alt="" loading="lazy">
+            <img class="rc-trophy" src="assets/awards/t-wef.webp" alt="" loading="lazy">
+          </div>
           <img class="rc-plinth" src="assets/awards/plinth.webp" alt="" loading="lazy">
         </div>
+
+        <div class="rc-index">
+          <span class="rc-progress" aria-hidden="true"><i></i></span>
+          <ul class="rc-badges">
+            <li aria-current="false"><img src="assets/awards/b-mpb.webp" alt="Most Preferred Brands 2021" loading="lazy"></li>
+            <li aria-current="false"><img src="assets/awards/b-asia.webp" alt="India’s Greatest Brands &amp; Leaders 2021-22" loading="lazy"></li>
+            <li aria-current="false"><img src="assets/awards/b-prime.webp" alt="Prime Insights Trusted Brand in Education" loading="lazy"></li>
+            <li aria-current="false"><img src="assets/awards/b-star.webp" alt="Times Business Awards trophy" loading="lazy"></li>
+            <li aria-current="false"><img src="assets/awards/b-wef.webp" alt="World Economic Forum" loading="lazy"></li>
+          </ul>
+        </div>
       </div>
-
-      <ul class="rc-badges">
-        <li aria-current="false"><img src="assets/awards/b-mpb.webp" alt="Most Preferred Brands 2021" loading="lazy"></li>
-        <li aria-current="false"><img src="assets/awards/b-asia.webp" alt="India’s Greatest Brands &amp; Leaders 2021-22" loading="lazy"></li>
-        <li aria-current="false"><img src="assets/awards/b-prime.webp" alt="Prime Insights Trusted Brand in Education" loading="lazy"></li>
-        <li aria-current="false"><img src="assets/awards/b-star.webp" alt="Times Business Awards trophy" loading="lazy"></li>
-        <li aria-current="false"><img src="assets/awards/b-wef.webp" alt="World Economic Forum" loading="lazy"></li>
-      </ul>
-
-      <ol class="rc-list">
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
-            <p class="rc-name">Most Preferred Brands</p>
-            <span class="rc-sub rc-by"><span>by Marksmen Daily in 2021</span></span>
-          </span>
-        </li>
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
-            <p class="rc-name">India’s Greatest Brands &amp; Leaders</p>
-            <span class="rc-sub rc-by"><span>by Asia One in 2021-22</span></span>
-          </span>
-        </li>
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
-            <p class="rc-name">Trusted Brand in Education</p>
-            <span class="rc-sub rc-by"><span>by Prime Insights in 2023</span></span>
-          </span>
-        </li>
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>Recognised as</span></span>
-            <p class="rc-name">Best Tech Skilling EdTech Company</p>
-            <span class="rc-sub rc-by"><span>by Times Business Awards in 2022</span></span>
-          </span>
-        </li>
-        <li class="rc-item" tabindex="0" role="button" aria-current="false">
-          <span class="rc-txt">
-            <span class="rc-sub rc-kicker"><span>We are honoured to be a</span></span>
-            <p class="rc-name">2024 Technology Pioneer</p>
-            <span class="rc-sub rc-by"><span>100 Startups worldwide made the cut.</span></span>
-          </span>
-        </li>
-      </ol>
     </div>
   </div>
 
+  <ul class="rc-cards">
+    <li>
+      <figure><img src="assets/award-forbes30.jpg" alt="Anupam Pedarla and Sashank Gujjula on the Forbes India 30 Under 30 cover" loading="lazy"></figure>
+      <p>Founders <b>Mr. Anupam Pedarla</b> &amp; <b>Mr. Sashank Gujjula</b> made it to the prestigious 2024 Forbes India 30 Under 30 list!</p></li>
+    <li>
+      <figure><img src="assets/award-times-1.jpg" alt="Sashank Gujjula receiving the Times Business Award on stage" loading="lazy"></figure>
+      <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
+    <li>
+      <figure><img src="assets/award-times-2.jpg" alt="Sashank Gujjula receiving an award from the Times Business Awards jury" loading="lazy"></figure>
+      <p><b>Mr. Sashank Gujjula</b>, Co-founder, NxtWave, receiving the ‘Best Tech Skilling EdTech Company’ award by Times Business Awards</p></li>
+  </ul>
 </section>
 
 <!-- ===================================================================
-     S3b — 3,000+ COMPANIES HIRE NXTWAVE LEARNERS (supplied build, Figma CCBP-v02 1163:2689): four rows
-     of logo cards drifting in alternate directions. Styles career/hiring-companies.css (scoped to
-     .nw-hire), rows built by career/hiring-companies.js from its ROWS list.
+     S3b — 3,000+ COMPANIES HIRE NXTWAVE LEARNERS: the count runs up as the heading arrives; under it,
+     four rows of logo cards drift in alternate directions on a plane that starts tipped back and
+     stands up as the section scrolls in. Scrolling faster pushes the rows along faster.
+     Styles career/hiring-companies.css, rows and motion career/hiring-companies.js (ROWS list).
      =================================================================== -->
 <section class="nw-hire" id="hiring-network" aria-labelledby="nw-hire-title" data-logo-path="assets/hiring-companies/logos/">
   <div class="nw-hire__head">
-    <h2 class="nw-hire__title" id="nw-hire-title">3,000+ companies hire NxtWave learners</h2>
+    <h2 class="nw-hire__title" id="nw-hire-title" data-head aria-label="3,000+ companies hire NxtWave learners"><span class="nw-hire__num" aria-hidden="true">3,000</span><span aria-hidden="true">+ companies hire NxtWave learners</span></h2>
     <p class="nw-hire__sub">Across product companies, startups, and global services firms.</p>
   </div>
-  <div class="nw-hire__rows"></div>
+  <div class="nw-hire__stage">
+    <div class="nw-hire__rows"></div>
+  </div>
 </section>
 
 <!-- ===================================================================
-     S5 — MENTORS (scroll-scrubbed video)
+     S5 — MENTORS: the film scrubs with the scroll while the stage is pinned. The heading holds the left
+     column; the six alumni marks come in one by one as the mentors gather round the learner on screen.
+     Styles career/mentors.css; the film scrub is the inline script below, the layout motion career/motion.js.
      =================================================================== -->
 <section class="mentors" id="team" aria-labelledby="mw-title">
   <div class="mw-track">
     <div class="mw-stage">
-      <!-- the heading pins with the film, so it stays in view for the whole scrub -->
       <header class="mw-head">
-        <h2 class="mw-title" id="mw-title">Taught by people<br>who have done the job.</h2>
+        <h2 class="mw-title" id="mw-title" data-head>Taught by people<br>who have done the job.</h2>
         <div class="mw-alumni">
           <ul class="mw-alumni-row">
             <li><img src="assets/masterclass/logos/stanford-color.png" alt="Stanford University" width="243" height="104" loading="lazy"></li>
@@ -958,368 +847,75 @@ html.lenis,html.lenis body{height:auto}
 </section>
 
 <!-- ===================================================================
-     S6 — CAREER TRANSFORMATIONS (supplied build): heading, subline and View All above a staggered
-     wall of text and video testimonials; the side columns rise into an arch as the section scrolls in.
-     Styles career/career-transformations.css (scoped to .ctw), wall built by
+     S6 — CAREER TRANSFORMATIONS: a pinned reel. The heading holds the top of the screen while the
+     scroll carries a long row of learner stories sideways beneath it, on a gently curved screen: the
+     columns turn away as they near either edge. Video stories play muted while they are in view.
+     View All closes the reel. Styles career/career-transformations.css, reel built by
      career/career-transformations.js (VIDEOS, QUOTES) from assets/career-transformations/.
      =================================================================== -->
 <section class="ctw" id="career-transformations" data-career-transformations data-assets="assets/career-transformations/" aria-labelledby="ct-title">
-  <div class="ctw-heading">
-    <div class="ctw-heading-text">
-      <h2 id="ct-title">Career Transformations</h2>
-      <p class="ctw-heading-sub">Real people. Named companies. Their own words.</p>
+  <div class="ctw-pin">
+    <div class="ctw-heading">
+      <div class="ctw-heading-text">
+        <h2 id="ct-title" data-head>Career Transformations</h2>
+        <p class="ctw-heading-sub">Real people. Named companies. Their own words.</p>
+      </div>
+    </div>
+    <div class="ctw-reel">
+      <div class="ctw-images">
+        <div class="ctw-end"><a class="ctw-cta" href="#" data-blank>View All</a></div>
+      </div>
     </div>
   </div>
-  <div class="ctw-mask">
-    <div class="ctw-images"></div>
-    <div class="ctw-fade-bottom"></div>
-  </div>
-  <div class="ctw-end"><a class="ctw-cta" href="#" data-blank>View All</a></div>
 </section>
 
 <!-- ===================================================================
-     S6b — MASTERCLASSES FROM MENTORS IN THE COMMUNITY (from the supplied build;
-     styles career/masterclass.css, script career/masterclass.js). Sits right after
-     Career Transformations, so it is the section that slides up over its pinned dark screen.
+     S6b — MASTERCLASSES FROM MENTORS IN THE COMMUNITY: the introduction holds the left column while
+     the right column scrolls past it: the masterclass film, tipped back at first and coming flat as it
+     reaches the middle of the screen, then the four mentors standing up one after another. The
+     mentors' companies drift underneath. Styles career/masterclass.css, script career/masterclass.js.
      =================================================================== -->
 <section class="mc" id="masterclasses" aria-labelledby="mc-title">
-  <div class="mc__stage">
+  <div class="mc__grid">
     <header class="mc__head">
-      <div class="mc__intro">
-        <p class="mc__eyebrow"><span class="mc__dot" aria-hidden="true"></span>NxtWave Masterclasses</p>
-        <h2 class="mc__title" id="mc-title">Masterclasses from<br>Mentors in the Community</h2>
-      </div>
+      <p class="mc__eyebrow"><span class="mc__dot" aria-hidden="true"></span>NxtWave Masterclasses</p>
+      <h2 class="mc__title" id="mc-title" data-head>Masterclasses from<br>Mentors in the Community</h2>
       <ul class="mc__aff" aria-label="Mentors from">
         <li><img src="assets/masterclass/logos/stanford-color.png" alt="Stanford University" width="243" height="104"></li>
         <li><img src="assets/masterclass/logos/google-color.png" alt="Google" width="238" height="104"></li>
         <li><img src="assets/masterclass/logos/amazon-color.png" alt="Amazon" width="229" height="104"></li>
         <li><img src="assets/masterclass/logos/microsoft-color.png" alt="Microsoft" width="276" height="104"></li>
       </ul>
+      <p class="mc__lede">Scientists and engineers from Stanford, Google, NVIDIA and Amazon teach what they actually build at work.</p>
+      <button class="mc__cta" type="button" data-play>Watch the sneak peek<span class="mc__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
     </header>
-    <div class="mc__viewport">
-      <div class="mc__rail" role="list" aria-label="Masterclass and mentors">
-        <div class="mc__tile mc__tile--text" role="listitem">
-          <p class="mc__lede">Scientists and engineers from Stanford, Google, NVIDIA and Amazon teach what they actually build at work.</p>
-          <button class="mc__cta" type="button" data-play>Watch the sneak peek<span class="mc__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
-        </div>
-        <div class="mc__tile mc__tile--video" role="listitem">
-          <button class="mc__video" type="button" data-yt="wLOkQDXN8RQ" aria-label="Play: Sneak Peek Of Masterclass by Rakesh Misra">
-            <img src="assets/masterclass/rakesh.jpg" alt="" width="1184" height="800" loading="lazy">
-          </button>
-        </div>
-        <!-- mentor tiles injected by career/masterclass.js -->
+    <div class="mc__flow">
+      <div class="mc__film">
+        <button class="mc__video" type="button" data-yt="wLOkQDXN8RQ" aria-label="Play: Sneak Peek Of Masterclass by Rakesh Misra">
+          <img src="assets/masterclass/rakesh.jpg" alt="" width="1184" height="800" loading="lazy">
+        </button>
       </div>
-    </div>
-    <div class="mc__nav">
-      <button class="mc__arrow" type="button" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-      <button class="mc__arrow" type="button" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      <ul class="mc__mentors" aria-label="Mentors"><!-- mentor cards injected by career/masterclass.js --></ul>
     </div>
   </div>
   <div class="mc-ticker" data-ticker="companies" role="region" aria-label="Companies in our mentor community"></div>
 </section>
 
 <div class="cs cs--after">
-<!-- NxtWave Learner's Experiences (supplied build, cards per Figma CCBP-v02 1177:3797): a lens carousel of
-     18 learner videos, the centre card larger, each with its learner row (photo, name, package, company)
-     under it; videos play inside the card. Photos are cropped from each video's thumbnail
-     (assets/learner-experiences/avatars). Names printed on a thumbnail are kept (Amazon too); the
-     rest (three names, every package, the other companies) is PLACEHOLDER data — replace before launch.
-     Styles career/learner-experiences.css (scoped to .lx),
-     behaviour career/learner-experiences.js. Sits first in .cs--after, so it follows the masterclasses section. -->
-<section class="lx" id="learner-experiences" aria-labelledby="lx-title">
-  <h2 class="lx__title" id="lx-title">NxtWave Learner's Experiences</h2>
-  <div class="lx__stage" role="region" aria-label="Learner testimonial videos">
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="aawbdgBRomo" aria-label="Play video: Soumith · NxtWave to Amazon">
-        <img src="assets/learner-experiences/aawbdgBRomo.jpg" alt="Soumith · NxtWave to Amazon" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/aawbdgBRomo.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Soumith</span>
-            <span class="lx-info__pill">₹19.5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/amazon.svg" alt="Amazon" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="464AuFzgWvs" aria-label="Play video: Hemanth Kumar · Placed at Revature">
-        <img src="assets/learner-experiences/464AuFzgWvs.jpg" alt="Hemanth Kumar · Placed at Revature" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/464AuFzgWvs.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Hemanth Kumar Vedullapalli</span>
-            <span class="lx-info__pill">₹4.5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/hcl.svg" alt="HCL" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="n3wgX8TEKL4" aria-label="Play video: Taking a step into the tech world">
-        <img src="assets/learner-experiences/n3wgX8TEKL4.jpg" alt="Taking a step into the tech world" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/n3wgX8TEKL4.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Chennoju Maneesha</span>
-            <span class="lx-info__pill">₹6 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/tech-mahindra.svg" alt="Tech Mahindra" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="Od_Ow7fI88k" aria-label="Play video: Shaik Shavali · Self-doubt to success">
-        <img src="assets/learner-experiences/Od_Ow7fI88k.jpg" alt="Shaik Shavali · Self-doubt to success" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/Od_Ow7fI88k.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Shaikshavali Pinjari</span>
-            <span class="lx-info__pill">₹4.5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/cyient.svg" alt="Cyient" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="Hcew9Njyp4I" aria-label="Play video: Dhamodhar · With NxtWave, I did it">
-        <img src="assets/learner-experiences/Hcew9Njyp4I.jpg" alt="Dhamodhar · With NxtWave, I did it" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/Hcew9Njyp4I.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Dhamodhar Rao</span>
-            <span class="lx-info__pill">₹7 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/globallogic.svg" alt="GlobalLogic" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="Zu0RhWE1Ddg" aria-label="Play video: Ajay Kumar · NxtWave led me to HTC">
-        <img src="assets/learner-experiences/Zu0RhWE1Ddg.jpg" alt="Ajay Kumar · NxtWave led me to HTC" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/Zu0RhWE1Ddg.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Ajay Kumar Yeshala</span>
-            <span class="lx-info__pill">₹4.5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/ntt-data.svg" alt="NTT Data" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="l9VtprKd2es" aria-label="Play video: First attempt. First job.">
-        <img src="assets/learner-experiences/l9VtprKd2es.jpg" alt="First attempt. First job." width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/l9VtprKd2es.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Sravya Reddy</span>
-            <span class="lx-info__pill">₹6.5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/accenture.svg" alt="Accenture" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="D9xv1HMStBI" aria-label="Play video: Anil Goguri · A dream achieved">
-        <img src="assets/learner-experiences/D9xv1HMStBI.jpg" alt="Anil Goguri · A dream achieved" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/D9xv1HMStBI.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Anil Reddy</span>
-            <span class="lx-info__pill">₹7.5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/deloitte.svg" alt="Deloitte" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="H29pCmIeW2E" aria-label="Play video: Pranay · Switched to an SDE-1 role">
-        <img src="assets/learner-experiences/H29pCmIeW2E.jpg" alt="Pranay · Switched to an SDE-1 role" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/H29pCmIeW2E.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Pranay</span>
-            <span class="lx-info__pill">₹14 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/oracle.svg" alt="Oracle" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="nDFKP8kNIAc" aria-label="Play video: Learning in her mother tongue, got placed">
-        <img src="assets/learner-experiences/nDFKP8kNIAc.jpg" alt="Learning in her mother tongue, got placed" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/nDFKP8kNIAc.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Harika Bandaru</span>
-            <span class="lx-info__pill">₹5.5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/cognizant.svg" alt="Cognizant" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="r5bE7xIUUz0" aria-label="Play video: ₹12 LPA · The turning point">
-        <img src="assets/learner-experiences/r5bE7xIUUz0.jpg" alt="₹12 LPA · The turning point" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/r5bE7xIUUz0.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Sai Kiran Gaddam</span>
-            <span class="lx-info__pill">₹12 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/bosch.svg" alt="Bosch" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="m_LshX1kT_s" aria-label="Play video: Leela Prasanthi · I still made it">
-        <img src="assets/learner-experiences/m_LshX1kT_s.jpg" alt="Leela Prasanthi · I still made it" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/m_LshX1kT_s.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Leela Prasanthi Karri</span>
-            <span class="lx-info__pill">₹5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/infosys.svg" alt="Infosys" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="pJ4KzzgQQYk" aria-label="Play video: Anjaiah · I proved the rumours wrong">
-        <img src="assets/learner-experiences/pJ4KzzgQQYk.jpg" alt="Anjaiah · I proved the rumours wrong" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/pJ4KzzgQQYk.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Anjaiah</span>
-            <span class="lx-info__pill">₹6 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/wipro.svg" alt="Wipro" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="M1Souvob8Bw" aria-label="Play video: Bharath · Salesman to software engineer">
-        <img src="assets/learner-experiences/M1Souvob8Bw.jpg" alt="Bharath · Salesman to software engineer" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/M1Souvob8Bw.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Chikkala Bharat Kumar</span>
-            <span class="lx-info__pill">₹6.5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/mindtree.svg" alt="Mindtree" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="HKb4URF4oFY" aria-label="Play video: Kavya Prathipati · My biggest achievement">
-        <img src="assets/learner-experiences/HKb4URF4oFY.jpg" alt="Kavya Prathipati · My biggest achievement" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/HKb4URF4oFY.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Kavya Prathipati</span>
-            <span class="lx-info__pill">₹4.5 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/prodapt.svg" alt="Prodapt" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="g9F4Uxy4Ioc" aria-label="Play video: Harshavardhan · Twice my expected salary">
-        <img src="assets/learner-experiences/g9F4Uxy4Ioc.jpg" alt="Harshavardhan · Twice my expected salary" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/g9F4Uxy4Ioc.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Harshavardhan Pentakota</span>
-            <span class="lx-info__pill">₹8 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/capgemini.svg" alt="Capgemini" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="1VDRiu6Ng_M" aria-label="Play video: Usha Sree · 15 LPA tech job">
-        <img src="assets/learner-experiences/1VDRiu6Ng_M.jpg" alt="Usha Sree · 15 LPA tech job" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/1VDRiu6Ng_M.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Usha Sree</span>
-            <span class="lx-info__pill">₹15 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/sap.svg" alt="SAP" loading="lazy">
-      </div>
-    </div>
-    <div class="lx-item">
-      <button class="lx-card" type="button" data-yt="NlkL72bqsug" aria-label="Play video: Srinivasulu · B.Com to IT">
-        <img src="assets/learner-experiences/NlkL72bqsug.jpg" alt="Srinivasulu · B.Com to IT" width="1280" height="720" decoding="async">
-      </button>
-      <div class="lx-info">
-        <div class="lx-info__who">
-          <span class="lx-info__avatar"><img src="assets/learner-experiences/avatars/NlkL72bqsug.jpg" alt="" width="56" height="56" loading="lazy"></span>
-          <span class="lx-info__text">
-            <span class="lx-info__name">Srinivasulu Vepamanu</span>
-            <span class="lx-info__pill">₹4 LPA</span>
-          </span>
-        </div>
-        <img class="lx-info__logo" src="assets/hiring-companies/logos/tcs.svg" alt="Tata Consultancy Services" loading="lazy">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- We train you for what companies hire for (supplied build): heading left, four cards fanned on the right that
-     fly into a row of four under the heading while the scene is pinned. Styles career/we-train-section.css (scoped to .ctg),
+<!-- We train you for what companies hire for: the heading holds the left column while the four cards
+     stack up on the right. Each card slides up over the one before and settles a step lower, and
+     the cards underneath sink back a little. Styles career/we-train-section.css (scoped to .ctg),
      behaviour career/we-train-section.js. -->
 <div class="ctg" id="what-companies-look-for" data-ctg>
-  <!-- desktop: everything below is pinned for the length of the flight; phones lay it out as before -->
-  <div class="ctg__pin">
   <section class="ctg__hero" aria-labelledby="ctg-title">
     <header class="ctg__head">
-      <h2 class="ctg__title" id="ctg-title">We train you for what companies hire for</h2>
+      <h2 class="ctg__title" id="ctg-title" data-head>We train you for what companies hire for</h2>
       <p class="ctg__sub">3,000+ companies have hired from our programmes. This is what we teach that gets people through.</p>
     </header>
   </section>
-
-  <!-- the four cards; on desktop they're lifted out of flow and flown between the fan and the row -->
-  <div class="ctg__stage">
-
-        <div class="ctg__fly">
-          <article class="ctg-card ctg-card--hero" style="--ctg-in:.15s">
+  <section class="ctg__deck" aria-label="What we teach">
+    <div class="ctg__slot" style="--i:0">
+          <article class="ctg-card ctg-card--hero">
             <div class="ctg-card__copy ctg-card-a" style="--ctg-d:0s">
               <h3 class="ctg-card__h">AI is built into how you solve problems</h3>
               <p class="ctg-card__p">You use the tools working engineers use, on everything you build here.</p>
@@ -1376,10 +972,9 @@ html.lenis,html.lenis body{height:auto}
               The same AI tools used by modern engineering teams.
             </p>
           </article>
-        </div>
-
-        <div class="ctg__fly">
-          <article class="ctg-card ctg-card--fund" style="--ctg-in:.27s">
+    </div>
+    <div class="ctg__slot" style="--i:1">
+          <article class="ctg-card ctg-card--fund">
             <div class="ctg-card__copy ctg-card-a">
               <h3 class="ctg-card__h">The fundamentals still decide interviews.</h3>
               <p class="ctg-card__p">DSA, systems, problem solving. AI raised the bar on these. It did not remove them.</p>
@@ -1390,10 +985,9 @@ html.lenis,html.lenis body{height:auto}
               <span class="ctg-card__slab ctg-card-a" style="--ctg-w:166px;--ctg-d:.08s">Problem Solving</span>
             </div></div>
           </article>
-        </div>
-
-        <div class="ctg__fly">
-          <article class="ctg-card ctg-card--curr" style="--ctg-in:.39s">
+    </div>
+    <div class="ctg__slot" style="--i:2">
+          <article class="ctg-card ctg-card--curr">
             <div class="ctg-card__copy ctg-card-a">
               <h3 class="ctg-card__h">We update the curriculum when hiring changes.</h3>
               <p class="ctg-card__p">What companies screen for keeps moving. So does what you learn.</p>
@@ -1404,10 +998,9 @@ html.lenis,html.lenis body{height:auto}
               <span class="ctg-card__chip ctg-card__chip--solid ctg-card-a" style="--ctg-d:.24s">Updated<br>curriculum</span>
             </div></div>
           </article>
-        </div>
-
-        <div class="ctg__fly">
-          <article class="ctg-card ctg-card--prep" style="--ctg-in:.51s">
+    </div>
+    <div class="ctg__slot" style="--i:3">
+          <article class="ctg-card ctg-card--prep">
             <div class="ctg-card__copy ctg-card-a">
               <h3 class="ctg-card__h">Interview prep for the rounds companies actually run.</h3>
               <p class="ctg-card__p">Not generic soft skills training.</p>
@@ -1419,19 +1012,14 @@ html.lenis,html.lenis body{height:auto}
               <li class="ctg-card-a" style="--ctg-d:.26s"><i></i>Live Coding</li>
             </ul></div>
           </article>
-        </div>
-  </div>
-
-  <section class="ctg__row" aria-label="What we teach">
-    <div class="ctg__slot"></div><div class="ctg__slot"></div><div class="ctg__slot"></div><div class="ctg__slot"></div>
+    </div>
   </section>
-  </div>
 </div>
 
 <section class="ht" id="hiring-teams" aria-labelledby="ht-title">
   <header class="ht__head">
     <div>
-      <h2 class="ht__title" id="ht-title">Why Top Companies Prefer NxtWave Students</h2>
+      <h2 class="ht__title" id="ht-title" data-head>Why Top Companies Prefer NxtWave Students</h2>
       <p class="ht__sub">The people who actually make the hiring decision, on why they keep coming back.</p>
     </div>
   </header>
@@ -1444,21 +1032,22 @@ html.lenis,html.lenis body{height:auto}
   </div>
 </section>
 
-<!-- Backed by Leading Global Investors (from the supplied build) -->
+<!-- Backed by Leading Global Investors: three plates side by side. As they arrive, each pair of laurels
+     closes round its investor's mark and the mark comes into focus. Styles career/investors.css. -->
 <section class="inv" id="investors" aria-labelledby="inv-title">
-  <header class="inv-head reveal-up">
-    <h2 class="inv-title" id="inv-title">Backed by Leading Global Investors</h2>
+  <header class="inv-head">
+    <h2 class="inv-title" id="inv-title" data-head>Backed by Leading Global Investors</h2>
     <p class="inv-sub">Supported by investors who share our vision for the future of tech education.</p>
   </header>
   <ul class="inv-row" aria-label="Investors">
-    <li class="reveal-up" style="--i:0"><img class="lf" src="assets/inv/laurel-l.png" alt="" aria-hidden="true"><div class="inv-logo inv-better"><img src="assets/inv/better.png" alt="Better Capital" loading="lazy"></div><img class="lf" src="assets/inv/laurel-r.png" alt="" aria-hidden="true"></li>
-    <li class="reveal-up" style="--i:1"><img class="lf" src="assets/inv/laurel-l.png" alt="" aria-hidden="true"><div class="inv-logo inv-gp"><img src="assets/inv/greater-pacific.png" alt="Greater Pacific Capital" loading="lazy"></div><img class="lf" src="assets/inv/laurel-r.png" alt="" aria-hidden="true"></li>
-    <li class="reveal-up" style="--i:2"><img class="lf" src="assets/inv/laurel-l.png" alt="" aria-hidden="true"><div class="inv-logo inv-orios"><img src="assets/inv/orios.png" alt="Orios Venture Partners" loading="lazy"></div><img class="lf" src="assets/inv/laurel-r.png" alt="" aria-hidden="true"></li>
+    <li style="--i:0"><img class="lf lf--l" src="assets/inv/laurel-l.png" alt="" aria-hidden="true"><div class="inv-logo inv-better"><img src="assets/inv/better.png" alt="Better Capital" loading="lazy"></div><img class="lf lf--r" src="assets/inv/laurel-r.png" alt="" aria-hidden="true"></li>
+    <li style="--i:1"><img class="lf lf--l" src="assets/inv/laurel-l.png" alt="" aria-hidden="true"><div class="inv-logo inv-gp"><img src="assets/inv/greater-pacific.png" alt="Greater Pacific Capital" loading="lazy"></div><img class="lf lf--r" src="assets/inv/laurel-r.png" alt="" aria-hidden="true"></li>
+    <li style="--i:2"><img class="lf lf--l" src="assets/inv/laurel-l.png" alt="" aria-hidden="true"><div class="inv-logo inv-orios"><img src="assets/inv/orios.png" alt="Orios Venture Partners" loading="lazy"></div><img class="lf lf--r" src="assets/inv/laurel-r.png" alt="" aria-hidden="true"></li>
   </ul>
 </section>
 
 <section class="fm" id="featured-in-media" aria-labelledby="fm-title">
-  <div class="fm__head"><h2 class="fm__title" id="fm-title">Recognized by Leading Media</h2></div>
+  <div class="fm__head"><h2 class="fm__title" id="fm-title" data-head>Recognized by Leading Media</h2></div>
   <div class="fm__press">
     <ul class="fm__press-grid" id="fm-press" aria-label="Publications that have featured NxtWave"></ul>
   </div>
@@ -2551,13 +2140,13 @@ requestAnimationFrame(frame);
 <script src="programmes.js"></script>
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
+<script src="career/motion.js"></script>
 <script src="career/script.js"></script>
 <script src="career/media-footer.js"></script>
 <script src="career/awards.js"></script>
 <script src="career/masterclass.js"></script>
 <script src="career/hiring-companies.js"></script>
 <script src="career/career-transformations.js"></script>
-<script src="career/learner-experiences.js"></script>
 <script src="career/we-train-section.js"></script>
 <script>
   /* ---- design notes ----------------------------------------------------------------
@@ -2641,12 +2230,6 @@ Parallax adds depth and responsiveness. The reveal helps visitors understand eac
         principles: [
           ['Authority Bias', `Recognised companies carry weight without explanation.`],
           ['Multimedia Effect', `Video and words together are absorbed better than words alone.`] ] },
-
-      { id: 'learner-experiences', name: 'Student Video Testimonials',
-        desc: `Video is where facts become belief. By this point the visitor knows what NxtWave does; here they hear it from someone who lived it. Each video is one full career transformation in the learner’s own voice.`,
-        principles: [
-          ['Identifiable Victim Effect', `One person’s story moves people more than a statistic.`],
-          ['Emotional Contagion', `A learner’s relief on camera becomes the visitor’s hope.`] ] },
 
       { id: 'what-companies-look-for', name: 'Our USPs',
         desc: `The offering shown visually, one idea per card, so the whole picture is absorbed without reading a block of text. The eye moves card to card and assembles the offer effortlessly.`,

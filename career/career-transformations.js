@@ -1,7 +1,8 @@
 /*
- * Learner experiences — staggered testimonial wall (vanilla JS, no dependencies).
+ * Career Transformations — the pinned, curved reel (vanilla JS; uses NWMotion from career/motion.js).
  * Boots every element with [data-career-transformations]. Asset base path comes from
  * data-assets (default "assets/career-transformations/").
+ * Every learner appears once: video stories take a column of their own, text stories pair up.
  */
 (() => {
   function init(root) {
@@ -10,7 +11,6 @@
     let A = root.dataset.assets || 'assets/career-transformations/';
     if (!A.endsWith('/')) A += '/';
 
-    // Learner data reused from ../career-transformations/data.js
     const VIDEOS = [
       { id: 'v01', name: 'Harshitha Nallapu', logo: 'cognizant',   lpa: '7.5 LPA' },
       { id: 'v02', name: 'Sravani Komatla',   logo: 'infosys',     lpa: '6.5 LPA' },
@@ -48,23 +48,6 @@
       { p: 'a24', name: 'Mahesh Konduru',      logo: 'mindtree',    lpa: '6 LPA',    q: 'The projects were the whole interview. I spent forty minutes on one I had built and never touched a puzzle question.' }
     ];
 
-    // 8 columns × 5 rows = 40 cards → 28 text : 12 video = exactly 70 : 30.
-    // Rows holding a video card, per column (no two videos side by side in the same row).
-    const VIDEO_ROWS = [[1, 4], [3], [0, 2], [4], [0, 3], [2], [0, 4], [2]];
-    const ROWS = 5;
-    // One extra card under columns 3, 4, 5 (they settle highest and looked empty at the bottom).
-    // Extras overflow the column without adding layout height, so the section keeps its size.
-    // Totals become 30 text : 13 video (69.8 : 30.2).
-    const EXTRA = { 2: 'text', 3: 'text', 4: 'video' };
-    // Start offsets (px). Centre pair starts in place under the title; the rest rise in, edges last.
-    const COL_OFFSETS = [1400, 900, 500, 0, 0, 500, 900, 1400];  // shorter travel → calmer rise
-    // Where each column settles after scrolling (approved mock): a gentle arch, centre pair highest.
-    const SETTLE = [336, 222, 110, 0, 0, 110, 222, 336];
-    // Once the arch has formed, each column keeps its own pace through the rest of the scroll: a share of
-    // the distance scrolled since, added (lagging) or taken away (running ahead). Neighbours alternate, so
-    // the wall keeps moving against itself instead of sliding up as one sheet.
-    const PACE = [0.12, -0.07, 0.16, -0.03, 0.06, -0.12, 0.09, -0.05];
-
     const PLAY_ICON = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5.2v9.6a.6.6 0 0 0 .92.5l7.4-4.8a.6.6 0 0 0 0-1L7.92 4.7A.6.6 0 0 0 7 5.2Z" fill="#0f172a"/></svg>';
 
     const textCard = d => `
@@ -94,29 +77,21 @@
         </div>
       </article>`;
 
-    const imagesEl = root.querySelector('.ctw-images');
-    let qi = 0, vi = 0;
-    const cols = COL_OFFSETS.map((off, c) => {
-      const col = document.createElement('div');
-      col.className = 'ctw-col';
-      let html = '';
-      for (let r = 0; r < ROWS; r++) {
-        html += VIDEO_ROWS[c].includes(r)
-          ? videoCard(VIDEOS[vi++ % VIDEOS.length])
-          : textCard(QUOTES[qi++ % QUOTES.length]);
-      }
-      if (EXTRA[c]) html += EXTRA[c] === 'video'
-        ? videoCard(VIDEOS[vi++ % VIDEOS.length]).replace('<article class="ctw-card-video"', '<article class="ctw-card-video ctw-extra"')
-        : textCard(QUOTES[qi++ % QUOTES.length]).replace('<article class="ctw-card-text"', '<article class="ctw-card-text ctw-extra"');
-      col.innerHTML = html;
-      imagesEl.appendChild(col);
-      return { el: col, off, settle: SETTLE[c], pace: PACE[c] };
-    });
+    // columns: a video story at every 2nd and 4th place of each run of five, text stories in pairs between
+    const track = root.querySelector('.ctw-images');
+    const end = root.querySelector('.ctw-end');
+    let qi = 0, vi = 0, html = '';
+    for (let c = 0; qi < QUOTES.length || vi < VIDEOS.length; c++) {
+      const wantVideo = (c % 5 === 1 || c % 5 === 3) && vi < VIDEOS.length;
+      if (wantVideo || qi >= QUOTES.length) html += `<div class="ctw-col ctw-col--video">${videoCard(VIDEOS[vi++])}</div>`;
+      else { html += `<div class="ctw-col">${textCard(QUOTES[qi++])}${qi < QUOTES.length ? textCard(QUOTES[qi++]) : ''}</div>`; }
+    }
+    end.insertAdjacentHTML('beforebegin', html);
+    const cols = [...track.children];
 
-    // Video cards play on their own, muted and looping, while they are on screen, and pause when they
-    // leave, so only the few in view are ever loading or running. Reduced motion keeps the stills.
-    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const playIO = !reduceMotion && 'IntersectionObserver' in window && new IntersectionObserver(entries => {
+    // video stories play muted and looping while on screen, and pause when they leave
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const playIO = !reduce && 'IntersectionObserver' in window && new IntersectionObserver(entries => {
       for (const { target: card, isIntersecting } of entries) {
         let v = card.querySelector('video');
         if (isIntersecting) {
@@ -128,83 +103,46 @@
             card.insertBefore(v, card.querySelector('.ctw-shade'));
           }
           v.play().then(() => card.classList.add('ctw-playing')).catch(() => {});
-        } else if (v) {
-          v.pause();
-        }
+        } else if (v) v.pause();
       }
-    }, { rootMargin: '120px 0px', threshold: 0.15 });
+    }, { rootMargin: '0px 120px', threshold: 0.2 });
     if (playIO) root.querySelectorAll('.ctw-card-video').forEach(card => playIO.observe(card));
 
-    // Mobile: the scaled grid keeps its unscaled layout height, so trim the mask to match.
-    const mask = root.querySelector('.ctw-mask');
-    function fitMask() {
-      const s = parseFloat(getComputedStyle(root).getPropertyValue('--grid-scale')) || 1;
-      const h = imagesEl.offsetHeight;
-      imagesEl.style.marginBottom = `${-(h * (1 - s))}px`;
-    }
-    // Lock each column's layout height to its first ROWS cards so extras don't grow the section.
-    function lockCols() {
-      for (const { el } of cols) {
-        el.style.height = '';
-        const last = el.children[ROWS - 1];
-        el.style.height = `${last.offsetTop + last.offsetHeight - el.firstElementChild.offsetTop}px`;
-      }
-    }
-    const relayout = () => { lockCols(); fitMask(); };
-    relayout();
-    addEventListener('resize', relayout);
-    addEventListener('load', relayout);
-    document.fonts && document.fonts.ready.then(relayout);
+    const M = window.NWMotion;
+    if (!M || M.RM) return;
 
-    // Scroll-linked stagger (heading is static).
-    const section = root;
-    const clamp01 = v => Math.min(1, Math.max(0, v));
-    // Section-top position relative to viewport height.
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let cur = 0;
+    // the vertical scroll the reel takes = how far the row runs past the screen
+    let shift = 0, geo = [];
+    const measure = () => {
+      track.style.transform = 'none';
+      shift = Math.max(0, track.scrollWidth - innerWidth);
+      root.style.setProperty('--ctw-run', shift + 'px');
+      geo = cols.map(c => ({ el: c, mid: c.offsetLeft + c.offsetWidth / 2 }));
+    };
+    measure();
+    addEventListener('resize', measure);
+    addEventListener('load', measure);
+    document.fonts && document.fonts.ready.then(measure);
 
-    // the rise follows the wall: it starts as the wall's top enters at the foot of the screen and has
-    // settled into the arch a quarter of the way down, then the columns keep their own paces
-    const WALL_FROM = 1.0, WALL_TO = 0.25;
-    const target = () => {
-      const top = mask.getBoundingClientRect().top / innerHeight;
-      return clamp01((WALL_FROM - top) / (WALL_FROM - WALL_TO));
-    };
-    // Heading → card-section gap: 130px at rest (56px on mobile), closes to 80px (32px on mobile), then stays locked.
-    // Gap closes while the section top moves from 60% (rest position) to 30% of the viewport.
-    const GAP_FROM = 0.6, GAP_TO = 0.3;
-    const gapClose = () => Math.max(0, parseFloat(getComputedStyle(root.querySelector('.ctw-heading')).paddingBottom) - (innerWidth < 810 ? 32 : 80));
-    const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    // the heading fades as the cards reach it: it starts going a little before the highest card meets
-    // its foot and is gone by the time that card reaches its top, and comes back on the way up
-    const text = root.querySelector('.ctw-heading-text');
-    const fadeText = () => {
-      if (!text) return;
-      const t = text.getBoundingClientRect();
-      let wall = Infinity;
-      for (const { el } of cols) { const c = el.firstElementChild; if (c) wall = Math.min(wall, c.getBoundingClientRect().top); }
-      const LEAD = 40;
-      text.style.opacity = (1 - clamp01((t.bottom + LEAD - wall) / (t.height + LEAD))).toFixed(3);
-    };
-    const render = p => {
-      fadeText();
-      const g = clamp01((GAP_FROM - section.getBoundingClientRect().top / innerHeight) / (GAP_FROM - GAP_TO));
-      mask.style.transform = `translate3d(0, ${(-gapClose() * g).toFixed(2)}px, 0)`;
-      const e = easeInOut(p);
-      // how far the wall has scrolled past the point where the arch settles (0 until then)
-      const past = reduce ? 0 : Math.max(0, WALL_TO * innerHeight - mask.getBoundingClientRect().top - (-gapClose() * g));
-      for (const { el, off, settle, pace } of cols)
-        el.style.transform = `translate3d(0, ${(settle + (off - settle) * (1 - e) - past * pace).toFixed(2)}px, 0)`;
-    };
-    function tick() {
-      const t = target();
-      cur = reduce ? t : cur + (t - cur) * 0.08;
-      if (Math.abs(t - cur) < 1e-4) cur = t;
-      render(cur);
-      requestAnimationFrame(tick);
-    }
-    cur = target(); render(cur);
-    requestAnimationFrame(tick);
+    let x = 0, lean = 0;
+    M.scene({
+      el: root,
+      read: () => M.pin(root),
+      write: (p, f) => {
+        // a little lag on the row so it glides, and a lean into the direction of travel
+        const want = -p * shift;
+        x += (want - x) * 0.14;
+        if (Math.abs(want - x) < .1) x = want;
+        lean += (Math.max(-5, Math.min(5, -f.vel * .12)) - lean) * .1;
+        track.style.transform = `translate3d(${x.toFixed(1)}px,0,0) skewX(${lean.toFixed(2)}deg)`;
+        // the curve: columns turn away and step back as they near either edge
+        const W = f.vw;
+        for (const g of geo) {
+          const n = Math.max(-1.3, Math.min(1.3, ((g.mid + x) - W / 2) / (W / 2)));
+          g.el.style.transform = `translateZ(${(-Math.abs(n) * Math.abs(n) * 110).toFixed(1)}px) rotateY(${(-n * 16).toFixed(2)}deg)`;
+        }
+      },
+    });
   }
 
   const boot = () => document.querySelectorAll('[data-career-transformations]').forEach(init);

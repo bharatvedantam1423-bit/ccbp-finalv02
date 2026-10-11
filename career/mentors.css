@@ -1,0 +1,67 @@
+/* =====================================================================
+   S5 — MENTORS ("Taught by people who have done the job.")
+   A pinned stage in two columns: the heading and the alumni marks on the left, the film on the
+   right, scrubbed by the scroll (inline script in index.html). career/motion.js writes the pin's
+   progress as --mw-p (0 → 1): the film settles into place over the first stretch, and each alumni
+   mark comes in as the mentors gather round the learner.
+   ===================================================================== */
+.mentors{--mw-p:0;position:relative;background:#fff}
+.mw-track{position:relative;height:var(--mw-track,320vh)}
+.mw-stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:clamp(24px,3vw,56px);
+  padding:clamp(64px,10vh,110px) var(--page-edge) clamp(24px,6vh,64px)}
+
+.mw-head{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(28px,4vh,44px);text-align:left;position:relative;z-index:1}
+.mw-title{font-size:min(var(--head-size),3.6vw)!important}
+
+/* the alumni marks: a two-column roll; each arrives with its share of the film */
+.mw-alumni{display:flex;flex-direction:column;gap:14px;width:100%}
+.mw-alumni-row{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,max-content));gap:clamp(14px,2.4vh,24px) clamp(28px,3vw,48px);align-items:center}
+.mw-alumni-row li{display:flex;align-items:center;
+  --k:clamp(0,calc((var(--mw-p) - var(--at)) * 9),1);
+  opacity:calc(.12 + var(--k) * .88);translate:calc((1 - var(--k)) * -18px) 0;filter:grayscale(calc(1 - var(--k)))}
+.mw-alumni-row li:nth-child(1){--at:.04}
+.mw-alumni-row li:nth-child(2){--at:.14}
+.mw-alumni-row li:nth-child(3){--at:.24}
+.mw-alumni-row li:nth-child(4){--at:.34}
+.mw-alumni-row li:nth-child(5){--at:.44}
+.mw-alumni-row li:nth-child(6){--at:.54}
+.mw-alumni-row img{display:block;width:auto;height:clamp(30px,2.6vw,42px);object-fit:contain}
+.mw-alumni-more{margin:0;font-family:var(--font-sub);font-size:14px;color:#64748b;
+  opacity:clamp(0,calc((var(--mw-p) - .62) * 8),1)}
+
+/* the film: whole frame, uncropped. It comes in from slightly further away and settles */
+.mw-screen{position:relative;width:100%;aspect-ratio:1262/728;max-height:100%;justify-self:center;
+  --s:clamp(0,calc(var(--mw-p) * 7),1);
+  scale:calc(.86 + var(--s) * .14);translate:calc((1 - var(--s)) * 6%) calc((1 - var(--s)) * 4%);
+  transform-origin:50% 100%}
+/* the desk's shadow under the film, gathering as it settles */
+.mw-screen::after{content:"";position:absolute;left:8%;right:8%;bottom:-3%;height:12%;z-index:-1;border-radius:50%;
+  background:radial-gradient(50% 50% at 50% 50%,rgba(37,99,235,.14),rgba(37,99,235,0));opacity:var(--s)}
+.mw-screen video,.mw-screen canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%),linear-gradient(180deg,transparent 0,#000 6%);
+  -webkit-mask-composite:source-in;
+          mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%),linear-gradient(180deg,transparent 0,#000 6%);
+          mask-composite:intersect}
+.mw-screen video{object-fit:contain;object-position:50% 100%}
+.mw-screen video,.mw-screen canvas{filter:brightness(1.016)}   /* lift the film's off-white to the page's white */
+.mw-screen canvas{opacity:0;transition:opacity .2s;-webkit-mask-image:none;mask-image:none}
+.mw-screen.frames canvas{opacity:1}
+.mw-screen.frames video{visibility:hidden}
+
+/* tablet / phone: heading over the film, the marks in a row under it */
+@media (max-width:1023px){
+  .mentors{--mw-track:240vh}
+  .mw-stage{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:center;gap:clamp(20px,4vh,40px);padding-inline:var(--page-pad)}
+  .mw-head{align-items:center;text-align:center;gap:20px}
+  .mw-title{font-size:var(--head-size)!important}
+  .mw-alumni{align-items:center}
+  .mw-alumni-row{grid-template-columns:repeat(3,max-content);justify-content:center;gap:12px 22px}
+  .mw-alumni-row img{height:28px}
+  .mw-screen{width:min(100%,calc((100svh - 330px) * 1262 / 728))}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mentors{--mw-track:auto;--mw-p:1}
+  .mw-stage{position:relative;height:auto;min-height:100svh}
+}

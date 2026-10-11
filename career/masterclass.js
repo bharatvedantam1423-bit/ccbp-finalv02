@@ -1,4 +1,4 @@
-/* Masterclasses from Mentors — data, rendering, scroll motion. */
+/* Masterclasses from Mentors — data, rendering, motion. */
 (() => {
   // Content from ccbp.in → "Masterclasses from Mentors in the Community". Copy per Figma 778:1625.
   const MENTORS = [
@@ -20,11 +20,12 @@
     cap: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c2 2 10 2 12 0v-5M22 9v5"/></svg>',
   };
   const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const M = window.NWMotion;
 
-  // ---- Mentor tiles: after the film, alternating bottom / top like the reference's staggered tiles ----
-  const rail = document.querySelector('.mc__rail');
-  rail.insertAdjacentHTML('beforeend', MENTORS.map((m, i) => `
-    <div class="mc__tile mc__tile--mentor ${i % 2 ? 'mc__tile--top' : 'mc__tile--bottom'}" role="listitem">
+  // ---- Mentor cards ----
+  const list = document.querySelector('.mc__mentors');
+  list.innerHTML = MENTORS.map((m) => `
+    <li>
       <article class="mentor">
         <img class="mentor__avatar" src="assets/masterclass/avatar-${m.img}.jpg" alt="${esc(m.name)}" loading="lazy">
         <h3 class="mentor__name">${esc(m.name)}</h3>
@@ -33,22 +34,23 @@
           <p class="mentor__row">${ICON.cap}<span>${esc(m.edu)}</span></p>
         </div>
       </article>
-    </div>`).join(''));
+    </li>`).join('');
+  // each pair stands up as it comes on screen
+  [...list.children].forEach((li) => M ? M.once(li, () => li.classList.add('is-in'), '0px 0px -18% 0px') : li.classList.add('is-in'));
 
-  // ---- Logo tickers: build S4 pattern — each set duplicated so translate −50% loops seamlessly ----
-  const set = (list, hidden) => `<ul class="mc-ticker-set"${hidden ? ' aria-hidden="true"' : ''}>` +
-    list.map((l) => `<li><img src="${l.src}" alt="${hidden ? '' : l.name}" decoding="async"></li>`).join('') + '</ul>';
-  const row = (list, dir, dur) => `<div class="mc-ticker-row ${dir}" style="--tick-dur:${dur}s">${set(list)}${set(list, true)}</div>`;
-
-  // Bottom: three lines of six, directions alternate (build DUR values)
+  // ---- Logo tickers: each set duplicated so translate −50% loops seamlessly ----
+  const set = (l, hidden) => `<ul class="mc-ticker-set"${hidden ? ' aria-hidden="true"' : ''}>` +
+    l.map((c) => `<li><img src="${c.src}" alt="${hidden ? '' : c.name}" decoding="async"></li>`).join('') + '</ul>';
+  const row = (l, dir, dur) => `<div class="mc-ticker-row ${dir}" style="--tick-dur:${dur}s">${set(l)}${set(l, true)}</div>`;
   const DUR = [70, 64, 76];
   document.querySelector('[data-ticker="companies"]').innerHTML = DUR.map((d, r) => {
     const l = COMPANIES.slice(r * 6, r * 6 + 6);
     return row(l.concat(l), r % 2 ? 'to-left' : 'to-right', d);
   }).join('');
 
-  // ---- Video: swap thumbnail for the YouTube player on click (the intro button plays it too) ----
+  // ---- Video: swap the thumbnail for the YouTube player on click (the intro button plays it too) ----
   const video = document.querySelector('.mc__video');
+  const film = document.querySelector('.mc__film');
   const play = () => {
     if (video.classList.contains('is-playing')) return;
     const f = document.createElement('iframe');
@@ -58,37 +60,22 @@
     f.allowFullscreen = true;
     video.append(f);
     video.classList.add('is-playing');
+    film.style.setProperty('--mc-tilt', 0);
   };
   video.addEventListener('click', play);
-  document.querySelector('.mc__cta[data-play]').addEventListener('click', play);
+  document.querySelector('.mc__cta[data-play]').addEventListener('click', () => {
+    play();
+    video.scrollIntoView({ behavior: M && M.RM ? 'auto' : 'smooth', block: 'center' });
+  });
 
-  // ---- Logo rows fade up once they reach the screen ----
-  const ticker = document.querySelector('[data-ticker="companies"]');
-  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { ticker.classList.add('is-in'); o.disconnect(); } }, { threshold: .2 })
-    .observe(ticker);
-
-  // ---- Arrows: step the rail one tile at a time; each greys out at its end ----
-  const viewport = document.querySelector('.mc__viewport');
-  const [prev, next] = document.querySelectorAll('.mc__arrow');
-  const tiles = () => [...rail.children];
-  const step = (dir) => {
-    const pad = parseFloat(getComputedStyle(rail).paddingLeft) || 0;
-    const x = viewport.scrollLeft;
-    // the first tile whose start is past the current position (or the last one before it, going back)
-    const starts = tiles().map((t) => t.offsetLeft - pad);
-    const to = dir > 0 ? starts.find((s) => s > x + 4) : [...starts].reverse().find((s) => s < x - 4);
-    viewport.scrollTo({ left: to ?? (dir > 0 ? viewport.scrollWidth : 0),
-      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-  };
-  const sync = () => {
-    const max = viewport.scrollWidth - viewport.clientWidth;
-    prev.disabled = viewport.scrollLeft <= 4;
-    next.disabled = viewport.scrollLeft >= max - 4;
-  };
-  prev.addEventListener('click', () => step(-1));
-  next.addEventListener('click', () => step(1));
-  viewport.addEventListener('scroll', sync, { passive: true });
-  addEventListener('resize', sync);
-  addEventListener('load', sync);
-  sync();
+  // ---- The film comes flat as it climbs to the middle of the screen ----
+  if (!M || M.RM) { film.style.setProperty('--mc-tilt', 0); return; }
+  M.scene({
+    el: film,
+    read: () => M.progress(film, 1, .3),
+    write: (p) => {
+      if (video.classList.contains('is-playing')) return;
+      film.style.setProperty('--mc-tilt', (1 - (1 - Math.pow(1 - p, 3))).toFixed(4));
+    },
+  });
 })();

@@ -1,0 +1,12 @@
+/* Shared motion styles for the sections below the programmes (see career/motion.js). */
+@property --wipe{syntax:"<percentage>";inherits:false;initial-value:120%}
+
+/* Section headings: the gradient fill arrives left to right behind a soft edge, lifting a touch.
+   A mask, not split letters, so the heading keeps its one continuous gradient. */
+.nw-wipe{--wipe:0%;
+  -webkit-mask-image:linear-gradient(100deg,#000 calc(var(--wipe) - 24%),transparent var(--wipe));
+          mask-image:linear-gradient(100deg,#000 calc(var(--wipe) - 24%),transparent var(--wipe));
+  translate:0 .18em;
+  transition:--wipe 1.3s cubic-bezier(.45,0,.2,1),translate 1.2s cubic-bezier(.16,1,.3,1)}
+.nw-wipe.is-in{--wipe:124%;translate:0 0}
+@media (prefers-reduced-motion:reduce){.nw-wipe{-webkit-mask-image:none;mask-image:none;translate:none;transition:none}}

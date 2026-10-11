@@ -34,49 +34,36 @@ track.querySelectorAll(".ht__co img").forEach(im => im.complete ? fitLogo(im) : 
 const labels = cards.map(c => c.querySelector(".ht__label"));
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ---------- Scroll animation: deck rises with scroll → fans out into a row. Plays once, never reverses. ---------- */
-if (!reduce && window.gsap) {
-  gsap.registerPlugin(ScrollTrigger);
-  const deck = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--deck")) || 14;
-  // x that collapses each card onto card 0, fanned slightly so the edges peek out like the reference
-  const stackX = (i) => cards[0].offsetLeft - cards[i].offsetLeft + Math.min(i, 3) * deck();
-  let done = false;
-
-  gsap.set(cards, { x: stackX });
-  gsap.set(labels, { autoAlpha: 0, y: 10 });
-
-  // 1) the stacked deck travels up with the scroll (only until it lands).
-  //    Driven by onUpdate rather than a scrubbed tween: a ScrollTrigger refresh (e.g. the late window "load"
-  //    once the photos arrive) reverts + re-renders a scrubbed tween, which made the deck jump back down mid-scroll.
-  const rail = document.querySelector(".ht__rail");
-  const lift = () => innerHeight * 0.55;
-  gsap.set(rail, { y: lift() });
-  const toY = gsap.quickTo(rail, "y", { duration: 0.6, ease: "power3" });
-  const rise = ScrollTrigger.create({
-    trigger: ".ht", start: "top bottom", end: "top 20%",
-    onUpdate: (s) => toY((1 - s.progress) * lift()),
-    onRefresh: (s) => toY((1 - s.progress) * lift()),
+/* ---------- Motion: the row slides in from the right as the section rises (a dolly along it), each
+   portrait opens from the foot up as it arrives, and a card under the pointer tilts toward it. ---------- */
+const M = window.NWMotion;
+const rail = document.querySelector(".ht__rail");
+if (M && !M.RM) {
+  cards.forEach((c, i) => c.style.setProperty("--d", i % 6));
+  M.once(rail, () => rail.classList.add("is-in"), "0px 0px -10% 0px");
+  let x = null;
+  M.scene({
+    el: rail,
+    read: () => M.progress(rail, 1, .35),
+    write: (p, f) => {
+      const want = (1 - (1 - Math.pow(1 - p, 3))) * f.vw * .38;
+      x = x === null ? want : x + (want - x) * .12;
+      rail.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`;
+    },
   });
-
-  // 2) once it lands, the deck spreads into the row — one-shot
-  const spread = () => {
-    if (done) return;
-    done = true;
-    rise.kill();
-    gsap.timeline({ defaults: { ease: "expo.out" } })
-      .to(rail, { y: 0, duration: 0.6, ease: "power3.out", overwrite: true }, 0)
-      .to(cards, { x: 0, duration: 1.3, stagger: 0.045 }, 0)
-      .to(labels, { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.04, ease: "power3.out" }, 0.35)
-      .add(() => gsap.set(cards, { clearProps: "transform" }));
-  };
-  ScrollTrigger.create({ trigger: ".ht", start: "top 20%", once: true, onEnter: spread });
-  // page reloaded below the section → show the finished state straight away
-  ScrollTrigger.create({ trigger: ".ht", start: "top 20%", once: true, onLeave: spread });
-
-  // keep the collapsed positions correct after resizes while the deck is still stacked
-  ScrollTrigger.addEventListener("refreshInit", () => { if (!done) gsap.set(cards, { x: 0 }); });
-  ScrollTrigger.addEventListener("refresh",     () => { if (!done) gsap.set(cards, { x: stackX }); });
-}
+  if (matchMedia("(hover: hover)").matches) cards.forEach(c => {
+    const media = c.querySelector(".ht__media");
+    media.addEventListener("pointermove", e => {
+      const r = media.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
+      media.style.setProperty("--rx", (-ny * 10).toFixed(2) + "deg");
+      media.style.setProperty("--ry", (nx * 12).toFixed(2) + "deg");
+      media.style.setProperty("--gx", ((nx + .5) * 100).toFixed(1) + "%");
+      media.style.setProperty("--gy", ((ny + .5) * 100).toFixed(1) + "%");
+    });
+    media.addEventListener("pointerleave", () => { media.style.setProperty("--rx", "0deg"); media.style.setProperty("--ry", "0deg"); });
+  });
+} else rail.classList.add("is-in");
 
 /* ---------- Horizontal rail: arrows + mouse drag ---------- */
 const [prev, next] = document.querySelectorAll(".ht__arrow");
@@ -126,45 +113,3 @@ const close = () => { modal.close(); frame.innerHTML = ""; };
 modal.querySelector(".ht__close").addEventListener("click", close);
 modal.addEventListener("click", e => { if (e.target === modal) close(); });
 modal.addEventListener("close", () => { frame.innerHTML = ""; });
-
-/* Recognised media cards — the top three grow from small to full size as they scroll into view (one-way); the ticker below moves on its own */
-addEventListener('DOMContentLoaded', () => {
-  const cards = [...document.querySelectorAll('.fm__grid > .fm__card')];
-  if (!cards.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const MIN = 0.5, TRAVEL = 0.6;                    // start scale · viewport-heights of scroll to reach full size
-  const target = cards.map(() => 0), cur = cards.map(() => 0);
-  const ease = t => 1 - Math.pow(1 - t, 3);
-  let tops = [], running = false;
-
-  // untransformed page offsets, so the scale never feeds back into the measurement
-  const layout = () => { tops = cards.map(c => { let y = 0, n = c; while (n) { y += n.offsetTop; n = n.offsetParent; } return y; }); };
-  const render = () => cards.forEach((c, k) => {
-    const p = ease(cur[k]);
-    c.style.transform = p >= 1 ? '' : `scale(${MIN + (1 - MIN) * p})`;
-    c.style.opacity = p >= 1 ? '' : 0.35 + 0.65 * p;
-  });
-  const measure = () => {
-    const vh = innerHeight, y = scrollY;
-    cards.forEach((_, k) => {
-      const p = (y + vh - tops[k]) / (vh * TRAVEL);  // 0 as the card's top enters the viewport
-      target[k] = Math.max(target[k], Math.min(1, Math.max(0, p)));  // never shrinks back
-    });
-  };
-  const tick = () => {
-    let moving = false;
-    cards.forEach((_, k) => {
-      const d = target[k] - cur[k];
-      if (Math.abs(d) > 0.0005) { cur[k] += d * 0.12; moving = true; } else cur[k] = target[k];
-    });
-    render();
-    if (moving) requestAnimationFrame(tick); else running = false;
-  };
-  const kick = () => { measure(); if (!running) { running = true; requestAnimationFrame(tick); } };
-
-  cards.forEach(c => { c.style.willChange = 'transform, opacity'; });
-  layout(); render();
-  addEventListener('scroll', kick, { passive: true });
-  addEventListener('resize', () => { layout(); kick(); });
-  addEventListener('load', () => { layout(); kick(); });
-  kick();
-});

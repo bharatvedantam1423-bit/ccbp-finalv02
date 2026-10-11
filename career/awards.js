@@ -1,51 +1,75 @@
-/* Awards & Recognitions: one award is open at a time. It advances on its own
-   while the section is in view, and follows a click or a keyboard choice.
-   The trophy, the badge and the open award all change on the same beat. */
+/* Awards & Recognitions — the pinned stage.
+   The first stretch of the pin opens the stage out to the full width; the rest is split evenly
+   across the five awards, so scrolling walks through them one at a time. A click on an award (or
+   its mark) scrolls to its stretch. Reduced motion: no pin, the awards change on click. */
 (() => {
   const sec = document.getElementById('recognition');
   if (!sec) return;
+  const scene = sec.querySelector('[data-rc]');
   const items = [...sec.querySelectorAll('.rc-item')];
   const badges = [...sec.querySelectorAll('.rc-badges li')];
   const trophies = [...sec.querySelectorAll('.rc-trophy')];
-  if (!items.length) return;
-
-  const HOLD = 2600;                       // how long an award holds
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  let at = -1, timer = 0, inView = false, held = false;
+  const M = window.NWMotion;
+  const N = items.length;
+  const OPEN = 0.16;                       // share of the pin spent opening the stage
+  let at = -1, flashT = 0;
 
   const show = i => {
     if (i === at) return;
+    const was = at;
     at = i;
     items.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
     badges.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
-    trophies.forEach((el, k) => k === i ? el.setAttribute('data-on', '') : el.removeAttribute('data-on'));
-  };
-
-  const stop = () => { clearTimeout(timer); timer = 0; };
-  const run = () => {
-    stop();
-    if (!inView || held || reduce.matches) return;
-    timer = setTimeout(() => { show((at + 1) % items.length); run(); }, HOLD);
-  };
-
-  items.forEach((el, i) => {
-    el.addEventListener('click', () => { show(i); run(); });
-    el.addEventListener('focus', () => { show(i); });
-    el.addEventListener('keydown', e => {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
-      e.preventDefault(); show(i); run();
+    trophies.forEach((el, k) => {
+      el.toggleAttribute('data-on', k === i);
+      el.toggleAttribute('data-was', k === was);
     });
+    // the spotlight flares as the new trophy comes up
+    scene.style.setProperty('--rc-flash', 1);
+    clearTimeout(flashT);
+    flashT = setTimeout(() => scene.style.setProperty('--rc-flash', 0), 420);
+  };
+
+  // where award i sits in the page's scroll
+  const yFor = i => {
+    const r = scene.getBoundingClientRect();
+    const span = r.height - innerHeight;
+    const p = OPEN + (1 - OPEN) * ((i + .5) / N);
+    return scrollY + r.top + span * p;
+  };
+  const go = i => {
+    if (!M || M.RM) { show(i); return; }
+    const lenis = window.NW && NW.lenis;
+    lenis ? lenis.scrollTo(yFor(i), { duration: 1.2 }) : scrollTo({ top: yFor(i), behavior: 'smooth' });
+  };
+  items.forEach((el, i) => {
+    el.addEventListener('click', () => go(i));
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(i); } });
   });
-
-  // the pointer resting on the roll holds the award it is on
-  const roll = sec.querySelector('.rc-list');
-  if (roll) {
-    roll.addEventListener('pointerenter', () => { held = true; stop(); });
-    roll.addEventListener('pointerleave', () => { held = false; run(); });
-  }
-
-  new IntersectionObserver(([e]) => { inView = e.isIntersecting; run(); }, { threshold: .25 })
-    .observe(sec.querySelector('.rc-panel') || sec);
+  badges.forEach((el, i) => el.addEventListener('click', () => go(i)));
 
   show(0);
+  if (!M || M.RM) { scene.style.setProperty('--rc-open', 1); return; }
+
+  M.scene({
+    el: scene,
+    read: () => M.pin(scene),
+    write: p => {
+      const open = Math.min(1, p / OPEN);
+      const eased = 1 - Math.pow(1 - open, 3);
+      const q = Math.max(0, (p - OPEN) / (1 - OPEN));
+      scene.style.setProperty('--rc-open', eased.toFixed(4));
+      scene.style.setProperty('--rc-p', q.toFixed(4));
+      show(Math.min(N - 1, Math.floor(q * N)));
+    },
+  });
+
+  // press photos: the photo opens from the foot up, then drifts against the scroll
+  const cards = [...sec.querySelectorAll('.rc-cards li')];
+  cards.forEach(li => M.once(li, () => li.classList.add('is-in')));
+  M.scene({
+    el: sec.querySelector('.rc-cards'),
+    read: () => cards.map(li => M.progress(li, 1, -.4)),
+    write: ps => cards.forEach((li, k) => li.style.setProperty('--rc-par', ((ps[k] - .5) * -40).toFixed(1) + 'px')),
+  });
 })();

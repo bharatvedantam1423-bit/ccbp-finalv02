@@ -17,8 +17,9 @@
 .cs{font-family:"Inter Display","Inter",system-ui,sans-serif;font-optical-sizing:auto;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
 
 .ht{display:flex;flex-direction:column;padding:var(--sec) 0 0;overflow:hidden}
-.ht__head{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;margin:0 var(--m) 56px}
-.ht__head>div:first-child{display:flex;flex-direction:column;align-items:center}
+.ht__head{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;margin:0 var(--m) 56px}
+.ht__head>div:first-child{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 48px;flex-wrap:wrap;width:100%}
+.ht__head .ht__sub{margin:0 0 .5em;max-width:340px}
 .ht__title{font-size:48px;line-height:1.1;font-weight:600;letter-spacing:-.02em;font-variation-settings:"opsz" 32}
 .ht__sub{font-family:"InterVariable","Inter",system-ui,sans-serif;font-size:16px;font-weight:500;line-height:1.5;color:var(--mute);margin-top:12px;max-width:520px;letter-spacing:-.02em}
 .ht__nav{display:flex;justify-content:center;gap:8px;margin-top:40px;padding:0 var(--m)}   /* below the cards, moves with the rail */
@@ -28,16 +29,27 @@
 .ht__arrow:hover svg{stroke:#fff}
 .ht__arrow:disabled{opacity:.3;pointer-events:none}
 @media (max-width:640px){.ht__nav{display:none}}
+@media (prefers-reduced-motion:reduce){.ht__rail .ht__media{clip-path:none;transition:none;transform:none}.ht__rail .ht__label{opacity:1;translate:none;transition:none}}
 
 .ht__rail{will-change:transform}
 .ht__track{list-style:none;display:flex;gap:var(--gap);overflow-x:auto;padding:0 var(--m);scroll-padding:0 var(--m);scroll-snap-type:x mandatory;scrollbar-width:none;cursor:grab;overscroll-behavior-x:contain}
 .ht__track::-webkit-scrollbar{display:none}
 .ht__track.drag{cursor:grabbing;scroll-snap-type:none}
 .ht__track.drag *{pointer-events:none}
-.ht__card{flex:0 0 var(--cw);scroll-snap-align:start;position:relative;will-change:transform}
+.ht__card{flex:0 0 var(--cw);scroll-snap-align:start;position:relative;perspective:900px}
+/* each portrait opens from the foot up as the row arrives, one after another */
+.ht__rail .ht__media{clip-path:inset(100% 0 0 0 round var(--r-md));transition:clip-path 1s cubic-bezier(.16,1,.3,1) calc(var(--d,0) * 80ms),transform .5s cubic-bezier(.2,.7,.1,1)}
+.ht__rail .ht__label{opacity:0;translate:0 12px;transition:opacity .6s ease calc(.3s + var(--d,0) * 80ms),translate .8s cubic-bezier(.16,1,.3,1) calc(.3s + var(--d,0) * 80ms)}
+.ht__rail.is-in .ht__media{clip-path:inset(0 0 0 0 round var(--r-md))}
+.ht__rail.is-in .ht__label{opacity:1;translate:none}
 .ht__track::after{content:"";flex:0 0 1px;margin-left:calc(var(--m) - var(--gap) - 1px)}
 
-.ht__media{position:relative;display:block;width:100%;aspect-ratio:9/16;border-radius:var(--r-md);overflow:hidden;background:#eceae6;border:1px solid #ddd;cursor:pointer;isolation:isolate}
+.ht__media{position:relative;display:block;width:100%;aspect-ratio:9/16;border-radius:var(--r-md);overflow:hidden;background:#eceae6;border:1px solid #ddd;cursor:pointer;isolation:isolate;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d}
+/* a soft light that follows the pointer across the portrait */
+.ht__media::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:radial-gradient(60% 40% at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.28),rgba(255,255,255,0) 70%)}
+.ht__media:hover::before{opacity:1}
 .ht__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform .9s cubic-bezier(.2,.7,.1,1)}
 .ht__media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.45));pointer-events:none}
 .ht__play{position:absolute;left:14px;bottom:14px;z-index:1;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;transition:transform .5s cubic-bezier(.2,.7,.1,1)}

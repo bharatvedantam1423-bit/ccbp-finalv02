@@ -75,6 +75,14 @@
   /* the top three sit in the bento grid; the rest of the coverage steps along in a row of four below them */
   grid.innerHTML = A.slice(0, 3).map(card).join('');
   [...grid.children].forEach((li, k) => { li.style.setProperty('--d', k); seen ? seen.observe(li) : li.classList.add('is-in'); });
+  if (window.NWMotion && !NWMotion.RM) {
+    const feat = [...grid.children];
+    NWMotion.scene({
+      el: grid,
+      read: () => feat.map(li => NWMotion.progress(li, 1, -.5)),
+      write: ps => feat.forEach((li, k) => li.style.setProperty('--fm-par', ((ps[k] - .5) * -36).toFixed(1) + 'px')),
+    });
+  }
   const sec = document.getElementById('featured-in-media'), tick = document.getElementById('fm-ticker'), row = document.getElementById('fm-ticker-row');
   const rest = A.slice(3).map((a, k) => card(a, k + 3));
   /* two copies so the stepping loops without a jump back; the copy is skipped by keyboard and screen readers */
@@ -129,6 +137,13 @@
     press.insertAdjacentHTML('beforeend', P.map(([lg, name]) =>
       `<li class="fm__press-item"><img src="${logo(lg)}" alt="${esc(name)}" loading="lazy"></li>`).join(''));
     /* same optical-weight rule as the card marks, kept small so the board stays quiet */
+    /* the marks flip up corner to corner: order by row + column */
+    const cols = () => { const it = press.children; let n = 1; while (n < it.length && it[n].offsetTop === it[0].offsetTop) n++; return n; };
+    const order = () => { const n = cols(); [...press.children].forEach((li, k) => li.style.setProperty('--k', (k % n) + Math.floor(k / n) * 2)); };
+    order(); addEventListener('resize', order);
+    const board = press.parentElement;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !window.NWMotion) board.classList.add('is-in');
+    else NWMotion.once(board, () => board.classList.add('is-in'), '0px 0px -15% 0px');
     press.querySelectorAll('img').forEach(im => {
       const go = () => sizeLogo(im, 14, 28, 2800, 150);
       im.complete ? go() : im.addEventListener('load', go, { once: true });
@@ -205,7 +220,8 @@
   new IntersectionObserver(([e]) => { on = e.isIntersecting; cancelAnimationFrame(raf); if (on) loop(); }).observe(sec);
 })();
 
-/* Heading sweep (from v2-stories) on every section title:
+/* Heading sweep (from v2-stories) on the programmes title (section 2 — the sections below use the
+   [data-head] wipe in career/motion.js):
    starts pale, a blue highlight runs through it letter by letter, then settles to its own colour */
 (() => {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || !window.gsap || !window.ScrollTrigger) return;
@@ -230,7 +246,7 @@
     [...el.children].forEach(c => c.setAttribute('aria-hidden', 'true'));
     return [...el.querySelectorAll('.sw-c')];
   };
-  document.querySelectorAll('.programmes__title, .record-title, .nw-hire__title, .mw-title, .ctw-heading h2, .mc__title, .lx__title, .inv-title, .ht__title, .fm__title, .cta__title').forEach(el => {
+  document.querySelectorAll('.programmes__title').forEach(el => {
     const dark = !!el.closest('.cta, .ct');
     const chars = split(el);
     const finals = chars.map(c => { const v = getComputedStyle(c).color; return /rgba\(.*,\s*0\)$/.test(v) ? 'rgba(37,99,235,0)' : v; });  // transparent → gradient title
