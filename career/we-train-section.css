@@ -31,39 +31,43 @@
 .ctg{position:relative;overflow-x:clip;background:#fff;color:var(--ctg-ink);font-family:var(--ctg-body);
   -webkit-font-smoothing:antialiased;text-align:left}
 
-/* ---------- layout: the heading sticks on the left, the deck stacks on the right ---------- */
-.ctg{--ctg-card-h:clamp(340px,58vh,460px);--ctg-top:clamp(88px,16vh,150px);--ctg-step:22px;
-  display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,96px);align-items:start;
-  padding:var(--sec-y,120px) var(--page-edge,80px) 0}
-.ctg__hero{position:sticky;top:var(--ctg-top);display:flex;align-items:flex-start}
-.ctg__head{display:flex;flex-direction:column;gap:24px;position:relative;z-index:20}
-.ctg__title{font-family:var(--ctg-head);font-weight:600;font-size:min(var(--head-size,56px),3.9vw);line-height:1.125;letter-spacing:-.01em;
-  background:var(--ctg-grad);-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
-.ctg__sub{font-size:17px;line-height:26px;font-weight:500;color:var(--ctg-sub);max-width:38ch}
+/* ---------- layout (variation 2): heading centred, the bento under it, held while it assembles ---------- */
+.ctg{--ctg-run:120vh;--ctg-a:0;height:calc(100svh + var(--ctg-run))}
+.ctg__pin{position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;align-items:center;
+  padding:clamp(48px,8vh,96px) var(--page-edge,80px) clamp(20px,4vh,40px);gap:clamp(20px,3.5vh,40px)}
+.ctg__head{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;max-width:760px}
+.ctg__title{font-family:var(--ctg-head);font-weight:600;font-size:var(--head-size,56px);line-height:1.125;letter-spacing:-.01em;
+  background:var(--ctg-grad);-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content;text-wrap:balance}
+.ctg__sub{font-size:17px;line-height:26px;font-weight:500;color:var(--ctg-sub);max-width:52ch}
 
-/* each slot is a stretch of scroll; its card sticks a step lower than the one before */
-.ctg__deck{position:relative;display:flex;flex-direction:column;padding-bottom:clamp(8px,2vw,24px)}
-.ctg__slot{position:sticky;top:calc(var(--ctg-top) + var(--i) * var(--ctg-step));height:var(--ctg-card-h);margin-bottom:clamp(120px,24vh,240px)}
-.ctg__slot:last-child{margin-bottom:0}
-.ctg__slot .ctg-card{transform-origin:50% 0%;
-  transform:translateY(calc(var(--ctg-sink,0) * -14px)) scale(calc(1 - var(--ctg-sink,0) * .05));
-  filter:brightness(calc(1 - min(var(--ctg-sink,0),3) * .025))}
+/* the bento: the AI card down the left, the fundamentals across the top right, the other two beneath */
+.ctg__bento{flex:1 1 auto;min-height:0;width:min(100%,1240px);display:grid;gap:12px;
+  grid-template-columns:1.15fr 1fr 1fr;grid-template-rows:1fr 1fr;perspective:1600px}
+.ctg__tile{position:relative;min-height:0;transform-style:preserve-3d;will-change:transform}
+.ctg__tile--a{grid-column:1;grid-row:1 / span 2}
+.ctg__tile--b{grid-column:2 / span 2;grid-row:1}
+.ctg__tile--c{grid-column:2;grid-row:2}
+.ctg__tile--d{grid-column:3;grid-row:2}
+/* one block: large corners on the outside, small ones where the cards meet */
+.ctg__tile--a .ctg-card{border-radius:36px 10px 10px 36px}
+.ctg__tile--b .ctg-card{border-radius:10px 36px 10px 10px}
+.ctg__tile--c .ctg-card{border-radius:10px}
+.ctg__tile--d .ctg-card{border-radius:10px 10px 36px 10px}
 
 /* ---------- cards (content from the live "We train you for…" section) ---------- */
-.ctg-card{position:relative;height:100%;overflow:hidden;border-radius:24px;
-  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto 1fr;column-gap:clamp(16px,2vw,32px);
-  padding:clamp(22px,2.4vw,40px);box-shadow:0 30px 50px -40px rgba(11,30,64,.35),0 14px 30px -22px rgba(11,30,64,.08)}
-.ctg-card > .ctg-card__copy{grid-column:1;grid-row:1}
-.ctg-card > .ctg-card__art,.ctg-card > .ctg-card__viz{grid-column:2;grid-row:1 / span 2;align-self:stretch}
-.ctg-card > .ctg-card__note{grid-column:1;grid-row:2;align-self:end;justify-self:start}
+.ctg-card{position:relative;height:100%;overflow:hidden;border-radius:24px;display:flex;flex-direction:column;
+  padding:clamp(18px,1.8vw,30px);box-shadow:0 30px 50px -40px rgba(11,30,64,.35),0 14px 30px -22px rgba(11,30,64,.08)}
+.ctg-card--hero{align-items:center}
+/* the wide fundamentals card: words on the left, the stack on the right */
+.ctg__tile--b .ctg-card{display:grid;grid-template-columns:1fr 1fr;align-items:center;column-gap:24px}
 .ctg-card--hero{background:linear-gradient(165deg,#f9f5fe 5.8%,#fff 94.2%);border:1px solid rgba(32,0,71,.1)}
 .ctg-card--fund{background:linear-gradient(165deg,#fff 12.3%,#f2f4fb 87.7%);border:1px solid rgba(0,14,70,.1)}
 .ctg-card--curr{background:linear-gradient(165deg,#fff 10%,#f2fde0 100%);border:1px solid rgba(53,81,0,.1)}
 .ctg-card--prep{background:linear-gradient(165deg,#fff 14%,#f9f6f0 86%);border:1px solid rgba(0,14,70,.1)}
 
 .ctg-card__copy{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;align-self:stretch}
-.ctg-card__h{font-family:var(--ctg-head);font-size:clamp(22px,2vw,30px);line-height:1.2;font-weight:600;letter-spacing:-.01em;color:var(--ctg-ink)}
-.ctg-card__p{font-size:clamp(14px,1.1vw,16px);line-height:1.45;color:var(--ctg-muted)}
+.ctg-card__h{font-family:var(--ctg-head);font-size:clamp(18px,1.6vw,26px);line-height:1.2;font-weight:600;letter-spacing:-.01em;color:var(--ctg-ink)}
+.ctg-card__p{font-size:clamp(13px,1vw,15px);line-height:1.45;color:var(--ctg-muted)}
 
 .ctg-card__art{flex:1;width:100%;display:flex;align-items:center;justify-content:center;min-height:0;margin:4px 0}
 .ctg-card__art svg{width:108%;height:auto;max-height:100%;overflow:visible}
@@ -72,8 +76,8 @@
 .ctg-card__note svg{flex:0 0 auto}
 
 .ctg-card__viz{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
-.ctg-card__viz-in{transform:scale(var(--ctg-vs,1.25))}
-.ctg-card__viz--stack .ctg-card__viz-in{display:flex;flex-direction:column;align-items:flex-end;gap:9px;transform:scale(var(--ctg-vs,1.25)) skewY(-5deg)}
+.ctg-card__viz-in{transform:scale(var(--ctg-vs,1.1))}
+.ctg-card__viz--stack .ctg-card__viz-in{display:flex;flex-direction:column;align-items:flex-end;gap:9px;transform:scale(var(--ctg-vs,1.1)) skewY(-5deg)}
 .ctg-card__slab{width:var(--ctg-w);padding:9px 13px;border-radius:12px;text-align:center;white-space:nowrap;font-size:12.5px;font-weight:500;
   letter-spacing:-.01em;color:#3b5bd9;background:linear-gradient(#fff,#e9efff);border:1px solid rgba(40,70,180,.16);
   box-shadow:0 8px 16px -12px rgba(25,55,150,.65)}
@@ -101,23 +105,23 @@
 @keyframes ctg-float{50%{translate:0 -6px}}
 .ctg-card.ctg-is-shown .ctg-card-node{animation:ctg-float 6s ease-in-out var(--ctg-d,0s) infinite}
 
-/* ---------- tablet / phone: the heading on top, the deck under it, each card text over picture ---------- */
+/* ---------- tablet / phone: no hold; heading, then the cards one under another, each flying in ---------- */
 @media (max-width:900px){
-  .ctg{grid-template-columns:1fr;padding:var(--sec-y,80px) 20px 0;--ctg-top:72px;--ctg-step:14px;--ctg-card-h:min(560px,calc(100svh - 120px))}
-  .ctg__hero{position:static}
-  .ctg__head{gap:12px}
+  .ctg{height:auto}
+  .ctg__pin{position:relative;height:auto;padding:var(--sec-y,80px) 20px 0}
   .ctg__title{font-size:34px}
   .ctg__sub{font-size:15px;line-height:1.45}
-  .ctg-card{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
-  .ctg-card > .ctg-card__art,.ctg-card > .ctg-card__viz{grid-column:1;grid-row:2}
-  .ctg-card > .ctg-card__note{grid-column:1;grid-row:3}
+  .ctg__bento{display:flex;flex-direction:column;gap:12px}
+  .ctg__tile{min-height:380px}
+  .ctg__tile .ctg-card{border-radius:24px!important}
+  .ctg__tile--b .ctg-card{display:flex}
   .ctg-card__h{font-size:22px}
-  .ctg-card__viz-in{--ctg-vs:1}
 }
 
 @media (prefers-reduced-motion:reduce){
-  .ctg__slot{position:relative;top:auto;margin-bottom:24px}
-  .ctg__slot .ctg-card{transform:none;filter:none}
+  .ctg{height:auto}
+  .ctg__pin{position:relative;height:auto;min-height:100svh}
+  .ctg__tile{transform:none!important}
   .ctg-card-a{opacity:1!important;transform:none!important;transition:none}
   .ctg-card-wire{stroke-dashoffset:0;transition:none}
   .ctg-card.ctg-is-shown .ctg-card-node{animation:none}

@@ -1,8 +1,8 @@
-/* NxtWave · 3,000+ companies hire NxtWave learners
-   Builds the four logo rows inside every <section class="nw-hire">: rows 1 & 3 drift left, rows 2 & 4
-   right, at the same pace. The drift runs on Web Animations so the scroll can push it: scrolling past
-   quickly speeds the rows up and they ease back to their own pace. The plane they sit on stands up
-   as the section scrolls in, and the count in the heading runs up to 3,000 when it arrives.
+/* NxtWave · 3,000+ companies hire NxtWave learners (variation 2) — the orbits.
+   Every logo from ROWS becomes a round badge on one of three tilted orbits around the heading. Each
+   frame the badges are placed on their ellipse; the orbit's back half sits behind the heading, smaller
+   and fainter, so the rings read in depth. The orbits open out from the middle as the section comes
+   up, turn on their own, alternate ways, and spin a little faster while the page is scrolled quickly.
    Logo folder comes from the section's data-logo-path (default "logos/"). */
 (function () {
   var ROWS = [
@@ -11,101 +11,63 @@
     [['cyient','Cyient'],['hcl','HCL'],['tata-elxsi','Tata Elxsi'],['needl-ai','needl.ai'],['fareportal','Fareportal'],['cognizant','Cognizant'],['cgi','CGI'],['merkle','Merkle Sokrati'],['mindtree','Mindtree']],
     [['delhivery','Delhivery'],['fractal','Fractal'],['napier','Napier Healthcare'],['gep','GEP'],['prodapt','Prodapt'],['tanla','Tanla'],['globallogic','GlobalLogic'],['ntt-data','NTT Data']]
   ];
-
-  var SPEED = 38;                                   // px per second at rest
-  var AREA = 78 * 26.5 * 1.15 * 0.81, MAX_W = 108, MAX_H = 36;
+  var ALL = [].concat.apply([], ROWS);
+  // three orbits: [share of the box's half-width, half-height, badges on it, turns per minute, badge size]
+  var ORBITS = [[.28, .25, 9, 1.4, 84], [.38, .35, 12, -1.0, 96], [.48, .45, 14, .75, 106]];
   var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function fit(img) {
-    var ar = img.naturalWidth / img.naturalHeight || 3;
-    var w = Math.sqrt(AREA * ar);
-    if (w / ar > MAX_H) w = MAX_H * ar;
-    img.style.setProperty('--w', Math.min(w, MAX_W).toFixed(1));
-  }
-
-  function card(path, logo, hidden) {
-    return '<div class="nw-hire__card"' + (hidden ? ' aria-hidden="true"' : '') + '>' +
-      '<img src="' + path + logo[0] + '.svg" alt="' + (hidden ? '' : logo[1]) + '" decoding="async"></div>';
-  }
-
-  function build(section) {
-    var host = section.querySelector('.nw-hire__rows');
-    if (!host) return [];
-    (section._anims || []).forEach(function (a) { a.cancel(); });
-    var path = section.getAttribute('data-logo-path') || 'logos/';
-    var cs = getComputedStyle(section);
-    var cardW = parseFloat(cs.getPropertyValue('--nw-hire-card-w')) || 151.5;
-    var gap = parseFloat(cs.getPropertyValue('--nw-hire-gap')) || 16;
-    var need = Math.max(window.innerWidth, 1440) * 1.3 + cardW * 2;   // the tipped plane shows more than the screen
-
-    host.innerHTML = ROWS.map(function (logos) {
-      var set = logos.slice();
-      while (set.length * (cardW + gap) < need) set = set.concat(logos);
-      var a = set.map(function (l, j) { return card(path, l, j >= logos.length); }).join('');
-      var b = set.map(function (l) { return card(path, l, true); }).join('');
-      return '<div class="nw-hire__row"><div class="nw-hire__track">' + a + b + '</div></div>';
-    }).join('');
-
-    host.querySelectorAll('img').forEach(function (img) {
-      if (img.complete && img.naturalWidth) fit(img);
-      else img.addEventListener('load', function () { fit(img); }, { once: true });
-    });
-
-    if (RM || !host.animate) return (section._anims = []);
-    section._anims = [].map.call(host.querySelectorAll('.nw-hire__track'), function (t, i) {
-      var half = t.scrollWidth / 2 + gap / 2;
-      var anim = t.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(' + (-half) + 'px)' }],
-        { duration: half / SPEED * 1000, iterations: Infinity, direction: i % 2 ? 'reverse' : 'normal' });
-      anim.currentTime = (i * 7919) % (half / SPEED * 1000);   // rows start at different points
-      return anim;
-    });
-    return section._anims;
-  }
-
-  // the count runs up to the number written in the heading
-  function count(el) {
-    var end = parseInt(el.textContent.replace(/\D/g, ''), 10) || 0;
-    if (RM || !end) return;
-    var fmt = function (n) { return n.toLocaleString('en-US'); };
-    el.style.minWidth = el.offsetWidth + 'px';
-    el.textContent = '0';
-    var t0 = 0, D = 1600;
-    var step = function (t) {
-      if (!t0) t0 = t;
-      var k = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - k, 4);
-      el.textContent = fmt(Math.round(end * e));
-      if (k < 1) requestAnimationFrame(step); else el.style.minWidth = '';
-    };
-    requestAnimationFrame(step);
-  }
-
   function init() {
-    var sections = document.querySelectorAll('.nw-hire');
-    sections.forEach(build);
-    var lastW = window.innerWidth;
-    window.addEventListener('resize', function () {
-      if (Math.abs(window.innerWidth - lastW) > 120) { lastW = window.innerWidth; sections.forEach(build); }
+    var sec = document.querySelector('.nw-hire');
+    if (!sec) return;
+    var host = sec.querySelector('.nw-hire__orbits');
+    var sky = sec.querySelector('.nw-hire__sky');
+    var path = sec.getAttribute('data-logo-path') || 'logos/';
+    var badges = [], k = 0;
+    ORBITS.forEach(function (o, ring) {
+      for (var j = 0; j < o[2] && k < ALL.length; j++, k++) {
+        var li = document.createElement('li');
+        li.className = 'nw-hire__badge';
+        li.style.setProperty('--b', o[4] + 'px');
+        li.innerHTML = '<img src="' + path + ALL[k][0] + '.svg" alt="' + ALL[k][1] + '" decoding="async">';
+        host.appendChild(li);
+        badges.push({ el: li, ring: ring, a0: (j / o[2]) * Math.PI * 2 + ring * .4 });
+      }
     });
 
-    var M = window.NWMotion;
-    sections.forEach(function (sec) {
-      var num = sec.querySelector('.nw-hire__num');
-      if (num && M) M.once(num, function () { setTimeout(function () { count(num); }, 250); });
-      if (!M || M.RM) { sec.style.setProperty('--nw-tilt', 0); return; }
-      var stage = sec.querySelector('.nw-hire__stage');
-      var rate = 1;
-      M.scene({
-        el: sec,
-        read: function () { return M.progress(stage, 1, .38); },
-        write: function (p, f) {
-          var e = 1 - Math.pow(1 - p, 3);
-          sec.style.setProperty('--nw-tilt', (1 - e).toFixed(4));
-          // scroll speed leans on the drift, then lets go
-          var want = 1 + Math.min(5, Math.abs(f.vel) / 6);
-          rate += (want - rate) * 0.08;
-          (sec._anims || []).forEach(function (a) { a.playbackRate = rate; });
-        },
-      });
+    var W = 0, H = 0, small = false;
+    var measure = function () { W = sky.clientWidth; H = sky.clientHeight; small = innerWidth < 760; };
+    measure();
+    addEventListener('resize', measure);
+
+    var M = window.NWMotion, spin = 0, last = performance.now(), boost = 1, open = RM ? 1 : 0;
+    var place = function () {
+      for (var i = 0; i < badges.length; i++) {
+        var b = badges[i], o = ORBITS[b.ring];
+        var a = b.a0 + spin * o[3];
+        // on a phone the orbits stand upright (taller than wide)
+        var rx = (small ? o[1] * 1.15 : o[0]) * W, ry = (small ? o[0] * 1.15 : o[1]) * H;
+        var r = .25 + .75 * open;                 // open out from the middle
+        var x = W / 2 + Math.cos(a) * rx * r, y = H / 2 + Math.sin(a) * ry * r;
+        var depth = (Math.sin(a) + 1) / 2;         // 0 at the back (top), 1 at the front (bottom)
+        var s = (small ? .5 : .72) + depth * (small ? .3 : .38);
+        b.el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + (s * (.6 + .4 * open)).toFixed(3) + ')';
+        b.el.style.opacity = ((.35 + depth * .65) * open).toFixed(3);
+        b.el.style.zIndex = depth > .5 ? 60 : 10;  // the front half passes in front of the heading
+      }
+    };
+    if (RM || !M) { place(); return; }
+
+    M.scene({
+      el: sec,
+      read: function () { return M.progress(sky, 1, .25); },
+      write: function (p, f) {
+        var now = performance.now(), dt = Math.min(64, now - last) / 1000; last = now;
+        boost += ((1 + Math.min(6, Math.abs(f.vel) / 5)) - boost) * .06;
+        spin += dt * (Math.PI * 2 / 60) * boost;       // one turn a minute at rest, scaled per orbit
+        open = 1 - Math.pow(1 - p, 3);
+        sec.style.setProperty('--nw-open', open.toFixed(3));
+        place();
+      },
     });
   }
 

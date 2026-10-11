@@ -1,7 +1,7 @@
-/* Career Transformations — a pinned, curved reel of learner stories. Everything is scoped under .ctw.
-   The section is as tall as the reel is long (career-transformations.js sets --ctw-run); .ctw-pin sticks
-   for that length while the reel moves sideways. Each column is turned by the script according to where
-   it sits on screen, so the row reads as a curved screen rather than a flat strip. */
+/* Career Transformations (variation 2) — a tilted wall of drifting columns. Scoped under .ctw.
+   Written stories are speech bubbles (one sharp corner where the voice comes from), video stories
+   are capsules. career-transformations.js drives the drift and writes --ctw-lean (1 → 0) as the
+   section scrolls through, standing the wall a little more upright. */
 .ctw{
   --bg:#ffffff;
   --ink:#1a2330;
@@ -10,83 +10,77 @@
   --pill-bg:#d9f8ea;
   --pill-ink:#00693a;
   --gap:16px;
-  --ctw-cw:clamp(220px,18.5vw,272px);                       /* column width */
-  --ctw-ch:clamp(360px,calc(100svh - 300px),520px);         /* column height */
-  --ctw-run:200vh;
-  position:relative;height:calc(100svh + var(--ctw-run));
-  background:var(--bg);color:var(--ink);
-  font-family:var(--font);font-weight:500;
-}
-.ctw,.ctw *{box-sizing:border-box;margin:0;padding:0}
+  --ctw-cw:clamp(200px,15vw,236px);
+  --ctw-lean:1;
+  position:relative;min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:500;
+  display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);align-items:center;
+  padding:var(--sec-y) 0 0 var(--page-edge);overflow:hidden}
+:where(.ctw),:where(.ctw) *{box-sizing:border-box;margin:0;padding:0}
 .ctw img,.ctw video{max-width:none}
 
-.ctw-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
-  display:flex;flex-direction:column;justify-content:center;gap:clamp(28px,5vh,56px);padding:clamp(56px,8vh,96px) 0 clamp(24px,4vh,48px)}
+.ctw-heading{position:relative;z-index:4;display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,4vh,40px)}
+.ctw-heading-text{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.ctw-heading h2{font-size:min(var(--head-size),4.2vw)!important}
+.ctw-heading-sub{max-width:280px}
+.ctw-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;background:#2563eb;color:#fff;text-decoration:none;
+  font-size:15px;line-height:20px;font-weight:500;box-shadow:0 18px 30px -18px rgba(37,99,235,.8);transition:background-color .25s,transform .4s var(--ease)}
+.ctw-cta:hover{background:#1d4ed8;transform:translateY(-2px)}
+.ctw-cta:focus-visible{outline:2px solid #2563eb;outline-offset:4px}
 
-/* heading on the content line, subline beside it */
-.ctw-heading{padding-inline:var(--page-edge)}
-.ctw-heading-text{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 48px;flex-wrap:wrap}
-.ctw-heading h2{max-width:100%}
-.ctw-heading-sub{max-width:300px;margin-bottom:.5em}
-
-/* the reel */
-.ctw-reel{position:relative;perspective:1600px;perspective-origin:50% 50%}
-.ctw-reel::before,.ctw-reel::after{content:"";position:absolute;top:-24px;bottom:-24px;width:clamp(24px,7vw,120px);z-index:3;pointer-events:none}
-.ctw-reel::before{left:0;background:linear-gradient(90deg,#fff 10%,rgba(255,255,255,0))}
-.ctw-reel::after{right:0;background:linear-gradient(270deg,#fff 10%,rgba(255,255,255,0))}
-.ctw-images{display:flex;align-items:flex-start;gap:var(--gap);width:max-content;padding-inline:var(--page-edge);
+/* the wall: tipped back and turned, the columns running past each other */
+.ctw-wall{position:relative;height:clamp(620px,100svh,900px);perspective:1400px;perspective-origin:30% 40%}
+/* white veils across the top and foot of the section: the columns come out of the page and go back into it */
+.ctw::before,.ctw::after{content:"";position:absolute;left:0;right:0;z-index:3;pointer-events:none}
+.ctw::before{top:0;height:calc(var(--sec-y) + 12%);background:linear-gradient(180deg,#fff 45%,rgba(255,255,255,0))}
+.ctw::after{bottom:0;height:16%;background:linear-gradient(0deg,#fff 25%,rgba(255,255,255,0))}
+/* and a soft white field behind the heading */
+.ctw-heading::before{content:"";position:absolute;inset:-30% -40% -30% -30%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,255,255,.95) 55%,rgba(255,255,255,0))}
+.ctw-images{position:absolute;left:16%;top:-30%;height:160%;display:flex;align-items:flex-start;gap:var(--gap);
+  transform-origin:30% 50%;
+  transform:rotateX(calc(var(--ctw-lean) * 22deg + 6deg)) rotateZ(calc(var(--ctw-lean) * -14deg - 4deg)) rotateY(calc(var(--ctw-lean) * -10deg));
   transform-style:preserve-3d;will-change:transform}
-.ctw-col{flex:none;width:var(--ctw-cw);height:var(--ctw-ch);display:flex;flex-direction:column;gap:var(--gap);
-  transform-style:preserve-3d;will-change:transform;backface-visibility:hidden}
-.ctw-col:nth-child(even){margin-top:clamp(16px,3vh,32px)}
-.ctw-col:nth-child(odd){margin-bottom:clamp(16px,3vh,32px)}
+.ctw-col{flex:none;width:var(--ctw-cw);overflow:visible}
+.ctw-col:nth-child(even){margin-top:calc(var(--ctw-cw) * .6)}
+.ctw-track{display:flex;flex-direction:column;gap:var(--gap);will-change:transform}
 
-/* text story */
-.ctw-card-text{flex:1 1 0;min-height:0;overflow:hidden;
-  background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
-  padding:16px;display:flex;flex-direction:column;gap:14px;
-  box-shadow:0 18px 30px -28px rgba(11,30,64,.35)}
+/* written story: a speech bubble */
+.ctw-card-text{position:relative;background:#fff;border:1px solid var(--border);border-radius:22px 22px 22px 4px;
+  padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 18px 30px -26px rgba(11,30,64,.4)}
+.ctw-card-text:nth-child(3n+2){border-radius:22px 22px 4px 22px}
 .ctw-card-text .ctw-top{display:flex;align-items:center;justify-content:space-between}
-.ctw-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--avatar-bg)}
+.ctw-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;background:var(--avatar-bg)}
 .ctw-avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .ctw-pill{background:var(--pill-bg);color:var(--pill-ink);font-size:12px;line-height:20px;padding:2px 8px;border-radius:100px;white-space:nowrap}
-.ctw-who{display:flex;flex-direction:column;gap:4px;margin-top:-4px}
+.ctw-who{display:flex;flex-direction:column;gap:4px}
 .ctw-name{font-size:15px;line-height:21px}
 .ctw-logo{height:18px;width:auto;max-width:110px;object-fit:contain;object-position:left center;display:block}
-.ctw-quote{font-size:13px;line-height:20px;color:#334155;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:6;overflow:hidden}
+.ctw-quote{font-size:13px;line-height:20px;color:#334155}
 
-/* video story: the whole column */
-.ctw-card-video{position:relative;flex:1 1 0;min-height:0;border-radius:var(--r-md);overflow:hidden;
-  background:#0f172a;color:#fff;cursor:pointer;isolation:isolate}
+/* video story: a capsule */
+.ctw-card-video{position:relative;aspect-ratio:9/16;border-radius:999px;overflow:hidden;background:#0f172a;color:#fff;cursor:pointer;isolation:isolate}
 .ctw-card-video img.ctw-still,.ctw-card-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ctw-card-video video{opacity:0;transition:opacity .3s ease}
 .ctw-card-video.ctw-playing video{opacity:1}
-.ctw-card-video .ctw-shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,.1) 45%,rgba(0,0,0,.9) 100%)}
-.ctw-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;
-  background:rgba(255,255,255,.85);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);display:grid;place-items:center;
-  transition:opacity .3s ease,transform .3s ease}
+.ctw-card-video .ctw-shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,.08) 45%,rgba(0,0,0,.88) 100%)}
+.ctw-play{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;
+  background:rgba(255,255,255,.85);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);display:grid;place-items:center;transition:opacity .3s,transform .3s}
 .ctw-card-video.ctw-playing .ctw-play{opacity:0;transform:translate(-50%,-50%) scale(.85)}
-.ctw-card-video .ctw-overlay{position:absolute;left:0;right:0;bottom:0;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ctw-card-video .ctw-overlay{position:absolute;left:0;right:0;bottom:14%;padding:0 18px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.ctw-card-video .ctw-who{align-items:center}
+.ctw-card-video .ctw-logo{object-position:center}
 
-/* the reel ends on View All */
-.ctw-end{flex:none;width:var(--ctw-cw);height:var(--ctw-ch);display:grid;place-items:center}
-.ctw-cta{display:inline-flex;align-items:center;justify-content:center;
-  width:clamp(140px,11vw,168px);aspect-ratio:1;border-radius:50%;
-  background:#2563eb;color:#fff;text-decoration:none;font-size:16px;line-height:20px;font-weight:500;
-  box-shadow:0 24px 40px -22px rgba(37,99,235,.8);
-  transition:background-color .25s ease,transform .5s var(--ease)}
-.ctw-cta:hover{background:#1d4ed8;transform:scale(1.06)}
-.ctw-cta:focus-visible{outline:2px solid #2563eb;outline-offset:4px}
-
-@media (max-width:809px){
-  .ctw{--ctw-cw:min(68vw,260px);--ctw-ch:clamp(340px,calc(100svh - 260px),460px);--gap:12px}
-  .ctw-heading-text{flex-direction:column;align-items:flex-start}
-  .ctw-heading-sub{margin:0}
+@media (max-width:900px){
+  .ctw{grid-template-columns:1fr;padding:var(--sec-y) 0 0;min-height:0}
+  .ctw-heading{padding:0 var(--page-pad)}
+  .ctw-heading h2{font-size:var(--head-size)!important}
+  .ctw-wall{height:clamp(520px,80svh,720px);margin-top:16px;overflow:hidden}
+  .ctw{--ctw-cw:min(44vw,200px);--gap:12px}
+  .ctw-images{left:4%;top:-20%}
+  .ctw::before{height:0}
 }
-
 @media (prefers-reduced-motion:reduce){
-  .ctw{height:auto}
-  .ctw-pin{position:relative;height:auto}
-  .ctw-reel{overflow-x:auto}
-  .ctw-col{transform:none!important}
+  .ctw-images{transform:none;position:relative;top:0;left:0;height:auto}
+  .ctw-wall{overflow:hidden}
+  .ctw::before,.ctw::after{display:none}
 }

@@ -77,17 +77,22 @@
         </div>
       </article>`;
 
-    // columns: a video story at every 2nd and 4th place of each run of five, text stories in pairs between
+    // four columns, each with two video capsules among six speech bubbles; every learner appears once.
+    // Each column holds its stories twice so the drift can loop without a seam.
     const track = root.querySelector('.ctw-images');
-    const end = root.querySelector('.ctw-end');
-    let qi = 0, vi = 0, html = '';
-    for (let c = 0; qi < QUOTES.length || vi < VIDEOS.length; c++) {
-      const wantVideo = (c % 5 === 1 || c % 5 === 3) && vi < VIDEOS.length;
-      if (wantVideo || qi >= QUOTES.length) html += `<div class="ctw-col ctw-col--video">${videoCard(VIDEOS[vi++])}</div>`;
-      else { html += `<div class="ctw-col">${textCard(QUOTES[qi++])}${qi < QUOTES.length ? textCard(QUOTES[qi++]) : ''}</div>`; }
+    const COLS = innerWidth < 900 ? 2 : 4;
+    const cols = Array.from({ length: COLS }, () => []);
+    let qi = 0, vi = 0;
+    for (let n = 0; qi < QUOTES.length || vi < VIDEOS.length; n++) {
+      // a video at one place in every row of four, stepping a column each row: two per column
+      const video = vi < VIDEOS.length && (n % 4 === Math.floor(n / 4) % 4 || qi >= QUOTES.length);
+      cols[n % COLS].push(video ? videoCard(VIDEOS[vi++]) : textCard(QUOTES[qi++]));
     }
-    end.insertAdjacentHTML('beforebegin', html);
-    const cols = [...track.children];
+    track.innerHTML = cols.map(list => {
+      const once = list.join('');
+      const copy = once.replace(/<article /g, '<article aria-hidden="true" ');
+      return `<div class="ctw-col"><div class="ctw-track">${once}${copy}</div></div>`;
+    }).join('');
 
     // video stories play muted and looping while on screen, and pause when they leave
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -105,42 +110,39 @@
           v.play().then(() => card.classList.add('ctw-playing')).catch(() => {});
         } else if (v) v.pause();
       }
-    }, { rootMargin: '0px 120px', threshold: 0.2 });
+    }, { threshold: 0.25 });
     if (playIO) root.querySelectorAll('.ctw-card-video').forEach(card => playIO.observe(card));
 
     const M = window.NWMotion;
-    if (!M || M.RM) return;
+    if (!M || M.RM || !track.animate) return;
 
-    // the vertical scroll the reel takes = how far the row runs past the screen
-    let shift = 0, geo = [];
-    const measure = () => {
-      track.style.transform = 'none';
-      shift = Math.max(0, track.scrollWidth - innerWidth);
-      root.style.setProperty('--ctw-run', shift + 'px');
-      geo = cols.map(c => ({ el: c, mid: c.offsetLeft + c.offsetWidth / 2 }));
+    // the drift: odd columns rise, even columns fall, each at its own pace
+    const PACE = [38, 30, 44, 34];               // px per second
+    let anims = [];
+    const build = () => {
+      anims.forEach(a => a.cancel());
+      anims = [...track.querySelectorAll('.ctw-track')].map((t, i) => {
+        const half = t.scrollHeight / 2 + 8;
+        const a = t.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${-half}px)` }],
+          { duration: half / PACE[i % PACE.length] * 1000, iterations: Infinity, direction: i % 2 ? 'reverse' : 'normal' });
+        a.currentTime = (i * 5231) % (half / PACE[i % PACE.length] * 1000);
+        return a;
+      });
     };
-    measure();
-    addEventListener('resize', measure);
-    addEventListener('load', measure);
-    document.fonts && document.fonts.ready.then(measure);
+    build();
+    addEventListener('load', build);
 
-    let x = 0, lean = 0;
+    let rate = 1, hover = false;
+    root.addEventListener('pointerenter', () => { hover = true; });
+    root.addEventListener('pointerleave', () => { hover = false; });
     M.scene({
       el: root,
-      read: () => M.pin(root),
+      read: () => M.progress(root, 1, -.6),
       write: (p, f) => {
-        // a little lag on the row so it glides, and a lean into the direction of travel
-        const want = -p * shift;
-        x += (want - x) * 0.14;
-        if (Math.abs(want - x) < .1) x = want;
-        lean += (Math.max(-5, Math.min(5, -f.vel * .12)) - lean) * .1;
-        track.style.transform = `translate3d(${x.toFixed(1)}px,0,0) skewX(${lean.toFixed(2)}deg)`;
-        // the curve: columns turn away and step back as they near either edge
-        const W = f.vw;
-        for (const g of geo) {
-          const n = Math.max(-1.3, Math.min(1.3, ((g.mid + x) - W / 2) / (W / 2)));
-          g.el.style.transform = `translateZ(${(-Math.abs(n) * Math.abs(n) * 110).toFixed(1)}px) rotateY(${(-n * 16).toFixed(2)}deg)`;
-        }
+        root.style.setProperty('--ctw-lean', (1 - p * .7).toFixed(4));
+        const want = (hover ? .35 : 1) + Math.min(5, Math.abs(f.vel) / 6);
+        rate += (want - rate) * .08;
+        anims.forEach(a => { a.playbackRate = rate; });
       },
     });
   }

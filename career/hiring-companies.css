@@ -1,65 +1,42 @@
-/* NxtWave · 3,000+ companies hire NxtWave learners
-   The heading on the content line, the subline beside it. Under them the four rows of logo cards sit
-   on a plane that starts tipped back, away from the reader, and stands up as the section scrolls in
-   (career/hiring-companies.js writes --nw-tilt 1 → 0). Everything is scoped under .nw-hire. */
+/* NxtWave · 3,000+ companies hire NxtWave learners (variation 2)
+   The heading at the centre of three tilted orbits of round logo badges (career/hiring-companies.js
+   places every badge each frame). --nw-open 0 → 1 opens the orbits out from the middle. */
 .nw-hire{
-  --nw-hire-bg:#ffffff;
   --nw-hire-sub:#3b4a63;
-  --nw-hire-card-bg:#ffffff;
   --nw-hire-card-border:#e9e9e9;
-  --nw-hire-card-w:151.5px;
-  --nw-hire-card-h:90.9px;
-  --nw-hire-gap:16px;
-  --nw-tilt:1;
-  position:relative;
-  padding:var(--sec-y) 0 clamp(48px,5vw,80px);
-  overflow:hidden;
-  background:var(--nw-hire-bg);
-  -webkit-font-smoothing:antialiased;
-}
+  --nw-open:0;
+  position:relative;padding:var(--sec-y) 0 clamp(24px,3vw,48px);overflow:hidden;background:#fff;-webkit-font-smoothing:antialiased}
 .nw-hire *,.nw-hire *::before,.nw-hire *::after{box-sizing:border-box}
 
-/* heading left, subline right, on one baseline */
-.nw-hire__head{width:min(calc(100% - 2 * var(--page-pad)),var(--page-max));margin:0 auto;
-  display:flex;align-items:flex-end;justify-content:space-between;gap:24px 48px;flex-wrap:wrap;text-align:left}
-.nw-hire__title{margin:0;max-width:13.5ch}
-.nw-hire__num{font-variant-numeric:tabular-nums}
-.nw-hire__sub{margin:0 0 .5em;max-width:320px;font-size:var(--sub-size);line-height:1.5;color:var(--nw-hire-sub)}
+.nw-hire__sky{position:relative;width:min(100%,1400px);height:clamp(560px,78vh,800px);margin:0 auto}
+/* faint guide lines for the three orbits */
+.nw-hire__sky::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:calc(var(--nw-open) * .9);
+  background:
+    radial-gradient(closest-side,transparent calc(100% - 1px),#e8edf7 calc(100% - 1px),#e8edf7 100%,transparent 100%) 50% 50% / 56% 50% no-repeat,
+    radial-gradient(closest-side,transparent calc(100% - 1px),#eef2f9 calc(100% - 1px),#eef2f9 100%,transparent 100%) 50% 50% / 76% 70% no-repeat,
+    radial-gradient(closest-side,transparent calc(100% - 1px),#f2f5fb calc(100% - 1px),#f2f5fb 100%,transparent 100%) 50% 50% / 96% 90% no-repeat}
 
-/* the plane */
-.nw-hire__stage{position:relative;margin-top:var(--head-gap);perspective:1100px;perspective-origin:50% -20%}
-.nw-hire__rows{position:relative;display:flex;flex-direction:column;gap:var(--nw-hire-gap);
-  transform-origin:50% 0%;
-  transform:rotateX(calc(var(--nw-tilt) * 64deg)) translateZ(calc(var(--nw-tilt) * -120px)) scale(calc(1 + var(--nw-tilt) * .18));
-  opacity:calc(1 - var(--nw-tilt) * .55);
-  will-change:transform}
-/* white edges: the rows come out of the page and go back into it */
-.nw-hire__stage::before,.nw-hire__stage::after{content:"";position:absolute;top:-40px;bottom:-40px;width:clamp(40px,12vw,200px);z-index:2;pointer-events:none}
-.nw-hire__stage::before{left:0;background:linear-gradient(90deg,var(--nw-hire-bg) 15%,rgba(255,255,255,0))}
-.nw-hire__stage::after{right:0;background:linear-gradient(270deg,var(--nw-hire-bg) 15%,rgba(255,255,255,0))}
+.nw-hire__head{position:absolute;left:50%;top:50%;translate:-50% -50%;z-index:70;width:min(520px,80%);padding:18px;
+  background:radial-gradient(closest-side,rgba(255,255,255,.96) 60%,rgba(255,255,255,0));
+  display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.nw-hire__title{margin:0;text-wrap:balance}
+.nw-hire__sub{margin:0;font-size:var(--sub-size);line-height:1.5;color:var(--nw-hire-sub);max-width:340px}
 
-.nw-hire__row{overflow:visible}
-.nw-hire__track{display:flex;gap:var(--nw-hire-gap);width:max-content;will-change:transform}
-.nw-hire__row:nth-child(2){margin-left:calc(var(--nw-hire-card-w) * -.5)}
-.nw-hire__row:nth-child(4){margin-left:calc(var(--nw-hire-card-w) * -.35)}
+.nw-hire__orbits{list-style:none;margin:0;padding:0;position:absolute;inset:0}
+.nw-hire__badge{position:absolute;left:0;top:0;width:var(--b,84px);height:var(--b,84px);margin:calc(var(--b,84px) / -2) 0 0 calc(var(--b,84px) / -2);
+  border-radius:50%;background:#fff;border:1px solid var(--nw-hire-card-border);display:grid;place-items:center;padding:calc(var(--b,84px) * .18);
+  box-shadow:0 14px 28px -20px rgba(11,30,64,.35);will-change:transform,opacity;
+  transition:border-color .4s,box-shadow .4s}
+.nw-hire__badge:hover{border-color:#cfdcf5;box-shadow:0 18px 30px -18px rgba(29,78,216,.35)}
+.nw-hire__badge img{display:block;width:100%;height:calc(var(--b,84px) * .42);object-fit:contain}
 
-.nw-hire__card{flex:none;width:var(--nw-hire-card-w);height:var(--nw-hire-card-h);padding:12px;
-  background:var(--nw-hire-card-bg);border:.95px solid var(--nw-hire-card-border);border-radius:var(--r-sm);
-  display:flex;align-items:center;justify-content:center;
-  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s}
-.nw-hire__card:hover{transform:translateY(-4px);border-color:#d6def0;box-shadow:0 14px 26px -18px rgba(11,30,64,.35)}
-.nw-hire__card img{display:block;width:calc(var(--w) * 1px);max-width:100%;height:auto;max-height:100%;object-fit:contain}
-
-@media (max-width:900px){
-  .nw-hire__head{flex-direction:column;align-items:flex-start}
-  .nw-hire__sub{margin:0}
-}
-@media (max-width:640px){
-  .nw-hire{--nw-hire-card-w:120px;--nw-hire-card-h:72px;--nw-hire-gap:12px}
-  .nw-hire__card{padding:10px}
-  .nw-hire__card img{width:calc(var(--w) * .78px)}
-  .nw-hire__rows{transform:rotateX(calc(var(--nw-tilt) * 40deg)) scale(calc(1 + var(--nw-tilt) * .12))}
+@media (max-width:760px){
+  .nw-hire__sky{height:clamp(640px,92svh,760px)}
+  .nw-hire__head{width:min(320px,86%)}
+  .nw-hire__sky::before{display:none}
+  .nw-hire__title{font-size:30px!important}
+  .nw-hire__sub{font-size:15px}
 }
 @media (prefers-reduced-motion:reduce){
-  .nw-hire__rows{transform:none;opacity:1}
+  .nw-hire__badge{transition:none}
 }

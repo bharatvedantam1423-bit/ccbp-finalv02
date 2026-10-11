@@ -1,13 +1,12 @@
 /* =====================================================================
-   S3 — AWARDS & RECOGNITIONS
-   The heading and the recognising bodies on white, then the stage: a navy panel
-   (the award panel's own gradient) that pins while the scroll walks through the five
-   awards. It starts as an inset card and opens out to the full width; each trophy rises
-   out of the plinth under a spotlight while its name takes the left of the stage.
-   The press photographs follow, keeping their cut corner.
-   Progress is written by career/awards.js as custom properties on .rc-scene:
-     --rc-open  0 → 1   the stage opening out
-     --rc-p     0 → 1   progress through the five awards (drives the rail)
+   S3 — AWARDS & RECOGNITIONS (variation 2)
+   The heading and the recognising bodies on white. Below them a navy dome (the award panel's own
+   gradient, an arch over a flat foot) pins while the scroll turns a ring of five arched glass cases;
+   each award comes round to the front, holds, and its name settles underneath. The five names
+   below are tabs. The press photographs follow in slanted frames.
+   career/awards.js writes on .rc-scene:
+     --rc-turn  the ring's angle in cards (0 → 4, holding on each whole number)
+     --rc-rise  0 → 1   the dome rising into place
    ===================================================================== */
 .rc{
   --rc-navy-0:#060f22;
@@ -32,142 +31,103 @@
 .rc-recog picture{display:block}
 .rc-recog img{display:block;width:min(960px,100%);height:auto;margin-inline:auto}
 
-/* ---- the stage -------------------------------------------------------- */
-.rc-scene{--rc-open:0;--rc-p:0;position:relative;margin-top:var(--head-gap);height:calc(100svh + var(--rc-run,260vh))}
-.rc-pin{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-
-/* inset card → full bleed: the inset and the corner radius both close as the stage opens */
-.rc-stage{
-  --inset:calc((1 - var(--rc-open)) * clamp(16px,6vw,96px));
-  position:absolute;inset:calc(var(--inset) * .6) var(--inset);
-  border-radius:calc((1 - var(--rc-open)) * 40px);
-  overflow:hidden;isolation:isolate;color:#fff;
+/* ---- the dome ---------------------------------------------------------- */
+.rc-scene{--rc-turn:0;--rc-rise:0;position:relative;margin-top:var(--head-gap);height:calc(100svh + var(--rc-run,240vh))}
+.rc-pin{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:flex-end;justify-content:center;
+  padding:clamp(16px,3vh,32px) var(--page-pad) 0}
+.rc-dome{position:relative;width:min(100%,var(--page-max));height:calc(100% - clamp(8px,2vh,24px));
+  border-radius:50% 50% 0 0 / 34% 34% 0 0;
   background:
-    radial-gradient(70% 55% at 72% 108%,rgba(14,65,171,.95) 0%,rgba(14,65,171,0) 70%),
-    linear-gradient(176deg,var(--rc-navy-0) 0%,var(--rc-navy-1) 62%,var(--rc-navy-2) 112%);
-  display:grid;
-  grid-template-columns:minmax(0,min(44%,560px)) 1fr;
-  grid-template-rows:1fr auto;
-  column-gap:clamp(24px,4vw,72px);
-  padding:clamp(72px,11vh,120px) var(--page-edge) clamp(28px,5vh,48px);
-}
+    radial-gradient(45% 40% at 50% 46%,rgba(130,189,255,.22) 0%,rgba(130,189,255,0) 70%),
+    radial-gradient(60% 35% at 50% 108%,rgba(14,65,171,.9) 0%,rgba(14,65,171,0) 70%),
+    linear-gradient(180deg,var(--rc-navy-0) 0%,var(--rc-navy-1) 70%,var(--rc-navy-2) 115%);
+  color:#fff;overflow:hidden;isolation:isolate;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:clamp(12px,2.4vh,28px);
+  padding:0 clamp(16px,3vw,48px) clamp(20px,4vh,44px);
+  transform:translateY(calc((1 - var(--rc-rise)) * 18%)) scale(calc(.92 + var(--rc-rise) * .08));transform-origin:50% 100%}
+/* a fine field of points in the dome, drifting slowly */
+.rc-stars{position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:radial-gradient(1px 1px at 12% 22%,#82bdff 50%,transparent 51%),radial-gradient(1px 1px at 28% 12%,#fff 50%,transparent 51%),
+    radial-gradient(1.5px 1.5px at 44% 30%,#82bdff 50%,transparent 51%),radial-gradient(1px 1px at 63% 16%,#fff 50%,transparent 51%),
+    radial-gradient(1px 1px at 78% 26%,#82bdff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 88% 40%,#fff 50%,transparent 51%),
+    radial-gradient(1px 1px at 20% 44%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 70% 48%,#82bdff 50%,transparent 51%);
+  background-size:520px 420px;animation:rc-drift 60s linear infinite}
+@keyframes rc-drift{to{background-position:520px -420px}}
 
-/* the spotlight: a soft cone from above onto the trophy, flaring on each change (drawn by .rc-show::before) */
-.rc-floor{position:absolute;z-index:0;left:40%;right:0;bottom:0;height:38%;pointer-events:none;
-  background:radial-gradient(50% 60% at 50% 100%,rgba(130,189,255,.18),rgba(130,189,255,0) 70%)}
+/* ---- the ring of glass cases -------------------------------------------- */
+.rc-ring{--r:clamp(220px,24vw,360px);--cw:clamp(150px,14vw,210px);
+  position:relative;list-style:none;margin:0 0 auto;padding:0;flex:1 1 auto;width:100%;min-height:0;
+  perspective:1500px;perspective-origin:50% 30%;transform-style:preserve-3d}
+.rc-card{position:absolute;left:50%;bottom:18%;backface-visibility:hidden;width:var(--cw);height:calc(var(--cw) * 1.55);margin-left:calc(var(--cw) / -2);
+  /* each case stands on the ring, the ring turns by --rc-turn cards (72° a card) */
+  transform:rotateY(calc((var(--k) - var(--rc-turn)) * 72deg)) translateZ(var(--r));
+  display:flex;flex-direction:column;align-items:center;gap:10px}
+.rc-glass{position:relative;flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center;padding:14% 10% 10%;
+  border-radius:999px 999px 18px 18px;
+  background:linear-gradient(180deg,rgba(130,189,255,.16),rgba(20,52,121,.42));
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 30px 50px -30px rgba(0,0,0,.7)}
+/* a sheen runs down the glass */
+.rc-glass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(115deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.16) 42%,rgba(255,255,255,0) 54%)}
+.rc-glass img{display:block;max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 16px 18px rgba(0,0,0,.45))}
+.rc-badge{height:clamp(22px,2.6vw,34px);width:auto;opacity:.75}
+.rc-card:nth-child(5) .rc-badge{height:clamp(16px,1.8vw,22px)}
 
-/* ---- the roll of awards: the open one is large, the rest wait below it ---- */
-.rc-list{position:relative;z-index:2;grid-column:1;grid-row:1;align-self:center;
-  list-style:none;margin:0;padding:0 0 0 clamp(18px,1.6vw,28px);display:flex;flex-direction:column;gap:clamp(6px,1.2vh,14px)}
-/* the rail fills with the scroll */
-.rc-list::before,.rc-list::after{content:"";position:absolute;left:0;top:4px;bottom:4px;width:2px;border-radius:2px}
-.rc-list::before{background:rgba(229,229,229,.18)}
-.rc-list::after{background:var(--rc-rule);box-shadow:0 0 14px rgba(0,80,255,.8);transform-origin:top;transform:scaleY(var(--rc-p))}
-
-.rc-item{position:relative;display:flex;flex-direction:column;align-items:flex-start;cursor:pointer;color:var(--rc-dim);
-  padding:4px 0;outline:none}
-.rc-kicker,.rc-by{display:block;max-height:0;opacity:0;overflow:hidden;
-  transition:max-height .6s var(--rc-ease),opacity .45s ease,margin .6s var(--rc-ease)}
+/* ---- the name of the award at the front ---------------------------------- */
+.rc-captions{position:relative;list-style:none;margin:0;padding:0;width:min(100%,760px);height:clamp(108px,15vh,150px);text-align:center}
+.rc-item{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;
+  opacity:0;transform:translateY(16px);filter:blur(6px);transition:opacity .5s ease,transform .8s var(--rc-ease),filter .6s ease;pointer-events:none}
+.rc-item[aria-current="true"]{opacity:1;transform:none;filter:none}
 .rc-kicker{font:600 12px/1.4 var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--rc-kick)}
+.rc-name{margin:0;font-family:var(--font-head);font-weight:600;font-size:clamp(26px,3vw,44px);line-height:1.1;letter-spacing:-.01em}
 .rc-by{font:400 clamp(14px,1.05vw,16px)/1.5 var(--font);color:rgba(255,255,255,.72)}
-.rc-name{margin:0;font-family:var(--font-head);font-weight:500;letter-spacing:-.01em;
-  font-size:clamp(15px,1.15vw,18px);line-height:1.25;opacity:.55;
-  transform-origin:left center;
-  transition:font-size .6s var(--rc-ease),opacity .45s ease,color .45s ease}
-.rc-item:hover .rc-name{opacity:.85}
-.rc-item[aria-current="true"]{color:#fff}
-.rc-item[aria-current="true"] .rc-kicker{max-height:3em;opacity:1;margin-bottom:8px}
-.rc-item[aria-current="true"] .rc-by{max-height:4.5em;opacity:1;margin-top:10px}
-.rc-item[aria-current="true"] .rc-name{font-size:clamp(28px,3.3vw,48px);line-height:1.08;font-weight:600;opacity:1}
-.rc-item[aria-current="true"] + .rc-item{margin-top:clamp(10px,2.4vh,28px)}
-.rc-item:focus-visible .rc-name{outline:2px solid var(--rc-kick);outline-offset:6px;border-radius:4px}
-/* the open name types itself in: a wipe across, not a fade */
-.rc-item[aria-current="true"] .rc-name{animation:rc-wipe .9s var(--rc-ease) both}
-@keyframes rc-wipe{from{clip-path:inset(0 100% 0 0);translate:0 .25em}to{clip-path:inset(0 0 0 0);translate:0 0}}
 
-/* ---- the trophy on its plinth ---------------------------------------- */
-.rc-show{position:absolute;z-index:1;bottom:0;right:max(-4vw,calc(var(--page-edge) - 9vw));
-  width:min(58vw,calc(100svh * 1.12 * 1400 / 1739),900px);aspect-ratio:1400/1739;perspective:1400px;
-  transform-origin:50% 100%}
-.rc-show::before{content:"";position:absolute;left:50%;bottom:50%;width:130%;height:120svh;translate:-50% 0;pointer-events:none;
-  background:radial-gradient(40% 75% at 50% 0%,rgba(147,197,253,.36) 0%,rgba(147,197,253,.1) 55%,rgba(147,197,253,0) 78%);
-  clip-path:polygon(43% 0,57% 0,100% 100%,0 100%);
-  opacity:calc(.55 + var(--rc-flash,0) * .45);transition:opacity .9s var(--rc-ease)}
-/* the trophies are drawn on the plinth's own canvas; the box ends at the plinth's top edge, so a trophy
-   rising from below comes up out of the plinth */
-.rc-orbit{position:absolute;inset:0 0 23.5% 0;overflow:hidden;transform-style:preserve-3d}
-.rc-trophy{position:absolute;left:0;top:0;width:100%;height:auto;display:block;
-  opacity:0;transform:translate3d(0,32%,0) rotateY(28deg);filter:blur(6px) brightness(.7);
-  transform-origin:50% 62%;
-  transition:opacity .5s ease,transform 1.1s var(--rc-ease),filter .9s var(--rc-ease)}
-.rc-trophy[data-on]{opacity:1;transform:translate3d(0,0,0) rotateY(0deg);filter:none;
-  animation:rc-hover 7s ease-in-out 1.1s infinite}
-.rc-trophy[data-was]{opacity:0;transform:translate3d(0,-8%,0) rotateY(-36deg) scale(.94);filter:blur(8px) brightness(1.4);
-  transition:opacity .45s ease,transform .7s cubic-bezier(.55,0,.75,.2),filter .6s ease}
-/* the open trophy turns a few degrees either way, like a slow orbit around it */
-@keyframes rc-hover{0%,100%{transform:translate3d(0,0,0) rotateY(0deg)}25%{transform:translate3d(0,-1.2%,0) rotateY(7deg)}75%{transform:translate3d(0,-.6%,0) rotateY(-7deg)}}
-.rc-plinth{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+/* ---- tabs ---------------------------------------------------------------- */
+.rc-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.rc-chip{font:500 13px/1 var(--font);color:var(--rc-dim);background:rgba(255,255,255,.04);border:1px solid rgba(229,229,229,.18);
+  border-radius:999px;padding:9px 14px;cursor:pointer;transition:background .4s,color .4s,border-color .4s}
+.rc-chip:hover{color:#fff;border-color:rgba(229,229,229,.4)}
+.rc-chip[aria-current="true"]{color:#fff;background:var(--rc-rule);border-color:var(--rc-rule);box-shadow:0 0 20px rgba(0,80,255,.55)}
+.rc-chip:focus-visible{outline:2px solid var(--rc-kick);outline-offset:3px}
 
-/* ---- the award marks + progress, along the foot of the stage ---------- */
-.rc-index{position:relative;z-index:2;grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:14px}
-.rc-progress{display:block;width:min(100%,420px);height:2px;border-radius:2px;background:rgba(229,229,229,.18);overflow:hidden}
-.rc-progress i{display:block;height:100%;background:linear-gradient(90deg,var(--rc-rule),var(--rc-kick));transform-origin:left;transform:scaleX(var(--rc-p))}
-.rc-badges{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:clamp(16px,2vw,32px)}
-.rc-badges li{display:flex;align-items:center;height:clamp(34px,5.4vh,52px);cursor:pointer}
-.rc-badges img{display:block;height:100%;width:auto;opacity:.5;filter:grayscale(.4);
-  transition:opacity .5s ease,filter .5s ease,transform .6s var(--rc-ease)}
-.rc-badges li:nth-child(5) img{height:62%}
-.rc-badges li[aria-current="true"] img{opacity:1;filter:drop-shadow(0 0 14px rgba(150,190,255,.6));transform:translateY(-4px) scale(1.08)}
-
-/* the stage's contents arrive with the opening */
-.rc-list,.rc-index{opacity:clamp(0,calc(var(--rc-open) * 2 - .6),1);translate:0 calc((1 - var(--rc-open)) * 40px)}
-.rc-show{translate:0 calc((1 - var(--rc-open)) * 12%);scale:calc(.9 + var(--rc-open) * .1)}
-
-/* ---- press photographs ------------------------------------------------- */
+/* ---- press photographs: slanted frames ------------------------------------ */
 .rc-cards{list-style:none;margin:0 auto;padding:var(--head-gap) 0 0;
   width:min(calc(100% - 2 * var(--page-pad)),var(--page-max));
-  display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:clamp(16px,2.2vw,32px);align-items:start}
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,24px)}
 .rc-cards li{display:flex;flex-direction:column;gap:16px}
-.rc-cards li:nth-child(2){margin-top:clamp(24px,5vw,72px)}
-.rc-cards li:nth-child(3){margin-top:clamp(12px,2.5vw,36px)}
-.rc-cards figure{margin:0;position:relative;overflow:hidden;border-radius:var(--r-md);background:#eef2f9;
-  aspect-ratio:378/240;
-  -webkit-mask-image:linear-gradient(45deg,#0000 32px,#000 0);mask-image:linear-gradient(45deg,#0000 32px,#000 0);
-  clip-path:inset(100% 0 0 0);transition:clip-path 1.1s var(--rc-ease)}
-.rc-cards li:nth-child(1) figure{aspect-ratio:378/270}
-.rc-cards img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover;display:block;
-  transform:translate3d(0,var(--rc-par,0px),0) scale(1.15);transition:scale 1.4s var(--rc-ease)}
-.rc-cards p{margin:0;font:500 clamp(14px,1.05vw,16px)/1.5 "Inter Display","InterVariable","Inter",sans-serif;color:#818181;max-width:400px;
-  opacity:0;translate:0 14px;transition:opacity .7s ease .35s,translate .9s var(--rc-ease) .35s}
+.rc-cards figure{margin:0;position:relative;overflow:hidden;aspect-ratio:4/3;background:#eef2f9;
+  --s:9%;
+  clip-path:polygon(var(--s) 0,100% 0,100% 0,calc(100% - var(--s)) 0,0 0,0 0);
+  transition:clip-path 1.2s cubic-bezier(.77,0,.18,1)}
+.rc-cards li.is-in figure{clip-path:polygon(var(--s) 0,100% 0,100% 0,calc(100% - var(--s)) 100%,0 100%,0 100%)}
+.rc-cards img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.2) translateX(-4%);
+  transition:transform 1.6s var(--rc-ease)}
+.rc-cards li.is-in img{transform:none}
+.rc-cards p{margin:0;padding-right:4%;font:500 clamp(14px,1.05vw,16px)/1.5 "Inter Display","InterVariable","Inter",sans-serif;color:#818181;
+  opacity:0;transition:opacity .8s ease .5s}
 .rc-cards b{font-weight:600;color:#0f0f0f}
-.rc-cards li.is-in figure{clip-path:inset(0 0 0 0)}
-.rc-cards li.is-in img{scale:1}
-.rc-cards li.is-in p{opacity:1;translate:none}
-.rc-cards li:nth-child(2) figure,.rc-cards li:nth-child(2) p{transition-delay:.12s}
-.rc-cards li:nth-child(3) figure,.rc-cards li:nth-child(3) p{transition-delay:.24s}
+.rc-cards li.is-in p{opacity:1}
+.rc-cards li:nth-child(2) figure,.rc-cards li:nth-child(2) img{transition-delay:.15s}
+.rc-cards li:nth-child(3) figure,.rc-cards li:nth-child(3) img{transition-delay:.3s}
 
-/* ---- tablet / phone: the trophy over the open award, the marks underneath ---- */
+/* ---- tablet / phone ------------------------------------------------------- */
 @media (max-width:900px){
   .rc-scene{--rc-run:200vh}
-  .rc-stage{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;padding:64px 20px 24px;row-gap:12px}
-  .rc-show{left:50%;right:auto;translate:-50% calc((1 - var(--rc-open)) * 12%);width:min(118vw,calc((100svh - 150px) * 1400 / 1739),560px)}
-  .rc-floor{left:0}
-  .rc-list{grid-row:1;align-self:start;padding-left:16px}
-  .rc-item:not([aria-current="true"]){display:none}
-  .rc-item[aria-current="true"] .rc-name{font-size:clamp(24px,7vw,34px)}
-  .rc-index{grid-row:3;align-items:center}
-  .rc-badges{display:none}
-  .rc-progress{width:60%}
+  .rc-pin{padding-inline:12px}
+  .rc-dome{border-radius:50% 50% 0 0 / 22% 22% 0 0}
+  .rc-ring{--r:clamp(120px,30vw,220px);--cw:clamp(118px,30vw,170px)}
+  .rc-chips{display:none}
   .rc-cards{grid-template-columns:1fr;max-width:520px}
-  .rc-cards li:nth-child(n){margin-top:0}
 }
 
 @media (prefers-reduced-motion:reduce){
   .rc-scene{height:auto}
-  .rc-pin{position:relative;height:auto;min-height:100svh}
-  .rc-stage{position:relative;inset:auto;border-radius:0;width:100%;min-height:100svh}
-  .rc-trophy,.rc-name,.rc-kicker,.rc-by{transition:none;animation:none!important}
+  .rc-pin{position:relative;height:100svh}
+  .rc-dome{transform:none}
+  .rc-stars{animation:none}
+  .rc-item{transition:none}
   .rc-cards figure{clip-path:none;transition:none}
-  .rc-cards img{transform:none;scale:1;transition:none}
-  .rc-cards p{opacity:1;translate:none;transition:none}
+  .rc-cards img{transform:none;transition:none}
+  .rc-cards p{opacity:1;transition:none}
 }

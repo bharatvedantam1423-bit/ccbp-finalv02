@@ -24,8 +24,8 @@
 
   // ---- Mentor cards ----
   const list = document.querySelector('.mc__mentors');
-  list.innerHTML = MENTORS.map((m) => `
-    <li>
+  list.innerHTML = MENTORS.map((m, k) => `
+    <li style="--k:${k};--fx:${(1.5 - k) * 110}%;--fr:${(k - 1.5) * 9}deg">
       <article class="mentor">
         <img class="mentor__avatar" src="assets/masterclass/avatar-${m.img}.jpg" alt="${esc(m.name)}" loading="lazy">
         <h3 class="mentor__name">${esc(m.name)}</h3>
@@ -35,22 +35,22 @@
         </div>
       </article>
     </li>`).join('');
-  // each pair stands up as it comes on screen
-  [...list.children].forEach((li) => M ? M.once(li, () => li.classList.add('is-in'), '0px 0px -18% 0px') : li.classList.add('is-in'));
+  // the tickets are dealt out from the middle, one after another, as the row comes on screen
+  M ? M.once(list, () => list.classList.add('is-in'), '0px 0px -12% 0px') : list.classList.add('is-in');
 
   // ---- Logo tickers: each set duplicated so translate −50% loops seamlessly ----
   const set = (l, hidden) => `<ul class="mc-ticker-set"${hidden ? ' aria-hidden="true"' : ''}>` +
     l.map((c) => `<li><img src="${c.src}" alt="${hidden ? '' : c.name}" decoding="async"></li>`).join('') + '</ul>';
   const row = (l, dir, dur) => `<div class="mc-ticker-row ${dir}" style="--tick-dur:${dur}s">${set(l)}${set(l, true)}</div>`;
-  const DUR = [70, 64, 76];
+  const DUR = [80, 92];
   document.querySelector('[data-ticker="companies"]').innerHTML = DUR.map((d, r) => {
-    const l = COMPANIES.slice(r * 6, r * 6 + 6);
+    const l = COMPANIES.slice(r * 9, r * 9 + 9);
     return row(l.concat(l), r % 2 ? 'to-left' : 'to-right', d);
   }).join('');
 
   // ---- Video: swap the thumbnail for the YouTube player on click (the intro button plays it too) ----
   const video = document.querySelector('.mc__video');
-  const film = document.querySelector('.mc__film');
+  const film = document.querySelector('.mc__zoom');
   const play = () => {
     if (video.classList.contains('is-playing')) return;
     const f = document.createElement('iframe');
@@ -60,7 +60,7 @@
     f.allowFullscreen = true;
     video.append(f);
     video.classList.add('is-playing');
-    film.style.setProperty('--mc-tilt', 0);
+    film.style.setProperty('--mc-z', 1);
   };
   video.addEventListener('click', play);
   document.querySelector('.mc__cta[data-play]').addEventListener('click', () => {
@@ -68,14 +68,15 @@
     video.scrollIntoView({ behavior: M && M.RM ? 'auto' : 'smooth', block: 'center' });
   });
 
-  // ---- The film comes flat as it climbs to the middle of the screen ----
-  if (!M || M.RM) { film.style.setProperty('--mc-tilt', 0); return; }
+  // ---- The round window opens out while the scroll holds it ----
+  if (!M || M.RM) { film.style.setProperty('--mc-z', 1); return; }
   M.scene({
     el: film,
-    read: () => M.progress(film, 1, .3),
+    read: () => M.pin(film),
     write: (p) => {
       if (video.classList.contains('is-playing')) return;
-      film.style.setProperty('--mc-tilt', (1 - (1 - Math.pow(1 - p, 3))).toFixed(4));
+      const t = Math.min(1, p / .8);
+      film.style.setProperty('--mc-z', (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2).toFixed(4));
     },
   });
 })();

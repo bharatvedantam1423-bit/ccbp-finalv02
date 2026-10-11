@@ -1,75 +1,59 @@
-/* Awards & Recognitions — the pinned stage.
-   The first stretch of the pin opens the stage out to the full width; the rest is split evenly
-   across the five awards, so scrolling walks through them one at a time. A click on an award (or
-   its mark) scrolls to its stretch. Reduced motion: no pin, the awards change on click. */
+/* Awards & Recognitions (variation 2) — the turning ring.
+   The first stretch of the pin raises the dome; the rest turns the ring one case at a time. Between
+   cases the ring eases round and then holds, so every award gets a moment at the front. A tab scrolls
+   to its award. Reduced motion: no pin; the tabs turn the ring directly. */
 (() => {
   const sec = document.getElementById('recognition');
   if (!sec) return;
   const scene = sec.querySelector('[data-rc]');
   const items = [...sec.querySelectorAll('.rc-item')];
-  const badges = [...sec.querySelectorAll('.rc-badges li')];
-  const trophies = [...sec.querySelectorAll('.rc-trophy')];
+  const chips = [...sec.querySelectorAll('.rc-chip')];
   const M = window.NWMotion;
   const N = items.length;
-  const OPEN = 0.16;                       // share of the pin spent opening the stage
-  let at = -1, flashT = 0;
+  const RISE = 0.12;
+  let at = -1;
 
   const show = i => {
     if (i === at) return;
-    const was = at;
     at = i;
     items.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
-    badges.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
-    trophies.forEach((el, k) => {
-      el.toggleAttribute('data-on', k === i);
-      el.toggleAttribute('data-was', k === was);
-    });
-    // the spotlight flares as the new trophy comes up
-    scene.style.setProperty('--rc-flash', 1);
-    clearTimeout(flashT);
-    flashT = setTimeout(() => scene.style.setProperty('--rc-flash', 0), 420);
+    chips.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
   };
+  const smooth = t => t * t * (3 - 2 * t);
 
-  // where award i sits in the page's scroll
   const yFor = i => {
     const r = scene.getBoundingClientRect();
     const span = r.height - innerHeight;
-    const p = OPEN + (1 - OPEN) * ((i + .5) / N);
-    return scrollY + r.top + span * p;
+    return scrollY + r.top + span * (RISE + (1 - RISE) * (i / (N - 1)) * .999);
   };
-  const go = i => {
-    if (!M || M.RM) { show(i); return; }
+  chips.forEach((el, i) => el.addEventListener('click', () => {
+    if (!M || M.RM) { scene.style.setProperty('--rc-turn', i); show(i); return; }
     const lenis = window.NW && NW.lenis;
-    lenis ? lenis.scrollTo(yFor(i), { duration: 1.2 }) : scrollTo({ top: yFor(i), behavior: 'smooth' });
-  };
-  items.forEach((el, i) => {
-    el.addEventListener('click', () => go(i));
-    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(i); } });
-  });
-  badges.forEach((el, i) => el.addEventListener('click', () => go(i)));
+    lenis ? lenis.scrollTo(yFor(i), { duration: 1.4 }) : scrollTo({ top: yFor(i), behavior: 'smooth' });
+  }));
 
   show(0);
-  if (!M || M.RM) { scene.style.setProperty('--rc-open', 1); return; }
+  const cards = [...sec.querySelectorAll('.rc-cards li')];
+  if (!M || M.RM) {
+    scene.style.setProperty('--rc-rise', 1);
+    cards.forEach(li => li.classList.add('is-in'));
+    return;
+  }
 
   M.scene({
     el: scene,
     read: () => M.pin(scene),
     write: p => {
-      const open = Math.min(1, p / OPEN);
-      const eased = 1 - Math.pow(1 - open, 3);
-      const q = Math.max(0, (p - OPEN) / (1 - OPEN));
-      scene.style.setProperty('--rc-open', eased.toFixed(4));
-      scene.style.setProperty('--rc-p', q.toFixed(4));
-      show(Math.min(N - 1, Math.floor(q * N)));
+      const rise = Math.min(1, p / RISE);
+      scene.style.setProperty('--rc-rise', (1 - Math.pow(1 - rise, 3)).toFixed(4));
+      // t runs 0 → N-1; each step eases through its middle half and holds either side
+      const t = Math.max(0, (p - RISE) / (1 - RISE)) * (N - 1);
+      const i = Math.min(N - 2, Math.floor(t)), f = t - i;
+      const turn = i + smooth(Math.min(1, Math.max(0, (f - .25) / .5)));
+      scene.style.setProperty('--rc-turn', turn.toFixed(4));
+      show(Math.round(turn));
     },
   });
 
-  // press photos: the photo opens from the foot up, then drifts against the scroll
-  const cards = [...sec.querySelectorAll('.rc-cards li')];
   cards.forEach(li => M.once(li, () => li.classList.add('is-in')));
-  M.scene({
-    el: sec.querySelector('.rc-cards'),
-    read: () => cards.map(li => M.progress(li, 1, -.4)),
-    write: ps => cards.forEach((li, k) => li.style.setProperty('--rc-par', ((ps[k] - .5) * -40).toFixed(1) + 'px')),
-  });
 })();

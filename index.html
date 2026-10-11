@@ -261,11 +261,7 @@ a{color:inherit;text-decoration:none}
 
 /* Why Top Companies Prefer NxtWave Students: portrait cards sized ~5.4 across, capped at 280px wide
    and kept inside the window height, so the section stays compact on big screens as well as small */
-.cs .ht{--cw:clamp(170px,min(calc((100vw - 2 * var(--m) - 4 * var(--gap)) / 5.4),calc((100svh - 380px) * .5625)),280px)}
-@media (max-width:640px){ .cs .ht{--cw:min(58vw,calc((100svh - 300px) * .5625))} }
 .cs .ht__head{margin-bottom:clamp(32px,4vw,56px)}
-.cs .ht__name{font-size:clamp(15px,1.15vw,18px)}
-.cs .ht__role{font-size:clamp(13px,.95vw,14px)}
 
 /* scroll reveal for both new sections */
 .reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform 1s var(--ease)}
@@ -360,9 +356,6 @@ a{color:inherit;text-decoration:none}
 .aw-wall{width:min(100%,var(--page-max))}
 .aw-cards{width:100%}   /* the photo cards span the column, edge to edge with the panel above */
 /* Why Top Companies Prefer NxtWave Students: the rail starts on the content line and runs off the right */
-.cs .ht__head{margin-inline:var(--page-edge)}
-.cs .ht__track,.cs .ht__nav{padding-inline:var(--page-edge)}
-.cs .ht__track{scroll-padding-inline:var(--page-edge)}   /* snapping lands the first card on the line too */
 /* Awards: heading → the recognising bodies. The panel (and its notch) hangs off the block below,
    so it moves down with the strip and the strip stays held in the notch */
 .rc-recog{margin-top:var(--head-gap)}
@@ -711,11 +704,11 @@ html.lenis,html.lenis body{height:auto}
   </section>
 
 <!-- ===================================================================
-     S3 — AWARDS & RECOGNITIONS
-     On white: the heading and the four bodies that recognise NxtWave. Then a navy stage that pins
-     while the scroll walks through the five awards one at a time: the stage opens out to the full
-     width, each trophy rises onto the plinth under a spotlight while its name takes the left side.
-     The three press photographs follow the stage. Styles career/awards.css, motion career/awards.js.
+     S3 — AWARDS & RECOGNITIONS (variation 2)
+     On white: the heading and the four bodies that recognise NxtWave. Then a navy dome that pins while
+     the scroll turns a ring of five arched glass cases, one trophy in each, bringing each award to the
+     front in turn; its name sits under the ring and the five names below act as tabs. The press
+     photographs follow in slanted frames. Styles career/awards.css, motion career/awards.js.
      =================================================================== -->
 <section class="rc" id="recognition" aria-labelledby="record-title">
   <header class="rc-top">
@@ -730,58 +723,29 @@ html.lenis,html.lenis body{height:auto}
 
   <div class="rc-scene" data-rc>
     <div class="rc-pin">
-      <div class="rc-stage">
-        <div class="rc-floor" aria-hidden="true"></div>
-
-        <ol class="rc-list">
-          <li class="rc-item" tabindex="0" role="button" aria-current="false">
-            <span class="rc-kicker">Recognised as</span>
-            <p class="rc-name">Most Preferred Brands</p>
-            <span class="rc-by">by Marksmen Daily in 2021</span>
-          </li>
-          <li class="rc-item" tabindex="0" role="button" aria-current="false">
-            <span class="rc-kicker">Recognised as</span>
-            <p class="rc-name">India’s Greatest Brands &amp; Leaders</p>
-            <span class="rc-by">by Asia One in 2021-22</span>
-          </li>
-          <li class="rc-item" tabindex="0" role="button" aria-current="false">
-            <span class="rc-kicker">Recognised as</span>
-            <p class="rc-name">Trusted Brand in Education</p>
-            <span class="rc-by">by Prime Insights in 2023</span>
-          </li>
-          <li class="rc-item" tabindex="0" role="button" aria-current="false">
-            <span class="rc-kicker">Recognised as</span>
-            <p class="rc-name">Best Tech Skilling EdTech Company</p>
-            <span class="rc-by">by Times Business Awards in 2022</span>
-          </li>
-          <li class="rc-item" tabindex="0" role="button" aria-current="false">
-            <span class="rc-kicker">We are honoured to be a</span>
-            <p class="rc-name">2024 Technology Pioneer</p>
-            <span class="rc-by">100 Startups worldwide made the cut.</span>
-          </li>
+      <div class="rc-dome">
+        <div class="rc-stars" aria-hidden="true"></div>
+        <ul class="rc-ring" aria-hidden="true">
+            <li class="rc-card" style="--k:0"><span class="rc-glass"><img src="assets/awards/c-mpb.webp" alt="" loading="lazy"></span><img class="rc-badge" src="assets/awards/b-mpb.webp" alt="Most Preferred Brands 2021" loading="lazy"></li>
+            <li class="rc-card" style="--k:1"><span class="rc-glass"><img src="assets/awards/c-asia.webp" alt="" loading="lazy"></span><img class="rc-badge" src="assets/awards/b-asia.webp" alt="India’s Greatest Brands &amp; Leaders 2021-22" loading="lazy"></li>
+            <li class="rc-card" style="--k:2"><span class="rc-glass"><img src="assets/awards/c-prime.webp" alt="" loading="lazy"></span><img class="rc-badge" src="assets/awards/b-prime.webp" alt="Prime Insights Trusted Brand in Education" loading="lazy"></li>
+            <li class="rc-card" style="--k:3"><span class="rc-glass"><img src="assets/awards/c-star.webp" alt="" loading="lazy"></span><img class="rc-badge" src="assets/awards/b-star.webp" alt="Times Business Awards trophy" loading="lazy"></li>
+            <li class="rc-card" style="--k:4"><span class="rc-glass"><img src="assets/awards/c-wef.webp" alt="" loading="lazy"></span><img class="rc-badge" src="assets/awards/b-wef.webp" alt="World Economic Forum" loading="lazy"></li>
+        </ul>
+        <ol class="rc-captions">
+          <li class="rc-item" aria-current="false"><span class="rc-kicker">Recognised as</span><p class="rc-name">Most Preferred Brands</p><span class="rc-by">by Marksmen Daily in 2021</span></li>
+          <li class="rc-item" aria-current="false"><span class="rc-kicker">Recognised as</span><p class="rc-name">India’s Greatest Brands &amp; Leaders</p><span class="rc-by">by Asia One in 2021-22</span></li>
+          <li class="rc-item" aria-current="false"><span class="rc-kicker">Recognised as</span><p class="rc-name">Trusted Brand in Education</p><span class="rc-by">by Prime Insights in 2023</span></li>
+          <li class="rc-item" aria-current="false"><span class="rc-kicker">Recognised as</span><p class="rc-name">Best Tech Skilling EdTech Company</p><span class="rc-by">by Times Business Awards in 2022</span></li>
+          <li class="rc-item" aria-current="false"><span class="rc-kicker">We are honoured to be a</span><p class="rc-name">2024 Technology Pioneer</p><span class="rc-by">100 Startups worldwide made the cut.</span></li>
         </ol>
-
-        <div class="rc-show" aria-hidden="true">
-          <div class="rc-orbit">
-            <img class="rc-trophy" src="assets/awards/t-mpb.webp" alt="" loading="lazy">
-            <img class="rc-trophy" src="assets/awards/t-asia.webp" alt="" loading="lazy">
-            <img class="rc-trophy" src="assets/awards/t-prime.webp" alt="" loading="lazy">
-            <img class="rc-trophy" src="assets/awards/t-star.webp" alt="" loading="lazy">
-            <img class="rc-trophy" src="assets/awards/t-wef.webp" alt="" loading="lazy">
-          </div>
-          <img class="rc-plinth" src="assets/awards/plinth.webp" alt="" loading="lazy">
-        </div>
-
-        <div class="rc-index">
-          <span class="rc-progress" aria-hidden="true"><i></i></span>
-          <ul class="rc-badges">
-            <li aria-current="false"><img src="assets/awards/b-mpb.webp" alt="Most Preferred Brands 2021" loading="lazy"></li>
-            <li aria-current="false"><img src="assets/awards/b-asia.webp" alt="India’s Greatest Brands &amp; Leaders 2021-22" loading="lazy"></li>
-            <li aria-current="false"><img src="assets/awards/b-prime.webp" alt="Prime Insights Trusted Brand in Education" loading="lazy"></li>
-            <li aria-current="false"><img src="assets/awards/b-star.webp" alt="Times Business Awards trophy" loading="lazy"></li>
-            <li aria-current="false"><img src="assets/awards/b-wef.webp" alt="World Economic Forum" loading="lazy"></li>
-          </ul>
-        </div>
+        <ul class="rc-chips" aria-label="Awards">
+          <li><button class="rc-chip" type="button" aria-current="false">Most Preferred Brands</button></li>
+          <li><button class="rc-chip" type="button" aria-current="false">India’s Greatest Brands &amp; Leaders</button></li>
+          <li><button class="rc-chip" type="button" aria-current="false">Trusted Brand in Education</button></li>
+          <li><button class="rc-chip" type="button" aria-current="false">Best Tech Skilling EdTech Company</button></li>
+          <li><button class="rc-chip" type="button" aria-current="false">2024 Technology Pioneer</button></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -800,24 +764,26 @@ html.lenis,html.lenis body{height:auto}
 </section>
 
 <!-- ===================================================================
-     S3b — 3,000+ COMPANIES HIRE NXTWAVE LEARNERS: the count runs up as the heading arrives; under it,
-     four rows of logo cards drift in alternate directions on a plane that starts tipped back and
-     stands up as the section scrolls in. Scrolling faster pushes the rows along faster.
-     Styles career/hiring-companies.css, rows and motion career/hiring-companies.js (ROWS list).
+     S3b — 3,000+ COMPANIES HIRE NXTWAVE LEARNERS (variation 2): the heading sits at the centre of three
+     tilted orbits of round logo badges. The orbits open out from the middle as the section arrives,
+     then keep turning, alternate ways; badges at the back of an orbit are smaller and fainter, so
+     the rings read in depth. Scrolling faster spins them a little faster.
+     Styles career/hiring-companies.css, orbits career/hiring-companies.js (ROWS list).
      =================================================================== -->
 <section class="nw-hire" id="hiring-network" aria-labelledby="nw-hire-title" data-logo-path="assets/hiring-companies/logos/">
-  <div class="nw-hire__head">
-    <h2 class="nw-hire__title" id="nw-hire-title" data-head aria-label="3,000+ companies hire NxtWave learners"><span class="nw-hire__num" aria-hidden="true">3,000</span><span aria-hidden="true">+ companies hire NxtWave learners</span></h2>
-    <p class="nw-hire__sub">Across product companies, startups, and global services firms.</p>
-  </div>
-  <div class="nw-hire__stage">
-    <div class="nw-hire__rows"></div>
+  <div class="nw-hire__sky">
+    <ul class="nw-hire__orbits" aria-label="Some of the companies that hire NxtWave learners"></ul>
+    <div class="nw-hire__head">
+      <h2 class="nw-hire__title" id="nw-hire-title" data-head>3,000+ companies hire NxtWave learners</h2>
+      <p class="nw-hire__sub">Across product companies, startups, and global services firms.</p>
+    </div>
   </div>
 </section>
 
 <!-- ===================================================================
-     S5 — MENTORS: the film scrubs with the scroll while the stage is pinned. The heading holds the left
-     column; the six alumni marks come in one by one as the mentors gather round the learner on screen.
+     S5 — MENTORS (variation 2): the film scrubs with the scroll while the stage is pinned, opening like
+     an iris from the learner outwards as the mentors gather round him. The heading sits above it; the
+     six alumni marks sit on a timeline beneath, each lighting up as the film passes it.
      Styles career/mentors.css; the film scrub is the inline script below, the layout motion career/motion.js.
      =================================================================== -->
 <section class="mentors" id="team" aria-labelledby="mw-title">
@@ -826,6 +792,7 @@ html.lenis,html.lenis body{height:auto}
       <header class="mw-head">
         <h2 class="mw-title" id="mw-title" data-head>Taught by people<br>who have done the job.</h2>
         <div class="mw-alumni">
+          <span class="mw-line" aria-hidden="true"><i></i></span>
           <ul class="mw-alumni-row">
             <li><img src="assets/masterclass/logos/stanford-color.png" alt="Stanford University" width="243" height="104" loading="lazy"></li>
             <li><img src="assets/masterclass/logos/google-color.png" alt="Google" width="238" height="104" loading="lazy"></li>
@@ -847,74 +814,72 @@ html.lenis,html.lenis body{height:auto}
 </section>
 
 <!-- ===================================================================
-     S6 — CAREER TRANSFORMATIONS: a pinned reel. The heading holds the top of the screen while the
-     scroll carries a long row of learner stories sideways beneath it, on a gently curved screen: the
-     columns turn away as they near either edge. Video stories play muted while they are in view.
-     View All closes the reel. Styles career/career-transformations.css, reel built by
-     career/career-transformations.js (VIDEOS, QUOTES) from assets/career-transformations/.
+     S6 — CAREER TRANSFORMATIONS (variation 2): the heading, subline and View All on the left; on the
+     right a tilted wall of learner stories in four columns that drift up and down past each other.
+     Written stories are speech bubbles, video stories are capsules that play muted while in view.
+     Scrolling leans the wall upright and speeds the drift. Styles career/career-transformations.css,
+     wall built by career/career-transformations.js (VIDEOS, QUOTES) from assets/career-transformations/.
      =================================================================== -->
 <section class="ctw" id="career-transformations" data-career-transformations data-assets="assets/career-transformations/" aria-labelledby="ct-title">
-  <div class="ctw-pin">
-    <div class="ctw-heading">
-      <div class="ctw-heading-text">
-        <h2 id="ct-title" data-head>Career Transformations</h2>
-        <p class="ctw-heading-sub">Real people. Named companies. Their own words.</p>
-      </div>
+  <div class="ctw-heading">
+    <div class="ctw-heading-text">
+      <h2 id="ct-title" data-head>Career Transformations</h2>
+      <p class="ctw-heading-sub">Real people. Named companies. Their own words.</p>
     </div>
-    <div class="ctw-reel">
-      <div class="ctw-images">
-        <div class="ctw-end"><a class="ctw-cta" href="#" data-blank>View All</a></div>
-      </div>
-    </div>
+    <div class="ctw-end"><a class="ctw-cta" href="#" data-blank>View All</a></div>
+  </div>
+  <div class="ctw-wall">
+    <div class="ctw-images"></div>
   </div>
 </section>
 
 <!-- ===================================================================
-     S6b — MASTERCLASSES FROM MENTORS IN THE COMMUNITY: the introduction holds the left column while
-     the right column scrolls past it: the masterclass film, tipped back at first and coming flat as it
-     reaches the middle of the screen, then the four mentors standing up one after another. The
-     mentors' companies drift underneath. Styles career/masterclass.css, script career/masterclass.js.
+     S6b — MASTERCLASSES FROM MENTORS IN THE COMMUNITY (variation 2): the introduction centred, then the
+     masterclass film as a small round window that opens out into the full screen as the scroll holds it
+     in place. The four mentors are dealt out under it as tickets. The mentors' companies drift beneath.
+     Styles career/masterclass.css, script career/masterclass.js.
      =================================================================== -->
 <section class="mc" id="masterclasses" aria-labelledby="mc-title">
-  <div class="mc__grid">
-    <header class="mc__head">
-      <p class="mc__eyebrow"><span class="mc__dot" aria-hidden="true"></span>NxtWave Masterclasses</p>
-      <h2 class="mc__title" id="mc-title" data-head>Masterclasses from<br>Mentors in the Community</h2>
-      <ul class="mc__aff" aria-label="Mentors from">
-        <li><img src="assets/masterclass/logos/stanford-color.png" alt="Stanford University" width="243" height="104"></li>
-        <li><img src="assets/masterclass/logos/google-color.png" alt="Google" width="238" height="104"></li>
-        <li><img src="assets/masterclass/logos/amazon-color.png" alt="Amazon" width="229" height="104"></li>
-        <li><img src="assets/masterclass/logos/microsoft-color.png" alt="Microsoft" width="276" height="104"></li>
-      </ul>
-      <p class="mc__lede">Scientists and engineers from Stanford, Google, NVIDIA and Amazon teach what they actually build at work.</p>
-      <button class="mc__cta" type="button" data-play>Watch the sneak peek<span class="mc__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
-    </header>
-    <div class="mc__flow">
+  <header class="mc__head">
+    <p class="mc__eyebrow"><span class="mc__dot" aria-hidden="true"></span>NxtWave Masterclasses</p>
+    <h2 class="mc__title" id="mc-title" data-head>Masterclasses from<br>Mentors in the Community</h2>
+    <ul class="mc__aff" aria-label="Mentors from">
+      <li><img src="assets/masterclass/logos/stanford-color.png" alt="Stanford University" width="243" height="104"></li>
+      <li><img src="assets/masterclass/logos/google-color.png" alt="Google" width="238" height="104"></li>
+      <li><img src="assets/masterclass/logos/amazon-color.png" alt="Amazon" width="229" height="104"></li>
+      <li><img src="assets/masterclass/logos/microsoft-color.png" alt="Microsoft" width="276" height="104"></li>
+    </ul>
+    <p class="mc__lede">Scientists and engineers from Stanford, Google, NVIDIA and Amazon teach what they actually build at work.</p>
+    <button class="mc__cta" type="button" data-play>Watch the sneak peek<span class="mc__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+  </header>
+  <div class="mc__zoom">
+    <div class="mc__zoom-pin">
       <div class="mc__film">
         <button class="mc__video" type="button" data-yt="wLOkQDXN8RQ" aria-label="Play: Sneak Peek Of Masterclass by Rakesh Misra">
           <img src="assets/masterclass/rakesh.jpg" alt="" width="1184" height="800" loading="lazy">
         </button>
       </div>
-      <ul class="mc__mentors" aria-label="Mentors"><!-- mentor cards injected by career/masterclass.js --></ul>
     </div>
   </div>
+  <ul class="mc__mentors" aria-label="Mentors"><!-- mentor tickets injected by career/masterclass.js --></ul>
   <div class="mc-ticker" data-ticker="companies" role="region" aria-label="Companies in our mentor community"></div>
 </section>
 
 <div class="cs cs--after">
-<!-- We train you for what companies hire for: the heading holds the left column while the four cards
-     stack up on the right. Each card slides up over the one before and settles a step lower, and
-     the cards underneath sink back a little. Styles career/we-train-section.css (scoped to .ctg),
-     behaviour career/we-train-section.js. -->
+<!-- We train you for what companies hire for (variation 2): the heading centred over a bento of the
+     four cards that reads as one rounded block. While the scroll holds the section, the cards start
+     scattered in space, turned every way, and fly together into the block. Styles
+     career/we-train-section.css (scoped to .ctg), behaviour career/we-train-section.js. -->
 <div class="ctg" id="what-companies-look-for" data-ctg>
-  <section class="ctg__hero" aria-labelledby="ctg-title">
-    <header class="ctg__head">
-      <h2 class="ctg__title" id="ctg-title" data-head>We train you for what companies hire for</h2>
-      <p class="ctg__sub">3,000+ companies have hired from our programmes. This is what we teach that gets people through.</p>
-    </header>
-  </section>
-  <section class="ctg__deck" aria-label="What we teach">
-    <div class="ctg__slot" style="--i:0">
+  <div class="ctg__pin">
+    <section class="ctg__hero" aria-labelledby="ctg-title">
+      <header class="ctg__head">
+        <h2 class="ctg__title" id="ctg-title" data-head>We train you for what companies hire for</h2>
+        <p class="ctg__sub">3,000+ companies have hired from our programmes. This is what we teach that gets people through.</p>
+      </header>
+    </section>
+    <section class="ctg__bento" aria-label="What we teach">
+      <div class="ctg__tile ctg__tile--a">
           <article class="ctg-card ctg-card--hero">
             <div class="ctg-card__copy ctg-card-a" style="--ctg-d:0s">
               <h3 class="ctg-card__h">AI is built into how you solve problems</h3>
@@ -972,8 +937,8 @@ html.lenis,html.lenis body{height:auto}
               The same AI tools used by modern engineering teams.
             </p>
           </article>
-    </div>
-    <div class="ctg__slot" style="--i:1">
+      </div>
+      <div class="ctg__tile ctg__tile--b">
           <article class="ctg-card ctg-card--fund">
             <div class="ctg-card__copy ctg-card-a">
               <h3 class="ctg-card__h">The fundamentals still decide interviews.</h3>
@@ -985,8 +950,8 @@ html.lenis,html.lenis body{height:auto}
               <span class="ctg-card__slab ctg-card-a" style="--ctg-w:166px;--ctg-d:.08s">Problem Solving</span>
             </div></div>
           </article>
-    </div>
-    <div class="ctg__slot" style="--i:2">
+      </div>
+      <div class="ctg__tile ctg__tile--c">
           <article class="ctg-card ctg-card--curr">
             <div class="ctg-card__copy ctg-card-a">
               <h3 class="ctg-card__h">We update the curriculum when hiring changes.</h3>
@@ -998,8 +963,8 @@ html.lenis,html.lenis body{height:auto}
               <span class="ctg-card__chip ctg-card__chip--solid ctg-card-a" style="--ctg-d:.24s">Updated<br>curriculum</span>
             </div></div>
           </article>
-    </div>
-    <div class="ctg__slot" style="--i:3">
+      </div>
+      <div class="ctg__tile ctg__tile--d">
           <article class="ctg-card ctg-card--prep">
             <div class="ctg-card__copy ctg-card-a">
               <h3 class="ctg-card__h">Interview prep for the rounds companies actually run.</h3>
@@ -1012,8 +977,9 @@ html.lenis,html.lenis body{height:auto}
               <li class="ctg-card-a" style="--ctg-d:.26s"><i></i>Live Coding</li>
             </ul></div>
           </article>
-    </div>
-  </section>
+      </div>
+    </section>
+  </div>
 </div>
 
 <section class="ht" id="hiring-teams" aria-labelledby="ht-title">
@@ -1023,7 +989,7 @@ html.lenis,html.lenis body{height:auto}
       <p class="ht__sub">The people who actually make the hiring decision, on why they keep coming back.</p>
     </div>
   </header>
-  <div class="ht__rail">
+  <div class="ht__rail" tabindex="0" aria-roledescription="carousel" aria-label="Hiring partners on why they hire from NxtWave">
     <ul class="ht__track" id="ht-track"></ul>
     <div class="ht__nav">
       <button class="ht__arrow" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -1032,8 +998,9 @@ html.lenis,html.lenis body{height:auto}
   </div>
 </section>
 
-<!-- Backed by Leading Global Investors: three plates side by side. As they arrive, each pair of laurels
-     closes round its investor's mark and the mark comes into focus. Styles career/investors.css. -->
+<!-- Backed by Leading Global Investors (variation 2): the heading on the left; on the right the three
+     investors as round medallions, set like a podium. Each flips over like a coin as it arrives and
+     then turns gently, catching the light. Styles career/investors.css. -->
 <section class="inv" id="investors" aria-labelledby="inv-title">
   <header class="inv-head">
     <h2 class="inv-title" id="inv-title" data-head>Backed by Leading Global Investors</h2>
