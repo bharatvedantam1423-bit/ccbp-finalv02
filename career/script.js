@@ -16,100 +16,83 @@ const TESTIMONIALS = [
 const track = document.getElementById("ht-track");
 const PLAY = '<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>';
 
+/* A coverflow. The partner at the front is large under an arched top, the others step
+   back to either side, turned away. Their name, role and company show under the front portrait.
+   The front moves on by itself every few seconds while the section is on screen (held while the
+   pointer is over it), and follows the arrows, a swipe, a click on a side portrait, or the arrow keys.
+   A click on the front portrait plays the video. */
 track.innerHTML = TESTIMONIALS.map((t, i) => `
-  <li class="ht__card" style="z-index:${TESTIMONIALS.length - i}">
+  <li class="ht__card" style="--i:${i}">
     <button class="ht__media" data-id="${t.id}" aria-label="Play: ${t.name}, ${t.role}, ${t.co}">
-      <img src="${t.img}" alt="${t.name}" ${i > 4 ? 'loading="lazy"' : ""} decoding="async">
+      <img src="${t.img}" alt="${t.name}" ${i > 3 ? 'loading="lazy"' : ""} decoding="async">
       <span class="ht__play">${PLAY}</span><span class="ht__dur">${t.dur}</span>
     </button>
     <div class="ht__label"><p class="ht__name">${t.name}</p><p class="ht__role">${t.role}</p>
       <p class="ht__co">${t.logo ? `<img src="assets/hiring-logos/${t.logo}" alt="${t.co}" loading="lazy">` : `<span>${t.co}</span>`}</p></div>
   </li>`).join("");
 
-const cards  = [...track.children];
-/* logos of very different shapes get the same visual weight: height from a constant area, clamped */
+const cards = [...track.children];
 const fitLogo = im => { const r = im.naturalWidth / im.naturalHeight || 3;
   im.style.height = Math.min(44, Math.max(24, Math.sqrt(3800 / r)), 190 / r) + "px"; };
 track.querySelectorAll(".ht__co img").forEach(im => im.complete ? fitLogo(im) : im.addEventListener("load", () => fitLogo(im), { once: true }));
-const labels = cards.map(c => c.querySelector(".ht__label"));
-const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ---------- Motion: the row slides in from the right as the section rises (a dolly along it), each
-   portrait opens from the foot up as it arrives, and a card under the pointer tilts toward it. ---------- */
-const M = window.NWMotion;
-const rail = document.querySelector(".ht__rail");
-if (M && !M.RM) {
-  cards.forEach((c, i) => c.style.setProperty("--d", i % 6));
-  M.once(rail, () => rail.classList.add("is-in"), "0px 0px -10% 0px");
-  let x = null;
-  M.scene({
-    el: rail,
-    read: () => M.progress(rail, 1, .35),
-    write: (p, f) => {
-      const want = (1 - (1 - Math.pow(1 - p, 3))) * f.vw * .38;
-      x = x === null ? want : x + (want - x) * .12;
-      rail.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`;
-    },
-  });
-  if (matchMedia("(hover: hover)").matches) cards.forEach(c => {
-    const media = c.querySelector(".ht__media");
-    media.addEventListener("pointermove", e => {
-      const r = media.getBoundingClientRect();
-      const nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
-      media.style.setProperty("--rx", (-ny * 10).toFixed(2) + "deg");
-      media.style.setProperty("--ry", (nx * 12).toFixed(2) + "deg");
-      media.style.setProperty("--gx", ((nx + .5) * 100).toFixed(1) + "%");
-      media.style.setProperty("--gy", ((ny + .5) * 100).toFixed(1) + "%");
-    });
-    media.addEventListener("pointerleave", () => { media.style.setProperty("--rx", "0deg"); media.style.setProperty("--ry", "0deg"); });
-  });
-} else rail.classList.add("is-in");
+const N = cards.length;
+let at = 0;
+const place = () => cards.forEach((c, i) => {
+  let d = i - at;
+  if (d > N / 2) d -= N; if (d < -N / 2) d += N;          // the shortest way round, so it loops
+  c.style.setProperty("--d", d);
+  c.style.setProperty("--ad", Math.abs(d));
+  c.classList.toggle("is-front", d === 0);
+  c.setAttribute("aria-hidden", Math.abs(d) > 2 ? "true" : "false");
+  c.querySelector(".ht__media").tabIndex = d === 0 ? 0 : -1;
+});
+const go = i => { at = (i + N) % N; place(); };
+place();
 
-/* ---------- Horizontal rail: arrows + mouse drag ---------- */
 const [prev, next] = document.querySelectorAll(".ht__arrow");
-const step = () => cards[1].offsetLeft - cards[0].offsetLeft;
-const syncArrows = () => {
-  prev.disabled = track.scrollLeft < 4;
-  next.disabled = track.scrollLeft > track.scrollWidth - track.clientWidth - 4;
-};
-document.querySelectorAll(".ht__arrow").forEach(b =>
-  b.addEventListener("click", () => track.scrollBy({ left: step() * b.dataset.dir, behavior: "smooth" })));
-track.addEventListener("scroll", syncArrows, { passive: true });
-addEventListener("resize", syncArrows);
-syncArrows();
+prev.addEventListener("click", () => { go(at - 1); restart(); });
+next.addEventListener("click", () => { go(at + 1); restart(); });
+const rail = document.querySelector(".ht__rail");
+rail.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft") { go(at - 1); restart(); }
+  if (e.key === "ArrowRight") { go(at + 1); restart(); }
+});
 
+/* swipe / drag */
 let down = null, moved = false;
-track.addEventListener("pointerdown", e => {
-  if (e.pointerType !== "mouse") return;
-  down = { x: e.clientX, s: track.scrollLeft }; moved = false;
-});
-addEventListener("pointermove", e => {
+track.addEventListener("pointerdown", e => { down = { x: e.clientX }; moved = false; });
+addEventListener("pointerup", e => {
   if (!down) return;
-  const dx = e.clientX - down.x;
-  if (!moved && Math.abs(dx) > 5) { moved = true; track.classList.add("drag"); }
-  if (moved) track.scrollLeft = down.s - dx;
+  const dx = e.clientX - down.x; down = null;
+  if (Math.abs(dx) > 40) { moved = true; go(at + (dx < 0 ? 1 : -1)); restart(); }
 });
-addEventListener("pointerup", () => {
-  if (!down) return;
-  down = null;
-  if (moved) {
-    // let snap re-engage from the current position
-    const i = Math.round(track.scrollLeft / step());
-    track.classList.remove("drag");
-    track.scrollTo({ left: i * step(), behavior: "smooth" });
-  }
-});
+
+/* on its own, every few seconds, while on screen and not pointed at */
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let timer = 0, onScreen = false, held = false;
+const restart = () => { clearInterval(timer); if (!RM && onScreen && !held) timer = setInterval(() => go(at + 1), 4200); };
+rail.addEventListener("pointerenter", () => { held = true; restart(); });
+rail.addEventListener("pointerleave", () => { held = false; restart(); });
+if ("IntersectionObserver" in window) new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; restart(); }, { threshold: .35 }).observe(rail);
+
+/* the row arrives: the portraits rise from below, front first */
+if (window.NWMotion && !RM) NWMotion.once(rail, () => rail.classList.add("is-in"), "0px 0px -10% 0px");
+else rail.classList.add("is-in");
 
 /* ---------- Video modal ---------- */
 const modal = document.getElementById("ht-modal");
 const frame = modal.querySelector(".ht__frame");
 track.addEventListener("click", e => {
   const m = e.target.closest(".ht__media");
-  if (!m || moved || !m.dataset.id) return;
+  if (!m || moved) return;
+  const card = m.closest(".ht__card");
+  if (!card.classList.contains("is-front")) { go(cards.indexOf(card)); restart(); return; }
   frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${m.dataset.id}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
   modal.showModal();
 });
 const close = () => { modal.close(); frame.innerHTML = ""; };
 modal.querySelector(".ht__close").addEventListener("click", close);
 modal.addEventListener("click", e => { if (e.target === modal) close(); });
-modal.addEventListener("close", () => { frame.innerHTML = ""; });
+modal.addEventListener("close", () => { frame.innerHTML = ""; restart(); });
+modal.addEventListener("cancel", () => { frame.innerHTML = ""; });

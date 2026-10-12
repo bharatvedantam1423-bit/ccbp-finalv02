@@ -261,11 +261,7 @@ a{color:inherit;text-decoration:none}
 
 /* Why Top Companies Prefer NxtWave Students: portrait cards sized ~5.4 across, capped at 280px wide
    and kept inside the window height, so the section stays compact on big screens as well as small */
-.cs .ht{--cw:clamp(170px,min(calc((100vw - 2 * var(--m) - 4 * var(--gap)) / 5.4),calc((100svh - 380px) * .5625)),280px)}
-@media (max-width:640px){ .cs .ht{--cw:min(58vw,calc((100svh - 300px) * .5625))} }
 .cs .ht__head{margin-bottom:clamp(32px,4vw,56px)}
-.cs .ht__name{font-size:clamp(15px,1.15vw,18px)}
-.cs .ht__role{font-size:clamp(13px,.95vw,14px)}
 
 /* scroll reveal for both new sections */
 .reveal-up{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform 1s var(--ease)}
@@ -360,9 +356,6 @@ a{color:inherit;text-decoration:none}
 .aw-wall{width:min(100%,var(--page-max))}
 .aw-cards{width:100%}   /* the photo cards span the column, edge to edge with the panel above */
 /* Why Top Companies Prefer NxtWave Students: the rail starts on the content line and runs off the right */
-.cs .ht__head{margin-inline:var(--page-edge)}
-.cs .ht__track,.cs .ht__nav{padding-inline:var(--page-edge)}
-.cs .ht__track{scroll-padding-inline:var(--page-edge)}   /* snapping lands the first card on the line too */
 /* Awards: heading → the recognising bodies. The panel (and its notch) hangs off the block below,
    so it moves down with the strip and the strip stays held in the notch */
 .rc-recog{margin-top:var(--head-gap)}
@@ -1023,7 +1016,7 @@ html.lenis,html.lenis body{height:auto}
       <p class="ht__sub">The people who actually make the hiring decision, on why they keep coming back.</p>
     </div>
   </header>
-  <div class="ht__rail">
+  <div class="ht__rail" tabindex="0" aria-roledescription="carousel" aria-label="Hiring partners on why they hire from NxtWave">
     <ul class="ht__track" id="ht-track"></ul>
     <div class="ht__nav">
       <button class="ht__arrow" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -1032,8 +1025,9 @@ html.lenis,html.lenis body{height:auto}
   </div>
 </section>
 
-<!-- Backed by Leading Global Investors: three plates side by side. As they arrive, each pair of laurels
-     closes round its investor's mark and the mark comes into focus. Styles career/investors.css. -->
+<!-- Backed by Leading Global Investors: the heading on the left; on the right the three investors as
+     round medallions, set like a podium. Each flips over like a coin as it arrives and then turns
+     gently, catching the light. Styles career/investors.css. -->
 <section class="inv" id="investors" aria-labelledby="inv-title">
   <header class="inv-head">
     <h2 class="inv-title" id="inv-title" data-head>Backed by Leading Global Investors</h2>
