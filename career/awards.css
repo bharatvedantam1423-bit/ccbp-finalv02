@@ -56,34 +56,30 @@
 .rc-floor{position:absolute;z-index:0;left:40%;right:0;bottom:0;height:38%;pointer-events:none;
   background:radial-gradient(50% 60% at 50% 100%,rgba(130,189,255,.18),rgba(130,189,255,0) 70%)}
 
-/* ---- the roll of awards: the open one is large, the rest wait below it ---- */
-.rc-list{position:relative;z-index:2;grid-column:1;grid-row:1;align-self:center;
-  list-style:none;margin:0;padding:0 0 0 clamp(18px,1.6vw,28px);display:flex;flex-direction:column;gap:clamp(6px,1.2vh,14px)}
-/* the rail fills with the scroll */
-.rc-list::before,.rc-list::after{content:"";position:absolute;left:0;top:4px;bottom:4px;width:2px;border-radius:2px}
-.rc-list::before{background:rgba(229,229,229,.18)}
-.rc-list::after{background:var(--rc-rule);box-shadow:0 0 14px rgba(0,80,255,.8);transform-origin:top;transform:scaleY(var(--rc-p))}
+/* ---- the open award, large, over an index of all five --------------------------------
+   Nothing here changes size while the scroll runs: the large name is a stack of five that cross-fade
+   in place, and the index only changes colour while a marker slides down its rail. */
+.rc-copy{position:relative;z-index:2;grid-column:1;grid-row:1;align-self:center;display:flex;flex-direction:column;gap:clamp(24px,4.5vh,48px)}
+.rc-feature{position:relative;display:grid;min-height:clamp(150px,22vh,200px)}
+.rc-feat{grid-area:1/1;align-self:end;display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+  opacity:0;transform:translate3d(0,18px,0);transition:opacity .45s ease,transform .7s var(--rc-ease);will-change:opacity,transform;pointer-events:none}
+.rc-feat[aria-current="true"]{opacity:1;transform:none;transition-delay:.12s}
+.rc-feat .rc-kicker{font:600 12px/1.4 var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--rc-kick)}
+.rc-feat .rc-name{margin:0;font-family:var(--font-head);font-weight:600;font-size:clamp(28px,3.3vw,48px);line-height:1.08;letter-spacing:-.01em;color:#fff;text-wrap:balance}
+.rc-feat .rc-by{font:400 clamp(14px,1.05vw,16px)/1.5 var(--font);color:rgba(255,255,255,.72)}
 
-.rc-item{position:relative;display:flex;flex-direction:column;align-items:flex-start;cursor:pointer;color:var(--rc-dim);
-  padding:4px 0;outline:none}
-.rc-kicker,.rc-by{display:block;max-height:0;opacity:0;overflow:hidden;
-  transition:max-height .6s var(--rc-ease),opacity .45s ease,margin .6s var(--rc-ease)}
-.rc-kicker{font:600 12px/1.4 var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--rc-kick)}
-.rc-by{font:400 clamp(14px,1.05vw,16px)/1.5 var(--font);color:rgba(255,255,255,.72)}
-.rc-name{margin:0;font-family:var(--font-head);font-weight:500;letter-spacing:-.01em;
-  font-size:clamp(15px,1.15vw,18px);line-height:1.25;opacity:.55;
-  transform-origin:left center;
-  transition:font-size .6s var(--rc-ease),opacity .45s ease,color .45s ease}
+.rc-list{--h:clamp(34px,4.6vh,42px);position:relative;list-style:none;margin:0;padding:0 0 0 clamp(18px,1.6vw,26px);display:flex;flex-direction:column}
+.rc-list::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;border-radius:2px;background:rgba(229,229,229,.18)}
+/* the marker: a bright length of rail beside the open award */
+.rc-list::after{content:"";position:absolute;left:0;top:0;width:2px;height:var(--h);border-radius:2px;background:var(--rc-rule);box-shadow:0 0 14px rgba(0,80,255,.8);
+  transform:translate3d(0,calc(var(--rc-at,0) * var(--h)),0);transition:transform .6s var(--rc-ease)}
+.rc-item{height:var(--h);display:flex;align-items:center;cursor:pointer;outline:none}
+.rc-item .rc-kicker,.rc-item .rc-by{display:none}
+.rc-item .rc-name{margin:0;font-family:var(--font-head);font-weight:500;font-size:clamp(14px,1.1vw,17px);line-height:1.2;letter-spacing:-.01em;
+  color:var(--rc-dim);opacity:.55;transition:opacity .4s ease,color .4s ease}
 .rc-item:hover .rc-name{opacity:.85}
-.rc-item[aria-current="true"]{color:#fff}
-.rc-item[aria-current="true"] .rc-kicker{max-height:3em;opacity:1;margin-bottom:8px}
-.rc-item[aria-current="true"] .rc-by{max-height:4.5em;opacity:1;margin-top:10px}
-.rc-item[aria-current="true"] .rc-name{font-size:clamp(28px,3.3vw,48px);line-height:1.08;font-weight:600;opacity:1}
-.rc-item[aria-current="true"] + .rc-item{margin-top:clamp(10px,2.4vh,28px)}
-.rc-item:focus-visible .rc-name{outline:2px solid var(--rc-kick);outline-offset:6px;border-radius:4px}
-/* the open name types itself in: a wipe across, not a fade */
-.rc-item[aria-current="true"] .rc-name{animation:rc-wipe .9s var(--rc-ease) both}
-@keyframes rc-wipe{from{clip-path:inset(0 100% 0 0);translate:0 .25em}to{clip-path:inset(0 0 0 0);translate:0 0}}
+.rc-item[aria-current="true"] .rc-name{color:#fff;opacity:1}
+.rc-item:focus-visible .rc-name{outline:2px solid var(--rc-kick);outline-offset:4px;border-radius:4px}
 
 /* ---- the trophy on its plinth ---------------------------------------- */
 .rc-show{position:absolute;z-index:1;bottom:0;right:max(-4vw,calc(var(--page-edge) - 9vw));
@@ -93,20 +89,18 @@
   background:radial-gradient(40% 75% at 50% 0%,rgba(147,197,253,.36) 0%,rgba(147,197,253,.1) 55%,rgba(147,197,253,0) 78%);
   clip-path:polygon(43% 0,57% 0,100% 100%,0 100%);
   opacity:calc(.55 + var(--rc-flash,0) * .45);transition:opacity .9s var(--rc-ease)}
-/* the trophies are drawn on the plinth's own canvas; the box ends at the plinth's top edge, so a trophy
-   rising from below comes up out of the plinth */
-.rc-orbit{position:absolute;inset:0 0 23.5% 0;overflow:hidden;transform-style:preserve-3d}
-.rc-trophy{position:absolute;left:0;top:0;width:100%;height:auto;display:block;
-  opacity:0;transform:translate3d(0,32%,0) rotateY(28deg);filter:blur(6px) brightness(.7);
-  transform-origin:50% 62%;
-  transition:opacity .5s ease,transform 1.1s var(--rc-ease),filter .9s var(--rc-ease)}
-.rc-trophy[data-on]{opacity:1;transform:translate3d(0,0,0) rotateY(0deg);filter:none;
-  animation:rc-hover 7s ease-in-out 1.1s infinite}
-.rc-trophy[data-was]{opacity:0;transform:translate3d(0,-8%,0) rotateY(-36deg) scale(.94);filter:blur(8px) brightness(1.4);
-  transition:opacity .45s ease,transform .7s cubic-bezier(.55,0,.75,.2),filter .6s ease}
-/* the open trophy turns a few degrees either way, like a slow orbit around it */
-@keyframes rc-hover{0%,100%{transform:translate3d(0,0,0) rotateY(0deg)}25%{transform:translate3d(0,-1.2%,0) rotateY(7deg)}75%{transform:translate3d(0,-.6%,0) rotateY(-7deg)}}
-.rc-plinth{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+/* Each trophy picture is drawn on the very same plinth as .rc-plinth, so the pictures are stacked exactly
+   on top of it and never move: a new trophy is revealed from the foot up by a soft mask (the plinth in
+   its picture lands on the plinth underneath, so the base always sits where it should), and the old one
+   fades away. Only opacity and the mask change, so it stays smooth. */
+@property --rc-m{syntax:"<percentage>";inherits:false;initial-value:0%}
+.rc-orbit{position:absolute;inset:0;z-index:1}
+.rc-trophy{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;--rc-m:0%;
+  -webkit-mask-image:linear-gradient(0deg,#000 calc(var(--rc-m) - 14%),transparent var(--rc-m));
+          mask-image:linear-gradient(0deg,#000 calc(var(--rc-m) - 14%),transparent var(--rc-m));
+  transition:opacity .5s ease,--rc-m 0s linear .5s;will-change:opacity}
+.rc-trophy[data-on]{opacity:1;--rc-m:115%;transition:opacity .25s ease,--rc-m 1.1s cubic-bezier(.33,0,.15,1)}
+.rc-plinth{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
 
 /* ---- the award marks + progress, along the foot of the stage ---------- */
 .rc-index{position:relative;z-index:2;grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:14px}
@@ -120,31 +114,26 @@
 .rc-badges li[aria-current="true"] img{opacity:1;filter:drop-shadow(0 0 14px rgba(150,190,255,.6));transform:translateY(-4px) scale(1.08)}
 
 /* the stage's contents arrive with the opening */
-.rc-list,.rc-index{opacity:clamp(0,calc(var(--rc-open) * 2 - .6),1);translate:0 calc((1 - var(--rc-open)) * 40px)}
+.rc-copy,.rc-index{opacity:clamp(0,calc(var(--rc-open) * 2 - .6),1);transform:translate3d(0,calc((1 - var(--rc-open)) * 40px),0)}
 .rc-show{translate:0 calc((1 - var(--rc-open)) * 12%);scale:calc(.9 + var(--rc-open) * .1)}
 
-/* ---- press photographs ------------------------------------------------- */
+/* ---- press photographs: one even row, same frame, captions on one line ---- */
 .rc-cards{list-style:none;margin:0 auto;padding:var(--head-gap) 0 0;
   width:min(calc(100% - 2 * var(--page-pad)),var(--page-max));
-  display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:clamp(16px,2.2vw,32px);align-items:start}
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,32px);align-items:start}
 .rc-cards li{display:flex;flex-direction:column;gap:16px}
-.rc-cards li:nth-child(2){margin-top:clamp(24px,5vw,72px)}
-.rc-cards li:nth-child(3){margin-top:clamp(12px,2.5vw,36px)}
-.rc-cards figure{margin:0;position:relative;overflow:hidden;border-radius:var(--r-md);background:#eef2f9;
-  aspect-ratio:378/240;
+.rc-cards figure{margin:0;position:relative;overflow:hidden;border-radius:var(--r-md);background:#eef2f9;aspect-ratio:16/10;
   -webkit-mask-image:linear-gradient(45deg,#0000 32px,#000 0);mask-image:linear-gradient(45deg,#0000 32px,#000 0);
   clip-path:inset(100% 0 0 0);transition:clip-path 1.1s var(--rc-ease)}
-.rc-cards li:nth-child(1) figure{aspect-ratio:378/270}
-.rc-cards img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover;display:block;
-  transform:translate3d(0,var(--rc-par,0px),0) scale(1.15);transition:scale 1.4s var(--rc-ease)}
+.rc-cards img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.12);transition:transform 1.4s var(--rc-ease)}
 .rc-cards p{margin:0;font:500 clamp(14px,1.05vw,16px)/1.5 "Inter Display","InterVariable","Inter",sans-serif;color:#818181;max-width:400px;
-  opacity:0;translate:0 14px;transition:opacity .7s ease .35s,translate .9s var(--rc-ease) .35s}
+  opacity:0;transform:translate3d(0,14px,0);transition:opacity .7s ease .35s,transform .9s var(--rc-ease) .35s}
 .rc-cards b{font-weight:600;color:#0f0f0f}
 .rc-cards li.is-in figure{clip-path:inset(0 0 0 0)}
-.rc-cards li.is-in img{scale:1}
-.rc-cards li.is-in p{opacity:1;translate:none}
-.rc-cards li:nth-child(2) figure,.rc-cards li:nth-child(2) p{transition-delay:.12s}
-.rc-cards li:nth-child(3) figure,.rc-cards li:nth-child(3) p{transition-delay:.24s}
+.rc-cards li.is-in img{transform:none}
+.rc-cards li.is-in p{opacity:1;transform:none}
+.rc-cards li:nth-child(2) figure,.rc-cards li:nth-child(2) img,.rc-cards li:nth-child(2) p{transition-delay:.12s}
+.rc-cards li:nth-child(3) figure,.rc-cards li:nth-child(3) img,.rc-cards li:nth-child(3) p{transition-delay:.24s}
 
 /* ---- tablet / phone: the trophy over the open award, the marks underneath ---- */
 @media (max-width:900px){
@@ -152,22 +141,23 @@
   .rc-stage{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;padding:64px 20px 24px;row-gap:12px}
   .rc-show{left:50%;right:auto;translate:-50% calc((1 - var(--rc-open)) * 12%);width:min(118vw,calc((100svh - 150px) * 1400 / 1739),560px)}
   .rc-floor{left:0}
-  .rc-list{grid-row:1;align-self:start;padding-left:16px}
-  .rc-item:not([aria-current="true"]){display:none}
-  .rc-item[aria-current="true"] .rc-name{font-size:clamp(24px,7vw,34px)}
+  .rc-copy{grid-row:1;align-self:start}
+  .rc-list{display:none}
+  .rc-feat .rc-name{font-size:clamp(24px,7vw,34px)}
+  .rc-feature{min-height:120px}
   .rc-index{grid-row:3;align-items:center}
   .rc-badges{display:none}
   .rc-progress{width:60%}
   .rc-cards{grid-template-columns:1fr;max-width:520px}
-  .rc-cards li:nth-child(n){margin-top:0}
 }
 
 @media (prefers-reduced-motion:reduce){
   .rc-scene{height:auto}
   .rc-pin{position:relative;height:auto;min-height:100svh}
   .rc-stage{position:relative;inset:auto;border-radius:0;width:100%;min-height:100svh}
-  .rc-trophy,.rc-name,.rc-kicker,.rc-by{transition:none;animation:none!important}
+  .rc-trophy,.rc-feat,.rc-list::after{transition:none}
+  .rc-trophy[data-on]{--rc-m:115%}
   .rc-cards figure{clip-path:none;transition:none}
-  .rc-cards img{transform:none;scale:1;transition:none}
-  .rc-cards p{opacity:1;translate:none;transition:none}
+  .rc-cards img{transform:none;transition:none}
+  .rc-cards p{opacity:1;transform:none;transition:none}
 }

@@ -16,7 +16,7 @@ const TESTIMONIALS = [
 const track = document.getElementById("ht-track");
 const PLAY = '<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>';
 
-/* A coverflow. The partner at the front is large under an arched top, the others step
+/* A coverflow. The partner at the front is large, the others step
    back to either side, turned away. Their name, role and company show under the front portrait.
    The front moves on by itself every few seconds while the section is on screen (held while the
    pointer is over it), and follows the arrows, a swipe, a click on a side portrait, or the arrow keys.

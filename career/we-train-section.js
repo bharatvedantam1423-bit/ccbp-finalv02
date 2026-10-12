@@ -33,7 +33,7 @@
         cards.forEach((c, i) => {
           let sink = 0;
           for (let j = i + 1; j < cover.length; j++) sink += cover[j];
-          c.style.setProperty('--ctg-sink', sink.toFixed(3));
+          c.style.setProperty('--ctg-sink', Math.min(2, sink).toFixed(3));
         });
       },
     });

@@ -9,6 +9,17 @@
   const items = [...sec.querySelectorAll('.rc-item')];
   const badges = [...sec.querySelectorAll('.rc-badges li')];
   const trophies = [...sec.querySelectorAll('.rc-trophy')];
+  const list = sec.querySelector('.rc-list');
+  // the large copy of each award, built from the index so the words live in one place
+  const feature = sec.querySelector('.rc-feature');
+  const feats = items.map(li => {
+    const d = document.createElement('div');
+    d.className = 'rc-feat';
+    d.setAttribute('aria-current', 'false');
+    d.innerHTML = li.innerHTML;
+    feature.appendChild(d);
+    return d;
+  });
   const M = window.NWMotion;
   const N = items.length;
   const OPEN = 0.16;                       // share of the pin spent opening the stage
@@ -16,14 +27,12 @@
 
   const show = i => {
     if (i === at) return;
-    const was = at;
     at = i;
     items.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
+    feats.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
     badges.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
-    trophies.forEach((el, k) => {
-      el.toggleAttribute('data-on', k === i);
-      el.toggleAttribute('data-was', k === was);
-    });
+    trophies.forEach((el, k) => el.toggleAttribute('data-on', k === i));
+    list.style.setProperty('--rc-at', i);
     // the spotlight flares as the new trophy comes up
     scene.style.setProperty('--rc-flash', 1);
     clearTimeout(flashT);
@@ -64,12 +73,7 @@
     },
   });
 
-  // press photos: the photo opens from the foot up, then drifts against the scroll
+  // press photos: each opens from the foot up as it arrives
   const cards = [...sec.querySelectorAll('.rc-cards li')];
   cards.forEach(li => M.once(li, () => li.classList.add('is-in')));
-  M.scene({
-    el: sec.querySelector('.rc-cards'),
-    read: () => cards.map(li => M.progress(li, 1, -.4)),
-    write: ps => cards.forEach((li, k) => li.style.setProperty('--rc-par', ((ps[k] - .5) * -40).toFixed(1) + 'px')),
-  });
 })();

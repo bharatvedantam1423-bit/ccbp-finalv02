@@ -32,7 +32,7 @@
   -webkit-font-smoothing:antialiased;text-align:left}
 
 /* ---------- layout: the heading sticks on the left, the deck stacks on the right ---------- */
-.ctg{--ctg-card-h:clamp(340px,58vh,460px);--ctg-top:clamp(88px,16vh,150px);--ctg-step:22px;
+.ctg{--ctg-card-h:clamp(320px,52vh,420px);--ctg-top:clamp(96px,18vh,160px);--ctg-step:18px;
   display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,96px);align-items:start;
   padding:var(--sec-y,120px) var(--page-edge,80px) 0}
 .ctg__hero{position:sticky;top:var(--ctg-top);display:flex;align-items:flex-start}
@@ -42,16 +42,18 @@
 .ctg__sub{font-size:17px;line-height:26px;font-weight:500;color:var(--ctg-sub);max-width:38ch}
 
 /* each slot is a stretch of scroll; its card sticks a step lower than the one before */
-.ctg__deck{position:relative;display:flex;flex-direction:column;padding-bottom:clamp(8px,2vw,24px)}
+.ctg__deck{position:relative;display:flex;flex-direction:column;
+  /* room after the last card, so the finished stack rests for a moment before the section moves on */
+  padding-bottom:clamp(160px,30vh,300px)}
 .ctg__slot{position:sticky;top:calc(var(--ctg-top) + var(--i) * var(--ctg-step));height:var(--ctg-card-h);margin-bottom:clamp(120px,24vh,240px)}
 .ctg__slot:last-child{margin-bottom:0}
-.ctg__slot .ctg-card{transform-origin:50% 0%;
-  transform:translateY(calc(var(--ctg-sink,0) * -14px)) scale(calc(1 - var(--ctg-sink,0) * .05));
-  filter:brightness(calc(1 - min(var(--ctg-sink,0),3) * .025))}
+.ctg__slot .ctg-card{transform-origin:50% 0%;will-change:transform;backface-visibility:hidden;
+  /* a card under others steps back: smaller and a little higher, so its top shows above the next one */
+  transform:translate3d(0,calc(var(--ctg-sink,0) * -10px),0) scale(calc(1 - var(--ctg-sink,0) * .04))}
 
 /* ---------- cards (content from the live "We train you for…" section) ---------- */
 .ctg-card{position:relative;height:100%;overflow:hidden;border-radius:24px;
-  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto 1fr;column-gap:clamp(16px,2vw,32px);
+  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto 1fr;column-gap:clamp(16px,2vw,32px);align-content:stretch;
   padding:clamp(22px,2.4vw,40px);box-shadow:0 30px 50px -40px rgba(11,30,64,.35),0 14px 30px -22px rgba(11,30,64,.08)}
 .ctg-card > .ctg-card__copy{grid-column:1;grid-row:1}
 .ctg-card > .ctg-card__art,.ctg-card > .ctg-card__viz{grid-column:2;grid-row:1 / span 2;align-self:stretch}
@@ -103,7 +105,7 @@
 
 /* ---------- tablet / phone: the heading on top, the deck under it, each card text over picture ---------- */
 @media (max-width:900px){
-  .ctg{grid-template-columns:1fr;padding:var(--sec-y,80px) 20px 0;--ctg-top:72px;--ctg-step:14px;--ctg-card-h:min(560px,calc(100svh - 120px))}
+  .ctg{grid-template-columns:1fr;padding:var(--sec-y,80px) 20px 0;--ctg-top:72px;--ctg-step:14px;--ctg-card-h:min(520px,calc(100svh - 120px))}
   .ctg__hero{position:static}
   .ctg__head{gap:12px}
   .ctg__title{font-size:34px}
@@ -117,7 +119,8 @@
 
 @media (prefers-reduced-motion:reduce){
   .ctg__slot{position:relative;top:auto;margin-bottom:24px}
-  .ctg__slot .ctg-card{transform:none;filter:none}
+  .ctg__slot .ctg-card{transform:none}
+  .ctg__deck{padding-bottom:0}
   .ctg-card-a{opacity:1!important;transform:none!important;transition:none}
   .ctg-card-wire{stroke-dashoffset:0;transition:none}
   .ctg-card.ctg-is-shown .ctg-card-node{animation:none}

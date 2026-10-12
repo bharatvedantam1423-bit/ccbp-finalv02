@@ -1,21 +1,20 @@
 /* =====================================================================
    S7b — BACKED BY LEADING GLOBAL INVESTORS
-   The heading on the left, the three investors on the right as round medallions set like a podium.
+   The heading on the left, the three investors on the right as round medallions in one even row,
+   centred on the heading and ending on the page's right content edge.
    When the row arrives (.is-in, from career/motion.js) each medallion flips over like a coin, one
    after another, then keeps turning a few degrees either way with a sheen passing over it.
    ===================================================================== */
-.cs .inv{background:#fff;padding:var(--sec-y) var(--page-edge) 0;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:clamp(32px,5vw,96px)}
+.cs .inv{background:#fff;padding:var(--sec-y) var(--page-edge) 0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:clamp(32px,5vw,96px)}
 .inv-head{display:flex;flex-direction:column;align-items:flex-start;gap:16px;text-align:left;max-width:520px}
 .inv-sub{margin:0}
 
-.inv-row{--m:clamp(150px,13vw,200px);list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,calc(var(--m) / 2 + 8px));justify-content:center;
-  grid-template-rows:auto auto;row-gap:12px;perspective:1000px}
-.inv-row li{grid-row:2;grid-column:span 2;justify-self:center;position:relative;width:var(--m);aspect-ratio:1;
+.inv-row{--m:clamp(150px,12vw,184px);list-style:none;margin:0;padding:0;display:flex;align-items:center;justify-content:flex-end;gap:clamp(16px,2vw,28px);perspective:1000px}
+.inv-row li{flex:none;position:relative;width:var(--m);aspect-ratio:1;
   display:flex;align-items:center;justify-content:center;gap:4px;border-radius:50%;
   background:radial-gradient(circle at 50% 30%,#fff 0%,#f6f9ff 70%,#eef4ff 100%);
   box-shadow:inset 0 0 0 1px var(--line),inset 0 0 0 10px #fff,inset 0 0 0 11px #e6edf9,0 30px 40px -30px rgba(29,78,216,.45);
   transform-style:preserve-3d;transition:transform 1.4s cubic-bezier(.16,1,.3,1) calc(var(--i) * 200ms)}
-.inv-row li:nth-child(1){grid-row:1;grid-column:2 / span 2}
 /* the reverse of the coin, seen while it turns over */
 .inv-row li::before{content:"";position:absolute;inset:0;border-radius:50%;transform:rotateY(180deg) translateZ(1px);backface-visibility:hidden;
   background:radial-gradient(circle at 50% 35%,#2563eb,#143479 70%,#060f22)}
@@ -40,7 +39,10 @@
 @media (max-width:900px){
   .cs .inv{grid-template-columns:1fr;padding-inline:var(--page-pad)}
   .inv-head{align-items:center;text-align:center;margin-inline:auto}
-  .inv-row{--m:clamp(130px,38vw,170px)}
+  .inv-row{--m:clamp(96px,28vw,150px);justify-content:center;gap:12px}
+  .inv-row .lf{width:16px;height:52px}
+  .inv-better{width:72px;height:30px}.inv-better img{width:50px}
+  .inv-gp img{width:76px}.inv-orios img{width:72px}
 }
 @media (prefers-reduced-motion:reduce){
   .inv-row li{transition:none;animation:none!important}
