@@ -220,8 +220,8 @@
   new IntersectionObserver(([e]) => { on = e.isIntersecting; cancelAnimationFrame(raf); if (on) loop(); }).observe(sec);
 })();
 
-/* Heading sweep (from v2-stories) on the programmes title (section 2 — the sections below use the
-   [data-head] wipe in career/motion.js):
+/* Heading sweep (from v2-stories) on the headings kept from the original build — the programmes title,
+   the mentors and Career Transformations (the other sections below use the [data-head] wipe in career/motion.js):
    starts pale, a blue highlight runs through it letter by letter, then settles to its own colour */
 (() => {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || !window.gsap || !window.ScrollTrigger) return;
@@ -246,7 +246,7 @@
     [...el.children].forEach(c => c.setAttribute('aria-hidden', 'true'));
     return [...el.querySelectorAll('.sw-c')];
   };
-  document.querySelectorAll('.programmes__title').forEach(el => {
+  document.querySelectorAll('.programmes__title, .mw-title, .ctw-heading h2').forEach(el => {
     const dark = !!el.closest('.cta, .ct');
     const chars = split(el);
     const finals = chars.map(c => { const v = getComputedStyle(c).color; return /rgba\(.*,\s*0\)$/.test(v) ? 'rgba(37,99,235,0)' : v; });  // transparent → gradient title

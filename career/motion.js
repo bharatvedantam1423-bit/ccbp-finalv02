@@ -51,16 +51,7 @@
 
   window.NWMotion = { RM, scene, progress, pin, near, once, clamp01, get vh() { return vh; } };
 
-  /* mentors: the pin's progress drives the film's settle and the alumni marks (career/mentors.css) */
-  const mentors = document.getElementById('team');
-  const mwTrack = mentors && mentors.querySelector('.mw-track');
-  if (mwTrack && !RM) scene({
-    el: mentors,
-    read: () => pin(mwTrack),
-    write: p => mentors.style.setProperty('--mw-p', p.toFixed(4)),
-  });
-
-  /* investors: the laurels close round the marks when the row arrives (career/investors.css) */
+  /* investors: the medallions flip in when the row arrives (career/investors.css) */
   const invRow = document.querySelector('.inv-row');
   if (invRow) RM ? invRow.classList.add('is-in') : once(invRow, () => invRow.classList.add('is-in'), '0px 0px -18% 0px');
 

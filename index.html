@@ -19,7 +19,6 @@
 <link rel="stylesheet" href="career/masterclass.css">
 <link rel="stylesheet" href="career/awards.css">
 <link rel="stylesheet" href="career/hiring-companies.css">
-<link rel="stylesheet" href="career/mentors.css">
 <link rel="stylesheet" href="career/investors.css">
 <link rel="stylesheet" href="career/career-transformations.css">
 <link rel="stylesheet" href="career/we-train-section.css">
@@ -269,6 +268,59 @@ a{color:inherit;text-decoration:none}
 .aw-cards li.reveal-up{transition-delay:calc(var(--i,0) * 90ms)}
 @media (prefers-reduced-motion:reduce){ .reveal-up{opacity:1;transform:none;transition:none} }
 
+/* =====================================================================
+   S3 — MENTORS: scroll-scrubbed video ("Taught by people who have done the job")
+   ===================================================================== */
+.mentors{position:relative;background:#fff}
+.mw-track{position:relative;height:var(--mw-track,340vh)}
+/* heading + film pin together: the heading stays in view for the whole scrub, the film takes
+   the room left beneath it */
+.mw-stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;align-items:center;
+  padding-bottom:clamp(24px,6vh,64px)}   /* breathing room under the table */
+.mw-head{flex:none;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;
+  padding:clamp(40px,8vh,96px) 16px clamp(12px,2.6vh,28px);max-width:1080px;margin:0 auto}
+.mw-title{max-width:820px}
+.mw-sub{max-width:640px}
+
+/* the alumni strip that sits under the mentors heading, in place of a subhead */
+.mw-alumni{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:10px;width:100%}
+.mw-alumni-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  gap:clamp(14px,2.2vw,34px);list-style:none;margin:0;padding:0}
+.mw-alumni-row li{display:flex;align-items:center;gap:8px}
+.mw-alumni-row img{display:block;width:auto;height:clamp(32px,2.7vw,42px);object-fit:contain}
+.mw-alumni-row b{font-family:var(--font-head);font-size:clamp(14px,1.15vw,17px);
+  font-weight:600;color:#0f172a;letter-spacing:-.01em;white-space:nowrap}
+.mw-alumni-more{margin:0;font-family:var(--font-sub);font-size:13px;color:#64748b}
+@media (max-width:640px){ .mw-alumni-row{gap:14px 20px} }
+/* heading rises in as the section arrives */
+.mw-head > *{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .9s var(--ease)}
+.mw-head > * + *{transition-delay:.12s}
+.mentors.is-in .mw-head > *{opacity:1;transform:none}
+
+/* the film: whole frame, uncropped, sitting on the desk edge at the foot of the stage */
+.mw-screen{position:relative;flex:1 1 0;min-height:0;width:100%}
+.mw-screen video,.mw-screen canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
+  /* fallback video: same thin feather as the canvas draws (sides + top) */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%),linear-gradient(180deg,transparent 0,#000 6%);
+  -webkit-mask-composite:source-in;
+          mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%),linear-gradient(180deg,transparent 0,#000 6%);
+          mask-composite:intersect}
+.mw-screen video{object-fit:contain;object-position:50% 100%}
+/* the film's backdrop is rgb(253,253,251); lift it to pure white so it melts into the white section */
+.mw-screen video,.mw-screen canvas{filter:brightness(1.016)}
+.mw-screen canvas{opacity:0;transition:opacity .2s;-webkit-mask-image:none;mask-image:none}
+.mw-screen.frames canvas{opacity:1}
+.mw-screen.frames video{visibility:hidden}
+
+@media (max-width:860px){
+  .mentors{--mw-track:240vh}
+  .mw-head{gap:12px}
+  /* on a phone the film is far wider than it is tall: heading + film sit together in the middle
+     of the screen rather than the film dropping to the bottom with a gap above it */
+  .mw-stage{justify-content:center}
+  .mw-screen{flex:none;height:calc(100vw * 728 / 1262)}
+}
+
 /* everything from Masterclasses down is opaque and layered above, so nothing
    below can show through a short section */
 .mc{position:relative;z-index:2}
@@ -279,6 +331,11 @@ a{color:inherit;text-decoration:none}
 .cs{--sec:var(--sec-y)}
 .mc{--sec:var(--sec-y);padding-bottom:0}
 
+@media (prefers-reduced-motion:reduce){
+  .mentors{--mw-track:auto}
+  .mw-stage{position:relative;height:auto;min-height:100svh}
+  .mw-screen{flex:none;height:min(80vh,calc(100vw * 728 / 1262))}
+  .mw-head > *{opacity:1;transform:none}
 }
 
 /* =====================================================================
@@ -355,6 +412,27 @@ a{color:inherit;text-decoration:none}
 .aw-inner{max-width:var(--page-max)}
 .aw-wall{width:min(100%,var(--page-max))}
 .aw-cards{width:100%}   /* the photo cards span the column, edge to edge with the panel above */
+/* Career Transformations (supplied build, career/career-transformations.css): same room above the heading
+   and the page's side margin. The 130px → 80px heading-to-wall close is the build's own scroll motion. */
+.ctw{font-family:var(--font)}
+.ctw-heading{padding-top:var(--sec-y);padding-inline:var(--page-pad)}
+.ctw-heading-text{gap:16px}
+/* the wall's last 62px are solid white (the bottom fade is opaque from 72% of its 220px) and the gap close
+   lifts the wall 50px (24px on phones) without giving the space back. Tuck all but 12px of that under the
+   masterclasses section (opaque, layered above), so the gap to the next heading is about the page's --sec-y
+   and the fade is never clipped */
+.ctw{margin-bottom:-100px}
+@media (max-width:809px){ .ctw{margin-bottom:-74px} }
+/* The heading fills the screen and stays pinned; the wall of cards scrolls up over it, the heading
+   fading as they reach it (career-transformations.js). View All sits after the wall on clear white:
+   it starts where the wall's fade has turned solid, so no card ever shows through behind it. */
+.ctw{margin-bottom:0}
+.ctw-heading{position:sticky;top:0;z-index:0;height:100vh;height:100svh;box-sizing:border-box;
+  justify-content:center;padding-block:0}
+.ctw-heading-text{will-change:opacity}
+.ctw-mask{z-index:1}
+.ctw-end{position:relative;z-index:3;display:flex;justify-content:center;background:#fff;
+  margin-top:-48px;padding:16px 0 0}   /* the masterclasses section brings the --sec-y above its heading */
 /* Why Top Companies Prefer NxtWave Students: the rail starts on the content line and runs off the right */
 /* Awards: heading → the recognising bodies. The panel (and its notch) hangs off the block below,
    so it moves down with the strip and the strip stays held in the notch */
@@ -809,15 +887,14 @@ html.lenis,html.lenis body{height:auto}
 </section>
 
 <!-- ===================================================================
-     S5 — MENTORS: the film scrubs with the scroll while the stage is pinned. The heading holds the left
-     column; the six alumni marks come in one by one as the mentors gather round the learner on screen.
-     Styles career/mentors.css; the film scrub is the inline script below, the layout motion career/motion.js.
+     S5 — MENTORS (scroll-scrubbed video)
      =================================================================== -->
 <section class="mentors" id="team" aria-labelledby="mw-title">
   <div class="mw-track">
     <div class="mw-stage">
+      <!-- the heading pins with the film, so it stays in view for the whole scrub -->
       <header class="mw-head">
-        <h2 class="mw-title" id="mw-title" data-head>Taught by people<br>who have done the job.</h2>
+        <h2 class="mw-title" id="mw-title">Taught by people<br>who have done the job.</h2>
         <div class="mw-alumni">
           <ul class="mw-alumni-row">
             <li><img src="assets/masterclass/logos/stanford-color.png" alt="Stanford University" width="243" height="104" loading="lazy"></li>
@@ -840,26 +917,23 @@ html.lenis,html.lenis body{height:auto}
 </section>
 
 <!-- ===================================================================
-     S6 — CAREER TRANSFORMATIONS: a pinned reel. The heading holds the top of the screen while the
-     scroll carries a long row of learner stories sideways beneath it, on a gently curved screen: the
-     columns turn away as they near either edge. Video stories play muted while they are in view.
-     View All closes the reel. Styles career/career-transformations.css, reel built by
+     S6 — CAREER TRANSFORMATIONS (supplied build): heading, subline and View All above a staggered
+     wall of text and video testimonials; the side columns rise into an arch as the section scrolls in.
+     Styles career/career-transformations.css (scoped to .ctw), wall built by
      career/career-transformations.js (VIDEOS, QUOTES) from assets/career-transformations/.
      =================================================================== -->
 <section class="ctw" id="career-transformations" data-career-transformations data-assets="assets/career-transformations/" aria-labelledby="ct-title">
-  <div class="ctw-pin">
-    <div class="ctw-heading">
-      <div class="ctw-heading-text">
-        <h2 id="ct-title" data-head>Career Transformations</h2>
-        <p class="ctw-heading-sub">Real people. Named companies. Their own words.</p>
-      </div>
-    </div>
-    <div class="ctw-reel">
-      <div class="ctw-images">
-        <div class="ctw-end"><a class="ctw-cta" href="#" data-blank>View All</a></div>
-      </div>
+  <div class="ctw-heading">
+    <div class="ctw-heading-text">
+      <h2 id="ct-title">Career Transformations</h2>
+      <p class="ctw-heading-sub">Real people. Named companies. Their own words.</p>
     </div>
   </div>
+  <div class="ctw-mask">
+    <div class="ctw-images"></div>
+    <div class="ctw-fade-bottom"></div>
+  </div>
+  <div class="ctw-end"><a class="ctw-cta" href="#" data-blank>View All</a></div>
 </section>
 
 <!-- ===================================================================
