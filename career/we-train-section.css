@@ -73,89 +73,135 @@
   font-size:12px;font-weight:500;line-height:1.3;letter-spacing:-.01em;color:#312e2e}
 .ctg-card__note svg{flex:0 0 auto}
 
-/* the picture on cards 2–4 sits on its own stage: a soft tinted panel with a faint dot grid and a glow,
-   so it reads as a crafted illustration rather than loose chips on the card */
+/* ---------- the four illustrations: one family of soft glass tiles, blue mesh accents ---------- */
+/* cards 2–4 sit on a stage: a tinted panel with a faint dot grid and a glow */
 .ctg-card__viz{position:relative;flex:1;display:flex;align-items:center;justify-content:center;min-height:0;isolation:isolate}
 .ctg-card__viz::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:20px;
   background:radial-gradient(60% 55% at 50% 50%,var(--ctg-glow) 0%,transparent 70%),
     radial-gradient(circle,var(--ctg-dot) 1px,transparent 1.4px) 0 0 / 16px 16px,
     linear-gradient(160deg,rgba(255,255,255,.85),rgba(255,255,255,.35));
-  border:1px solid rgba(255,255,255,.9);box-shadow:inset 0 0 0 1px var(--ctg-rim),inset 0 18px 30px -24px rgba(255,255,255,1);
+  box-shadow:inset 0 0 0 1px var(--ctg-rim);
   -webkit-mask:radial-gradient(120% 100% at 50% 50%,#000 60%,transparent 100%);mask:radial-gradient(120% 100% at 50% 50%,#000 60%,transparent 100%)}
 .ctg-card--fund{--ctg-glow:rgba(110,150,255,.22);--ctg-dot:rgba(59,91,217,.16);--ctg-rim:rgba(59,91,217,.08)}
 .ctg-card--curr{--ctg-glow:rgba(120,210,140,.26);--ctg-dot:rgba(47,125,70,.16);--ctg-rim:rgba(47,125,70,.08)}
 .ctg-card--prep{--ctg-glow:rgba(249,150,80,.18);--ctg-dot:rgba(180,100,40,.14);--ctg-rim:rgba(180,100,40,.07)}
-.ctg-card__viz-in{transform:scale(var(--ctg-vs,1.2))}
+.ctg-card__viz-in{transform:scale(var(--ctg-vs,1.15))}
+.ctg-card__svg{width:100%;height:auto;max-height:100%;overflow:visible}
 
-/* fundamentals: three blocks stacked on a base, each with its own small mark and a solid edge underneath */
-.ctg-card__viz--stack .ctg-card__viz-in{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding-bottom:14px;
-  transform:scale(var(--ctg-vs,1.2)) perspective(600px) rotateX(14deg)}
-.ctg-card__slab{position:relative;display:flex;align-items:center;justify-content:center;gap:7px;width:var(--ctg-w);padding:10px 14px;border-radius:12px;
-  white-space:nowrap;font-size:12.5px;font-weight:600;letter-spacing:-.01em;color:#2f4fc9;
-  background:linear-gradient(180deg,#fff 0%,#eef3ff 100%);border:1px solid rgba(40,70,180,.14);
-  box-shadow:inset 0 1px 0 #fff,0 4px 0 -1px #cfdafc,0 5px 0 -1px rgba(40,70,180,.18),0 16px 22px -14px rgba(25,55,150,.55)}
-.ctg-card__slab svg{flex:none;width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
-  padding:3px;box-sizing:content-box;border-radius:6px;background:#e3eaff}
-.ctg-card__slab:nth-of-type(3){color:#fff;background:linear-gradient(180deg,#4d7bf3,#2f5fe0);border-color:#2a55cf;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 0 -1px #2448b4,0 18px 26px -14px rgba(36,72,180,.75)}
-.ctg-card__slab:nth-of-type(3) svg{background:rgba(255,255,255,.18)}
-.ctg-card__base{position:absolute;left:50%;bottom:0;width:230px;height:22px;margin-left:-115px;border-radius:50%;z-index:-1;
-  background:radial-gradient(closest-side,rgba(47,95,224,.28),rgba(47,95,224,0))}
+/* icon colours shared by the tiles and rows */
+.ctg-card .is-blue{--c:#2f5fe0;--cb:#e6edff}.ctg-card .is-violet{--c:#7b3fe4;--cb:#f0e9ff}
+.ctg-card .is-green{--c:#22a05a;--cb:#e4f6eb}.ctg-card .is-orange{--c:#ea6a12;--cb:#fff0e4}
 
-/* curriculum: a trend tile feeds the curriculum tile; the connector keeps flowing, the result carries a tick */
-.ctg-card__viz--flow .ctg-card__viz-in{display:flex;flex-direction:column;align-items:center;gap:2px}
-.ctg-card__chip{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:128px;padding:11px 16px 12px;border-radius:14px;
-  text-align:center;font-size:12px;font-weight:600;line-height:1.3;letter-spacing:-.01em;color:#2b7443;
-  background:linear-gradient(180deg,#fff,#f3fbf5);border:1px solid rgba(35,120,70,.18);
-  box-shadow:inset 0 1px 0 #fff,0 12px 22px -16px rgba(30,110,60,.55)}
-.ctg-card__spark{width:64px;height:22px;fill:none;stroke:#3aa15f;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
-  stroke-dasharray:90;stroke-dashoffset:90;transition:stroke-dashoffset 1.1s ease .7s}
-.ctg-card.ctg-is-shown .ctg-card__spark{stroke-dashoffset:0}
-.ctg-card__chip--solid{color:#fff;background:linear-gradient(180deg,#3fae66,#2a8c4e);border-color:#26814a;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 16px 26px -14px rgba(30,120,60,.7)}
-.ctg-card__book{width:20px;height:20px;fill:rgba(255,255,255,.2);stroke:#fff;stroke-width:1.5;stroke-linejoin:round}
-.ctg-card__tick{position:absolute;top:-8px;right:-8px;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;
-  background:#fff;box-shadow:0 0 0 2px #2a8c4e,0 4px 10px -4px rgba(30,120,60,.6);
-  transform:scale(0);transition:transform .5s cubic-bezier(.34,1.56,.64,1) 1.1s}
-.ctg-card.ctg-is-shown .ctg-card__tick{transform:scale(1)}
-.ctg-card__tick svg,.ctg-card__ok{width:12px;height:12px;fill:none;stroke:#2a8c4e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-/* the pulse round the result */
-.ctg-card__chip--solid::after{content:"";position:absolute;inset:-1px;border-radius:inherit;box-shadow:0 0 0 2px rgba(58,161,95,.5);
-  opacity:0;pointer-events:none}
-.ctg-card.ctg-is-shown .ctg-card__chip--solid::after{animation:ctg-pulse 2.8s ease-out 1.4s infinite}
-@keyframes ctg-pulse{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.18,1.3)}}
-.ctg-card__arrow{width:14px;height:40px;stroke:#3aa15f;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+/* 1 · AI: a chip with circuit traces; light runs out along them to the four tools */
+.ctg-card-label{font-family:var(--ctg-body);font-size:13px;font-weight:600;fill:#3a4459;letter-spacing:-.01em;text-anchor:middle}
+.ctg-card-ai{font-family:var(--ctg-head);font-size:38px;font-weight:700;fill:#fff;letter-spacing:-.02em;text-anchor:middle}
+.ctg-orbit circle{fill:none;stroke:#b9cbf5;stroke-width:1;stroke-dasharray:2 6}
+.ctg-orbit .ctg-orbit__far{stroke:#d3dffa;stroke-dasharray:1 8}
+.ctg-orbit{transform-box:fill-box;transform-origin:50% 50%}
+.ctg-card.ctg-is-shown .ctg-orbit{animation:ctg-spin 40s linear infinite}
+@keyframes ctg-spin{to{rotate:360deg}}
+.ctg-trace{fill:none;stroke:#bccdf3;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100;
+  transition:stroke-dashoffset 1s ease calc(.25s + var(--ctg-d,0s))}
+.ctg-card.ctg-is-shown .ctg-trace{stroke-dashoffset:0}
+.ctg-pulse{fill:none;stroke:#3b6cf6;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:10 100;stroke-dashoffset:10;opacity:0}
+.ctg-card.ctg-is-shown .ctg-pulse{animation:ctg-run 2.2s cubic-bezier(.45,0,.25,1) calc(1.4s + var(--ctg-p,0s)) infinite}
+@keyframes ctg-run{0%{stroke-dashoffset:10;opacity:0}12%{opacity:1}85%{opacity:1}100%{stroke-dashoffset:-100;opacity:0}}
+.ctg-joint{fill:#fff;stroke:#3b6cf6;stroke-width:2}
+.ctg-chip__pins rect{fill:#9fb6ef}
+.ctg-chip__spark{fill:#fff;opacity:.9}
+.ctg-card.ctg-is-shown .ctg-chip__spark{animation:ctg-twinkle 3s ease-in-out 1.5s infinite;transform-box:fill-box;transform-origin:50% 50%}
+@keyframes ctg-twinkle{50%{opacity:.25;scale:.6}}
+.ctg-tile__bg{fill:url(#ctgTile);stroke:#dfe7fb}
+.ctg-tile__ico{fill:var(--cb)}
+.ctg-tile__glyph{fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ctg-card.ctg-is-shown .ctg-tile{animation:ctg-float 6s ease-in-out var(--ctg-d,0s) infinite}
+@keyframes ctg-float{50%{translate:0 -4px}}
+
+/* 2 · Fundamentals: an isometric tower, problem solving at the base, each layer named on a tag */
+.ctg-floor{fill:none;stroke:rgba(59,91,217,.14);stroke-dasharray:3 5}
+.ctg-blk .e{fill:none;stroke:rgba(255,255,255,.9);stroke-width:1.2;stroke-linejoin:round}
+.ctg-blk--base .t{fill:#6f97fa}.ctg-blk--base .l{fill:#3e6deb}.ctg-blk--base .r{fill:#2850c4}
+.ctg-blk--mid .t{fill:#f5f8ff}.ctg-blk--mid .l{fill:#dde6fd}.ctg-blk--mid .r{fill:#c4d3fa}
+.ctg-blk--top .t{fill:#fff}.ctg-blk--top .l{fill:#e6ecff}.ctg-blk--top .r{fill:#cfdbfb}
+.ctg-blk polygon{stroke:rgba(30,60,170,.12);stroke-width:.8;stroke-linejoin:round}
+.ctg-card__viz--stack .ctg-blk.ctg-card-a{transform:translateY(-34px)}
+.ctg-card.ctg-is-shown .ctg-blk.ctg-card-a{transform:none}
+.ctg-card.ctg-is-shown .ctg-blk--top{animation:ctg-float 5s ease-in-out 1.6s infinite}
+.ctg-lead{fill:none;stroke:#9db3ee;stroke-width:1.3;stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset .7s ease calc(.25s + var(--ctg-d,0s))}
+.ctg-card.ctg-is-shown .ctg-lead{stroke-dashoffset:0}
+.ctg-tag circle{fill:#fff;stroke:#3b6cf6;stroke-width:1.6}
+.ctg-tag__bg{fill:#fff;stroke:#dde6fb}
+.ctg-tag--base .ctg-tag__bg{fill:#2f5fe0;stroke:#2a55cf}
+.ctg-tag__ico{fill:none;stroke:#2f5fe0;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ctg-tag__t{font-family:var(--ctg-body);font-size:13px;font-weight:600;fill:#2a3550;letter-spacing:-.01em}
+.ctg-tag--base .ctg-tag__ico{stroke:#fff}.ctg-tag--base .ctg-tag__t{fill:#fff}
+
+/* shared glass panel for cards 3 and 4 */
+.ctg-panel,.ctg-win{position:relative;border-radius:16px;background:linear-gradient(180deg,#fff,rgba(255,255,255,.92));
+  border:1px solid rgba(15,23,42,.07);box-shadow:inset 0 1px 0 #fff,0 18px 30px -20px rgba(15,40,90,.35),0 2px 6px -3px rgba(15,40,90,.12)}
+.ctg-panel__h{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:-.01em;color:#2a3550;white-space:nowrap}
+.ctg-panel__h svg{flex:none;width:22px;height:22px;padding:4px;border-radius:7px;box-sizing:border-box;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+/* 3 · Curriculum: the trend chart feeds the syllabus; a new module slides in and is ticked */
+.ctg-card__viz--flow .ctg-card__viz-in{--ctg-vs:1;display:flex;flex-direction:column;align-items:center;gap:2px;width:210px}
+.ctg-panel{width:100%;padding:12px 14px}
+.ctg-panel--trend .ctg-panel__h svg{background:#e4f6eb;stroke:#22a05a}
+.ctg-chart{display:block;width:100%;height:auto;margin-top:8px;overflow:visible}
+.ctg-chart__grid{stroke:#eef1f5;stroke-width:1}
+.ctg-chart__line{fill:none;stroke:#2f9a57;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset 1.2s ease .6s}
+.ctg-chart__area{opacity:0;transition:opacity .8s ease 1.2s}
+.ctg-chart__dot{fill:#2f9a57;stroke:#fff;stroke-width:1.6;opacity:0;transition:opacity .3s 1.7s}
+.ctg-chart__ring{fill:none;stroke:#2f9a57;stroke-width:1.4;opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.ctg-card.ctg-is-shown .ctg-chart__line{stroke-dashoffset:0}
+.ctg-card.ctg-is-shown .ctg-chart__area,.ctg-card.ctg-is-shown .ctg-chart__dot{opacity:1}
+.ctg-card.ctg-is-shown .ctg-chart__ring{animation:ctg-ping 2.4s ease-out 1.9s infinite}
+@keyframes ctg-ping{0%{opacity:.8;scale:.6}100%{opacity:0;scale:1.8}}
+.ctg-card__arrow{width:14px;height:34px;stroke:#3aa15f;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .ctg-card__flow{stroke-dasharray:3 4}
 .ctg-card.ctg-is-shown .ctg-card__flow{animation:ctg-flow .9s linear infinite}
 @keyframes ctg-flow{to{stroke-dashoffset:-7}}
+.ctg-panel--syl{display:flex;flex-direction:column;gap:8px;border-color:rgba(35,120,70,.22);
+  box-shadow:inset 0 1px 0 #fff,0 0 0 4px rgba(58,161,95,.08),0 18px 30px -18px rgba(30,110,60,.45)}
+.ctg-panel--syl .ctg-panel__h{margin-bottom:2px}
+.ctg-panel--syl .ctg-panel__h svg{background:linear-gradient(180deg,#3fae66,#2a8c4e);stroke:#fff;fill:rgba(255,255,255,.18)}
+.ctg-mod{display:flex;align-items:center;gap:8px;height:20px}
+.ctg-mod i{flex:none;display:grid;place-items:center;width:14px;height:14px;border-radius:5px;background:#eef1f5}
+.ctg-mod b{display:block;height:6px;width:var(--w);border-radius:3px;background:#e7ebf1}
+.ctg-mod--new{margin:0 -6px;padding:0 6px;border-radius:8px;background:#effaf2;
+  opacity:0;transform:translateX(18px);transition:opacity .5s ease 1.3s,transform .7s var(--ctg-ease) 1.3s}
+.ctg-mod--new i{background:#2f9a57}
+.ctg-mod--new i svg{width:10px;height:10px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round}
+.ctg-mod--new b{background:linear-gradient(90deg,#3fae66,#a6dfb8)}
+.ctg-card.ctg-is-shown .ctg-mod--new{opacity:1;transform:none}
+.ctg-card__tick{position:absolute;top:-9px;right:-9px;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;
+  background:#2f9a57;box-shadow:0 0 0 3px #fff,0 6px 12px -4px rgba(30,120,60,.6);
+  transform:scale(0);transition:transform .5s cubic-bezier(.34,1.56,.64,1) 1.8s}
+.ctg-card.ctg-is-shown .ctg-card__tick{transform:scale(1)}
+.ctg-card__tick svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 
-/* interview prep: the rounds as one checklist on a rail; each step lights up and is ticked off in turn */
-.ctg-card__viz--rounds .ctg-card__viz-in{position:relative;list-style:none;display:flex;flex-direction:column;gap:9px;width:min(210px,100%);padding-left:22px}
-.ctg-card__viz--rounds .ctg-card__viz-in::before{content:"";position:absolute;left:6px;top:16px;bottom:16px;width:2px;border-radius:2px;
-  background:linear-gradient(#f97316,#fdba74 70%,rgba(253,186,116,.25))}
-.ctg-card__viz--rounds li{position:relative;display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap;
-  letter-spacing:-.01em;color:#2a2a2a;background:linear-gradient(180deg,#fff,#fffaf5);border:1px solid rgba(180,100,40,.14);
-  box-shadow:inset 0 1px 0 #fff,0 10px 18px -14px rgba(120,60,20,.5)}
-.ctg-card__viz--rounds i{position:absolute;left:-21px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:50%;
-  background:#fff;box-shadow:0 0 0 2px #f97316,0 0 0 5px rgba(249,115,22,.14)}
-.ctg-card__viz--rounds i::after{content:"";position:absolute;inset:3px;border-radius:50%;background:#f97316}
-.ctg-card__ok{margin-left:auto;padding:3px;box-sizing:content-box;border-radius:50%;background:#eaf7ee;
-  opacity:0;transform:scale(.4);transition:opacity .35s ease calc(.9s + var(--ctg-d,0s) * 2),transform .5s cubic-bezier(.34,1.56,.64,1) calc(.9s + var(--ctg-d,0s) * 2)}
+/* 4 · Interview prep: the rounds in a small app window; progress fills as each one is ticked */
+.ctg-win{width:min(236px,100%);padding:0 0 10px;overflow:hidden}
+.ctg-win__bar{display:flex;align-items:center;gap:5px;padding:10px 12px;border-bottom:1px solid #f1ede8;background:#fcfaf7}
+.ctg-win__bar span{width:7px;height:7px;border-radius:50%;background:#e9e3dc}
+.ctg-win__bar span:first-child{background:#fdba74}
+.ctg-win__bar em{flex:1;height:5px;margin-left:8px;border-radius:3px;background:#f1ece6;overflow:hidden}
+.ctg-win__bar b{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#f97316,#fdba74);
+  transform:scaleX(0);transform-origin:0 50%;transition:transform 1.6s cubic-bezier(.65,0,.35,1) 1s}
+.ctg-card.ctg-is-shown .ctg-win__bar b{transform:none}
+.ctg-win__list{list-style:none;display:flex;flex-direction:column;gap:2px;padding:8px 8px 0}
+.ctg-win__list li{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:10px;font-size:12px;font-weight:600;white-space:nowrap;letter-spacing:-.01em;color:#2a2a2a}
+.ctg-win__list li:nth-child(odd){background:#fbf9f6}
+.ctg-win__list i{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--cb)}
+.ctg-win__list i svg{width:14px;height:14px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ctg-card__ok{flex:none;margin-left:auto;width:12px;height:12px;padding:3px;box-sizing:content-box;border-radius:50%;background:#22a05a;
+  fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;
+  opacity:0;transform:scale(.4);transition:opacity .35s ease calc(.9s + var(--ctg-d,0s) * 3),transform .5s cubic-bezier(.34,1.56,.64,1) calc(.9s + var(--ctg-d,0s) * 3)}
 .ctg-card.ctg-is-shown .ctg-card__ok{opacity:1;transform:none}
-
-.ctg-card-plate-top{fill:url(#ctgPlate)}.ctg-card-plate-side{fill:#c6d8f5}.ctg-card-core-top{fill:url(#ctgCore)}
-.ctg-card-wire{fill:none;stroke:#a9c3ef;stroke-width:1.4;stroke-linecap:round}
-.ctg-card-label{font-family:var(--ctg-body);font-size:15px;font-weight:500;fill:#5b6478;letter-spacing:-.01em;text-anchor:middle}
-.ctg-card-ai{font-family:var(--ctg-body);font-size:36px;font-weight:700;fill:#1a3fd0;letter-spacing:-.02em;text-anchor:middle}
 
 /* inner build plays after the card has appeared */
 .ctg-card-a{opacity:0;transform:translateY(12px) scale(.96);transform-box:fill-box;transform-origin:50% 50%;
   transition:opacity .55s var(--ctg-ease) calc(.25s + var(--ctg-d,0s)),transform .7s var(--ctg-ease) calc(.25s + var(--ctg-d,0s))}
 .ctg-card.ctg-is-shown .ctg-card-a{opacity:1;transform:none}
-.ctg-card-wire{stroke-dasharray:420;stroke-dashoffset:420;transition:stroke-dashoffset 1.2s ease calc(.25s + var(--ctg-d,0s))}
-.ctg-card.ctg-is-shown .ctg-card-wire{stroke-dashoffset:0}
-@keyframes ctg-float{50%{translate:0 -6px}}
-.ctg-card.ctg-is-shown .ctg-card-node{animation:ctg-float 6s ease-in-out var(--ctg-d,0s) infinite}
 
 /* ---------- tablet / phone: the heading on top, the deck under it, each card text over picture ---------- */
 @media (max-width:900px){
@@ -169,16 +215,15 @@
   .ctg-card > .ctg-card__note{grid-column:1;grid-row:3}
   .ctg-card__h{font-size:22px}
   .ctg-card__viz-in{--ctg-vs:1}
+  .ctg-card__art svg{width:100%}
 }
 
 @media (prefers-reduced-motion:reduce){
   .ctg__slot{position:relative;top:auto;margin-bottom:24px}
   .ctg__slot .ctg-card{transform:none}
   .ctg__deck{padding-bottom:0}
-  .ctg-card-a{opacity:1!important;transform:none!important;transition:none}
-  .ctg-card-wire{stroke-dashoffset:0;transition:none}
-  .ctg-card.ctg-is-shown .ctg-card-node{animation:none}
-  .ctg-card__spark{stroke-dashoffset:0;transition:none}
-  .ctg-card__tick,.ctg-card__ok{opacity:1;transform:none;transition:none}
-  .ctg-card.ctg-is-shown .ctg-card__flow,.ctg-card.ctg-is-shown .ctg-card__chip--solid::after{animation:none}
+  .ctg-card-a,.ctg-card__viz--stack .ctg-blk.ctg-card-a,.ctg-mod--new,.ctg-card__tick,.ctg-card__ok,.ctg-win__bar b{opacity:1!important;transform:none!important;transition:none!important}
+  .ctg-trace,.ctg-lead,.ctg-chart__line{stroke-dashoffset:0;transition:none}
+  .ctg-chart__area,.ctg-chart__dot{opacity:1;transition:none}
+  .ctg-card *,.ctg-card *::after{animation:none!important}
 }
