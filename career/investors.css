@@ -1,15 +1,16 @@
 /* =====================================================================
    S7b — BACKED BY LEADING GLOBAL INVESTORS
-   The heading on the left, the three investors on the right as round medallions in one even row,
-   centred on the heading and ending on the page's right content edge.
+   The heading and line on top, each on a single line, with the three investors below them as round
+   medallions in one even row, all centred.
    When the row arrives (.is-in, from career/motion.js) each medallion flips over like a coin, one
    after another, then keeps turning a few degrees either way with a sheen passing over it.
    ===================================================================== */
-.cs .inv{background:#fff;padding:var(--sec-y) var(--page-edge) 0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:clamp(32px,5vw,96px)}
-.inv-head{display:flex;flex-direction:column;align-items:flex-start;gap:16px;text-align:left;max-width:520px}
+.cs .inv{background:#fff;padding:var(--sec-y) var(--page-edge) 0;display:flex;flex-direction:column;align-items:center;gap:clamp(40px,4vw,64px)}
+.inv-head{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.inv-title,.inv-sub{white-space:nowrap}
 .inv-sub{margin:0}
 
-.inv-row{--m:clamp(150px,12vw,184px);list-style:none;margin:0;padding:0;display:flex;align-items:center;justify-content:flex-end;gap:clamp(16px,2vw,28px);perspective:1000px}
+.inv-row{--m:clamp(150px,12vw,184px);list-style:none;margin:0;padding:0;display:flex;align-items:center;justify-content:center;gap:clamp(16px,2vw,28px);perspective:1000px}
 .inv-row li{flex:none;position:relative;width:var(--m);aspect-ratio:1;
   display:flex;align-items:center;justify-content:center;gap:4px;border-radius:50%;
   background:radial-gradient(circle at 50% 30%,#fff 0%,#f6f9ff 70%,#eef4ff 100%);
@@ -37,8 +38,8 @@
 .inv-row li:hover{transform:scale(1.04)}
 
 @media (max-width:900px){
-  .cs .inv{grid-template-columns:1fr;padding-inline:var(--page-pad)}
-  .inv-head{align-items:center;text-align:center;margin-inline:auto}
+  .cs .inv{padding-inline:var(--page-pad)}
+  .inv-title,.inv-sub{white-space:normal}
   .inv-row{--m:clamp(96px,28vw,150px);justify-content:center;gap:12px}
   .inv-row .lf{width:16px;height:52px}
   .inv-better{width:72px;height:30px}.inv-better img{width:50px}
