@@ -34,7 +34,7 @@ Open http://localhost:3000. Test at 1440×900, 1024×768 and 390×844, and with 
 | 6 | Career Transformations | `#career-transformations` | `career/career-transformations.css/js` | Original build, unchanged: pinned heading, staggered arch wall of text/video testimonials, View All. |
 | 6b | Masterclasses | `#masterclasses` | `career/masterclass.css/js` | Sticky intro left; film tilts flat as it rises; mentor cards stand up; company ticker. |
 | 7 | We train you for what companies hire for | `#what-companies-look-for` | `career/we-train-section.css/js` | Sticky heading left, stacking deck right (sticky slots, `--ctg-sink`, transform only, rests before release). |
-| 8 | Why Top Companies Prefer NxtWave Students | `#hiring-teams` | `career/style.css` + `career/script.js` | Coverflow (`--d`, `--ad` per card), auto-advance 4.2 s while visible, arrows/swipe/keys, YouTube modal. Portraits use `--r-lg`. |
+| 8 | Why Top Companies Prefer NxtWave Students | `#hiring-teams` | `career/style.css` + `career/script.js` | Coverflow (`--d`, `--ad` per card), auto-advance 2 s while visible (held while a portrait is hovered), arrows/swipe/keys, YouTube modal. Portraits use `--r-lg`. |
 | 9 | Backed by Leading Global Investors | `#investors` | `career/investors.css` | Heading left, three coin medallions in one row; flip in (`.inv-row.is-in`), gentle turn + sheen. |
 | 10 | Recognized by Leading Media | `#featured-in-media` | `career/media-footer.css/js` | Press board flips in; bento stories open (curtain + settle); stepping ticker; View More. |
 | — | Footer | `#footer` | `career/media-footer.css/js` | Content unchanged; card rises in (`--ft-in`). |

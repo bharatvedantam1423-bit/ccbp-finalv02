@@ -18,8 +18,8 @@ const PLAY = '<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg>';
 
 /* A coverflow. The partner at the front is large, the others step
    back to either side, turned away. Their name, role and company show under the front portrait.
-   The front moves on by itself every few seconds while the section is on screen (held while the
-   pointer is over it), and follows the arrows, a swipe, a click on a side portrait, or the arrow keys.
+   The front moves on by itself every 2 seconds while the section is on screen (held only while the
+   pointer is over a portrait), and follows the arrows, a swipe, a click on a side portrait, or the arrow keys.
    A click on the front portrait plays the video. */
 track.innerHTML = TESTIMONIALS.map((t, i) => `
   <li class="ht__card" style="--i:${i}">
@@ -68,12 +68,14 @@ addEventListener("pointerup", e => {
   if (Math.abs(dx) > 40) { moved = true; go(at + (dx < 0 ? 1 : -1)); restart(); }
 });
 
-/* on its own, every few seconds, while on screen and not pointed at */
+/* on its own, every 2 seconds, while on screen and no portrait is pointed at */
 const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let timer = 0, onScreen = false, held = false;
-const restart = () => { clearInterval(timer); if (!RM && onScreen && !held) timer = setInterval(() => go(at + 1), 4200); };
-rail.addEventListener("pointerenter", () => { held = true; restart(); });
-rail.addEventListener("pointerleave", () => { held = false; restart(); });
+const restart = () => { clearInterval(timer); if (!RM && onScreen && !held) timer = setInterval(() => go(at + 1), 2000); };
+track.querySelectorAll(".ht__media").forEach(m => {
+  m.addEventListener("pointerenter", e => { if (e.pointerType !== "touch") { held = true; restart(); } });
+  m.addEventListener("pointerleave", () => { held = false; restart(); });
+});
 if ("IntersectionObserver" in window) new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; restart(); }, { threshold: .35 }).observe(rail);
 
 /* the row arrives: the portraits rise from below, front first */
